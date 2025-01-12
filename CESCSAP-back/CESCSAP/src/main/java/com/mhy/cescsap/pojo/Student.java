@@ -24,10 +24,6 @@ public class Student {
     private Long classId;
     //联系方式
     private String contact;
-    //课程列表
-    private List<Course> courses;
-    //成绩列表
-    private List<Score> scores;
     //绩点
     private Double gpa;
     //预警信息列表
