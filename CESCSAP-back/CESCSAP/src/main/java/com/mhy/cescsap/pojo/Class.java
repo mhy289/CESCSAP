@@ -16,6 +16,6 @@ public class Class {
     private String className;
     //所属专业
     private String major;
-    //班级列表
-    private List<Student> students;
+    //教师id
+    private Long teacherId;
 }

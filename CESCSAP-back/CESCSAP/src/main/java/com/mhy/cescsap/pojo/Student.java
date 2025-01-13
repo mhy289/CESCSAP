@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -17,7 +18,7 @@ public class Student {
     //性别
     private String gender;
     //出生日期
-    private String birthDate;
+    private Date birthDate;
     //专业
     private String major;
     //班级id
@@ -26,8 +27,6 @@ public class Student {
     private String contact;
     //绩点
     private Double gpa;
-    //预警信息列表
-    private List<Warning> warnings;
     //自评结果
     private String selfEvaluation;
     //教师评价结果
@@ -35,5 +34,5 @@ public class Student {
     //同学评价结果
     private String classmateEvaluation;
     //登陆状态
-    private boolean loginStatus;
+    private Integer loginStatus;
 }

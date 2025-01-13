@@ -22,11 +22,12 @@ class TeacherMapperTest {
     @Test
     void insertTeacher() {
         Teacher t = new Teacher();
-        t.setName("负");
-        t.setGender("男");
-        t.setDepartment("计算机学院");
+        t.setName("负0");
+        t.setGender("男s");
+        t.setDepartment("s计算机学院");
         t.setBirthDate(new Date());
-        t.setContact("13688889999");
+        t.setContact("136288889999");
+        t.setLoginStatus("Test");
         int result = mapper.insertTeacher(t);
         System.out.println(result);
     }

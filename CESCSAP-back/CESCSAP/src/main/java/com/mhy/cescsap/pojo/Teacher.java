@@ -24,5 +24,5 @@ public class Teacher {
     //联系方式
     private String contact;
     //登陆状态
-    private String loginStatus;
+    private Integer loginStatus;
 }
