@@ -20,4 +20,24 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getStudents() {
         return studentMapper.getStudents();
     }
+
+    @Override
+    public Student getStudentById(Long id) {
+        return studentMapper.getStudentById(id);
+    }
+
+    @Override
+    public Integer addStudent(Student student) {
+        return studentMapper.addStudent(student);
+    }
+
+    @Override
+    public Integer deleteStudent(Long id) {
+        return studentMapper.deleteStudent(id);
+    }
+
+    @Override
+    public Integer updateStudent(Student student) {
+        return studentMapper.updateStudent(student);
+    }
 }

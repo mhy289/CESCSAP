@@ -1,6 +1,7 @@
 package com.mhy.cescsap.mapper;
 
 import com.mhy.cescsap.pojo.Student;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -20,13 +21,13 @@ public interface StudentMapper {
 
     //增加一个学生
     @Insert("insert into student(name, gender, birth_date, major, class_id, contact,login_status) values(#{name}, #{gender}, #{birthDate}, #{major}, #{classId}, #{contact},#{loginStatus}})")
-    int addStudent(Student student);
+    Integer addStudent(Student student);
 
     // 删除一个学生
     @Select("delete from student where student_id = #{studentId}")
-    int deleteStudent(Long studentId);
+    Integer deleteStudent(Long studentId);
 
     // 更新一个学生
     @Update("update student set name = #{name}, gender = #{gender}, birth_date = #{birthDate}, major = #{major}, class_id = #{classId}, contact = #{contact}, login_status = #{loginStatus} where student_id = #{studentId}")
-    int updateStudent(Student student);
+    Integer updateStudent(Student student);
 }

@@ -1,13 +1,11 @@
 package com.mhy.cescsap.controller;
 
 import com.mhy.cescsap.pojo.Result;
+import com.mhy.cescsap.pojo.Teacher;
 import com.mhy.cescsap.service.TeacherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -22,5 +20,28 @@ public class TeacherController {
     public Result getOneTeacher(@PathVariable Integer id){
         return new Result(teacherService.getTeacherById(id));
     }
+
     // 获取多个教师
+    @GetMapping("/teachers")
+    public Result getAllTeachers(){
+        return new Result(teacherService.getTeachers());
+    }
+
+    // 增加一个教师
+    @PostMapping("/teacher")
+    public Result addTeacher(Teacher teacher){
+        return new Result(teacherService.addTeacher(teacher));
+    }
+
+    // 删除一个教师
+    @DeleteMapping("/teacher/{id}")
+    public Result deleteTeacher(@PathVariable Integer id){
+        return new Result(teacherService.deleteTeacher(id));
+    }
+
+    // 修改一个教师
+    @PutMapping("/teacher")
+    public Result updateTeacher(Teacher teacher){
+        return new Result(teacherService.updateTeacher(teacher));
+    }
 }
