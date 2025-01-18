@@ -11,13 +11,13 @@ public interface TeacherService {
     List<Teacher> getTeachers();
 
     //查询单个教师
-    Teacher getTeacherById(Integer id);
+    Teacher getTeacherById(Long id);
 
     //增加一个教师
     Integer addTeacher(Teacher teacher);
 
     //删除一个教师
-    Integer deleteTeacher(Integer id);
+    Integer deleteTeacher(Long id);
 
     //修改一个教师
     Integer updateTeacher(Teacher teacher);

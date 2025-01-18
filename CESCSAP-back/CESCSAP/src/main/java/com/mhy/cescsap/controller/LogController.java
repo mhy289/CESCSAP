@@ -25,13 +25,13 @@ public class LogController {
 
     // 获取单个日志
     @GetMapping("/log/{id}")
-    public Result getOneLog(@PathVariable Integer id){
+    public Result getOneLog(@PathVariable Long id){
         return new Result(logService.getLogById(id));
     }
 
     // 删除单个日志
     @DeleteMapping("/log/{id}")
-    public Result deleteLog(@PathVariable Integer id){
+    public Result deleteLog(@PathVariable Long id){
         logService.deleteLog(id);
         return new Result("Delete log success");
     }

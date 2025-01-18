@@ -17,7 +17,7 @@ public class LogServiceImpl implements LogService {
     LogMapper logMapper;
 
     @Override
-    public Log getLogById(Integer logId) {
+    public Log getLogById(Long logId) {
         return logMapper.getLogById(logId);
     }
 
@@ -32,7 +32,7 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public Integer deleteLog(Integer logId) {
+    public Integer deleteLog(Long logId) {
         return logMapper.deleteLog(logId);
     }
 

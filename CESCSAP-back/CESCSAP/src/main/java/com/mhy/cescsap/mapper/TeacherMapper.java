@@ -9,7 +9,7 @@ import java.util.List;
 public interface TeacherMapper {
     //查询教师
     @Select("select * from teacher where teacher_id = #{teacherId}")
-    Teacher selectTeacherById(Integer id);
+    Teacher selectTeacherById(Long id);
 
     //查询所有教师
     @Select("select * from teacher")
@@ -21,7 +21,7 @@ public interface TeacherMapper {
 
     // 删除一个教师
     @Delete("delete from teacher where teacher_id = #{teacherId}")
-    Integer deleteTeacher(Integer id);
+    Integer deleteTeacher(Long id);
 
     // 更新一个教师
     @Update("update teacher set name = #{name}, gender = #{gender}, department = #{department}, birth_date = #{birthDate}, contact = #{contact}, login_status = #{loginStatus} where teacher_id = #{teacherId}")

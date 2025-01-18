@@ -20,7 +20,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher getTeacherById(Integer id) {
+    public Teacher getTeacherById(Long id) {
         return teacherMapper.selectTeacherById(id);
     }
 
@@ -30,7 +30,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Integer deleteTeacher(Integer id) {
+    public Integer deleteTeacher(Long id) {
         return teacherMapper.deleteTeacher(id);
     }
 

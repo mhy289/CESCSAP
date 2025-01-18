@@ -12,7 +12,7 @@ import java.util.List;
 public interface LogMapper {
     //查询一条日志
     @Select("select * from log where log_id = #{logId}")
-    Log getLogById(Integer logId);
+    Log getLogById(Long logId);
 
     //查询所有日志
     @Select("select * from log")
@@ -24,7 +24,7 @@ public interface LogMapper {
 
     // 删除一个日志
     @Select("delete from log where log_id = #{logId}")
-    Integer deleteLog(Integer logId);
+    Integer deleteLog(Long logId);
 
     // 更新一个日志
     @Update("update log set event_type = #{eventType}, event_content = #{eventContent}, event_time = #{eventTime}, event_user = #{eventUser}, event_source = #{eventSource}, event_remark = #{eventRemark}, event_status = #{eventStatus} where log_id = #{logId}")

@@ -17,7 +17,7 @@ public class TeacherController {
     // 教师相关操作
     // 获取单个教师
     @GetMapping("/teacher/{id}")
-    public Result getOneTeacher(@PathVariable Integer id){
+    public Result getOneTeacher(@PathVariable Long id){
         return new Result(teacherService.getTeacherById(id));
     }
 
@@ -35,7 +35,7 @@ public class TeacherController {
 
     // 删除一个教师
     @DeleteMapping("/teacher/{id}")
-    public Result deleteTeacher(@PathVariable Integer id){
+    public Result deleteTeacher(@PathVariable Long id){
         return new Result(teacherService.deleteTeacher(id));
     }
 
