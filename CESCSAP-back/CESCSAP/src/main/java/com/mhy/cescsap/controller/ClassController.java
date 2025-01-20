@@ -17,7 +17,7 @@ public class ClassController {
     ClassService classService;
 
     //查询单个班级
-    @GetMapping("/class/{id")
+    @GetMapping("/class/{id}")
     public Result getClass(@PathVariable Long id){
         return new Result(classService.getClass(id));
     }

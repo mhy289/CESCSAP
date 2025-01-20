@@ -27,7 +27,6 @@ class TeacherMapperTest {
         t.setDepartment("s计算机学院");
         t.setBirthDate(new Date());
         t.setContact("136288889999");
-        t.setLoginStatus("Test");
         int result = mapper.insertTeacher(t);
         System.out.println(result);
     }

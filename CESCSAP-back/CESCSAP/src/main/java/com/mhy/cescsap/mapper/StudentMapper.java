@@ -20,7 +20,7 @@ public interface StudentMapper {
     Student getStudentById(Long studentId);
 
     //增加一个学生
-    @Insert("insert into student(name, gender, birth_date, major, class_id, contact,login_status) values(#{name}, #{gender}, #{birthDate}, #{major}, #{classId}, #{contact},#{loginStatus}})")
+    @Insert("insert into student(name, gender, birth_date, major, class_id, contact,login_status) values(#{name}, #{gender}, #{birthDate}, #{major}, #{classId}, #{contact},#{loginStatus})")
     Integer addStudent(Student student);
 
     // 删除一个学生

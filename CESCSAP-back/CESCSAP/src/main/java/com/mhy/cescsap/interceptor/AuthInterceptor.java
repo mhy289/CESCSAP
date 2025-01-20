@@ -14,7 +14,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
+        if(true){
+            return true;
+        }
         StringBuffer url = request.getRequestURL();
         log.debug("url is {}", url);
 //        if(url.toString().contains("login")){

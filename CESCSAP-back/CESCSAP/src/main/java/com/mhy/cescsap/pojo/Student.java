@@ -27,12 +27,6 @@ public class Student {
     private String contact;
     //绩点
     private Double gpa;
-    //自评结果
-    private String selfEvaluation;
-    //教师评价结果
-    private String teacherEvaluation;
-    //同学评价结果
-    private String classmateEvaluation;
     //登陆状态
     private Integer loginStatus;
 }
