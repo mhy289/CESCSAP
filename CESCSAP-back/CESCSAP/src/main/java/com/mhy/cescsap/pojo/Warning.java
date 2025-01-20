@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +21,7 @@ public class Warning {
     //预警内容
     private String warningContent;
     //发送日期
-    private String sendDate;
+    private Date sendDate;
     //学生响应
     private String studentResponse;
 }

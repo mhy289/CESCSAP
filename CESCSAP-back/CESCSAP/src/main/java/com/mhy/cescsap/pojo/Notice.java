@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,5 +19,5 @@ public class Notice {
     //公告发布人
     private String publisher;
     //公告创建时间
-    private String createTime;
+    private Date createTime;
 }
