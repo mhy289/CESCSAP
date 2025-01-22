@@ -14,9 +14,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(true){
-            return true;
-        }
+//        if(true){
+//            return true;
+//        }
         StringBuffer url = request.getRequestURL();
         log.debug("url is {}", url);
 //        if(url.toString().contains("login")){
@@ -29,9 +29,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
         String token = request.getHeader("Authorization");
         if(token == null){
+            log.info("aaa");
             throw new BusinessException(ExceptionType.BUS_INVALID_TOKEN, "Invalid authorization");
         }
         if(!JwtUtils.verifyToken(token) || token.isEmpty()){
+            log.info("bbb");
             throw new BusinessException(ExceptionType.BUS_INVALID_TOKEN, "Invalid authorization");
         } else {
             log.info("token");

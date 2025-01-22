@@ -14,6 +14,8 @@ public class Admin {
     private Long adminId;
     // 管理员名称
     private String name;
+    //密码
+    private String password;
     // 联系方式
     private String contact;
     //登陆状态

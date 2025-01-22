@@ -21,4 +21,8 @@ public interface TeacherService {
 
     //修改一个教师
     Integer updateTeacher(Teacher teacher);
+
+    //教师登录
+    Teacher login(Teacher teacher);
+
 }

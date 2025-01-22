@@ -26,4 +26,7 @@ public interface TeacherMapper {
     // 更新一个教师
     @Update("update teacher set name = #{name}, gender = #{gender}, department = #{department}, birth_date = #{birthDate}, contact = #{contact}, login_status = #{loginStatus} where teacher_id = #{teacherId}")
     Integer updateTeacher(Teacher teacher);
+
+    @Select("select * from teacher where name = #{name}")
+    Teacher selectTeacherByName(String teacherName);
 }
