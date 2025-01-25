@@ -9,13 +9,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Admin {
+public class Admin extends User{
     // 管理员id
     private Long adminId;
-    // 管理员名称
-    private String name;
-    //密码
-    private String password;
+//    // 管理员名称
+//    private String name;
+//    //密码
+//    private String password;
     // 联系方式
     private String contact;
     //登陆状态

@@ -10,13 +10,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Student {
+public class Student extends User{
     //学号
     private Long studentId;
-    //名字
-    private String name;
-    //密码
-    private String password;
+//    //名字
+//    private String name;
+//    //密码
+//    private String password;
     //性别
     private String gender;
     //出生日期

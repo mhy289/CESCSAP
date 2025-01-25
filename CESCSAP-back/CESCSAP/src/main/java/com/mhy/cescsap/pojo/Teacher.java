@@ -13,10 +13,10 @@ import java.util.List;
 public class Teacher extends User{
     //教师id
     private Long teacherId;
-    //姓名
-    private String name;
-    //密码
-    private String password;
+//    //姓名
+//    private String name;
+//    //密码
+//    private String password;
     //性别
     private String gender;
     //所属院系

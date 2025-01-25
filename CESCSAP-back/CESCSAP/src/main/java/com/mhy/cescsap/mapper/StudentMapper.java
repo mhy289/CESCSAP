@@ -30,4 +30,7 @@ public interface StudentMapper {
     // 更新一个学生
     @Update("update student set name = #{name}, gender = #{gender}, birth_date = #{birthDate}, major = #{major}, class_id = #{classId}, contact = #{contact}, login_status = #{loginStatus} where student_id = #{studentId}")
     Integer updateStudent(Student student);
+
+    @Select("select * from student where name = #{name}")
+    Student selectStudentByName(String name);
 }
