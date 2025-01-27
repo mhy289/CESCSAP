@@ -16,7 +16,7 @@ public interface TeacherMapper {
     List<Teacher> selectAllTeachers();
 
     //增加一个教师
-    @Insert("insert into teacher (name, gender, department, birth_date, contact,login_status) values (#{name}, #{gender}, #{department}, #{birthDate}, #{contact},#{loginStatus})")
+    @Insert("insert into teacher (name, gender, department, birth_date, contact,login_status,role) values (#{name}, #{gender}, #{department}, #{birthDate}, #{contact},#{loginStatus},#{role})")
     Integer insertTeacher(Teacher teacher);
 
     // 删除一个教师
@@ -24,7 +24,7 @@ public interface TeacherMapper {
     Integer deleteTeacher(Long id);
 
     // 更新一个教师
-    @Update("update teacher set name = #{name}, gender = #{gender}, department = #{department}, birth_date = #{birthDate}, contact = #{contact}, login_status = #{loginStatus} where teacher_id = #{teacherId}")
+    @Update("update teacher set name = #{name}, gender = #{gender}, department = #{department}, birth_date = #{birthDate}, contact = #{contact}, login_status = #{loginStatus},role = #{role} where teacher_id = #{teacherId}")
     Integer updateTeacher(Teacher teacher);
 
     @Select("select * from teacher where name = #{name}")

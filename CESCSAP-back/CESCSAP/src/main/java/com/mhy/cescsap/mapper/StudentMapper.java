@@ -20,7 +20,7 @@ public interface StudentMapper {
     Student getStudentById(Long studentId);
 
     //增加一个学生
-    @Insert("insert into student(name, gender, birth_date, major, class_id, contact,login_status) values(#{name}, #{gender}, #{birthDate}, #{major}, #{classId}, #{contact},#{loginStatus})")
+    @Insert("insert into student(name, gender, birth_date, major, class_id, contact,login_status,role) values(#{name}, #{gender}, #{birthDate}, #{major}, #{classId}, #{contact},#{loginStatus},#{role})")
     Integer addStudent(Student student);
 
     // 删除一个学生
@@ -28,7 +28,7 @@ public interface StudentMapper {
     Integer deleteStudent(Long studentId);
 
     // 更新一个学生
-    @Update("update student set name = #{name}, gender = #{gender}, birth_date = #{birthDate}, major = #{major}, class_id = #{classId}, contact = #{contact}, login_status = #{loginStatus} where student_id = #{studentId}")
+    @Update("update student set name = #{name}, gender = #{gender}, birth_date = #{birthDate}, major = #{major}, class_id = #{classId}, contact = #{contact}, login_status = #{loginStatus},role = #{role} where student_id = #{studentId}")
     Integer updateStudent(Student student);
 
     @Select("select * from student where name = #{name}")

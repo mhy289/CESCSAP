@@ -34,4 +34,32 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+    // 首先判断是否需要登录
+    if (to.name === 'login' || to.name === 'Register') {
+        // 如果是登录或注册页面，则直接通过
+        next();
+    } else {
+        // 获取token
+        let token = localStorage.getItem('token');
+        if (token) {
+            // 如果存在token，则继续导航
+            next();
+        } else {
+            // 如果不存在token，则显示错误并导航到登录页面
+            Message.error("请先登录");
+            next({ name: 'login' }); // 使用name或path都可以，这里使用name更清晰
+            // 注意：这里不需要再调用router.push("/login")，因为next已经处理了
+        }
+    }
+
+    // 如果目标路由与当前路由相同，理论上不需要做额外处理，因为上面的逻辑已经处理了所有情况
+    // 但如果你确实需要在这种情况下做一些操作（虽然不常见），你应该将这部分逻辑移到上面
+    // 例如，检查查询参数或hash是否有变化，然后决定是否继续
+
+    // 注意：console.log(to, from, next) 应该放在逻辑处理之前或之后，而不是穿插在中间
+    // 这里我将它放在最后，仅用于调试
+    console.log(to, from); // 注意：next函数不应该被console.log，因为它是一个函数
+});
+
 export default router

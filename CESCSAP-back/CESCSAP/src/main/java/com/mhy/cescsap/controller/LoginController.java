@@ -6,12 +6,12 @@ import com.mhy.cescsap.service.StudentService;
 import com.mhy.cescsap.service.TeacherService;
 import com.mhy.cescsap.service.UserService;
 import com.mhy.cescsap.utils.JwtUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static com.mhy.cescsap.utils.JwtUtils.getAudience;
 
 @RestController
 @CrossOrigin
@@ -27,7 +27,7 @@ public class LoginController {
     @Autowired
     UserService userService;
 
-    //教师登录
+    //登录
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
         log.debug("user is {}", user);
@@ -43,5 +43,16 @@ public class LoginController {
         result.setCode(200);
         result.setMsg("登陆成功");
         return result;
+    }
+
+    //获取身份
+    @GetMapping("/role")
+    public Result RoleCheck(HttpServletRequest req){
+        log.debug("role");
+        String token = req.getHeader("Authorization");
+        String audience = getAudience(token);
+        Integer isAdmin = userService.checkAdmin(Integer.valueOf(audience));
+        System.out.println(isAdmin);
+        return new Result(isAdmin);
     }
 }

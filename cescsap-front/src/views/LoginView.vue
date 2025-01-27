@@ -68,6 +68,7 @@
           console.log(res.data)
           // 跳转到首页
           localStorage.setItem('token', res.data); // 存储token
+          localStorage.setItem('role', this.ruleForm.role); // 存储role
           this.$router.push('/')
           //this.$router.push('/teacher');
         } else {

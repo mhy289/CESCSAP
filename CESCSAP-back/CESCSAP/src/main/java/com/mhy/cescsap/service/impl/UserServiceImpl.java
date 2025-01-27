@@ -88,4 +88,9 @@ public class UserServiceImpl implements UserService {
         }
         //return null;
     }
+
+    @Override
+    public Integer checkAdmin(Integer integer) {
+        return null;
+    }
 }

@@ -19,7 +19,7 @@ import axios from 'axios'
 // 设置请求的基础路径
 axios.defaults.baseURL = "http://localhost:8080"
 // 定义响应拦截器
-/* axios.interceptors.response.use(function (resp) {
+axios.interceptors.response.use(function (resp) {
   let data = resp.data
   if (data.code === 444) {
     // 跳转到登录页
@@ -28,10 +28,10 @@ axios.defaults.baseURL = "http://localhost:8080"
     //router.push("/login")
   }
   return data
-}) */
+})
 
 //定义请求拦截器
-/* axios.interceptors.request.use(function (req) {
+axios.interceptors.request.use(function (req) {
   console.log(req.url)
   const token = localStorage.getItem("token")
   if (token) {
@@ -41,7 +41,7 @@ axios.defaults.baseURL = "http://localhost:8080"
 }, function (error) {
   // 对请求错误做些什么
   return Promise.reject(error);
-}); */
+});
 
 Vue.prototype.$http = axios
 
