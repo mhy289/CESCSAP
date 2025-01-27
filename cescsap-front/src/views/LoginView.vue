@@ -63,14 +63,16 @@
         console.log(this.ruleForm);
         // 在这里根据role的值进行不同的登录处理
         let res = await this.$http.post("/login", this.ruleForm)
-        if (res.data.code === 200) {
+        if (res.code === 200) {
           console.log('登录成功');
           console.log(res.data)
-          // 跳转到教师首页
+          // 跳转到首页
+          localStorage.setItem('token', res.data); // 存储token
+          this.$router.push('/')
           //this.$router.push('/teacher');
         } else {
           console.log('登录失败');
-          console.log(res.data.code)
+          console.log(res.data)
           // 跳转到登录页并提示登录失败
           //this.$router.push('/login');
         }
