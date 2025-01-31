@@ -2,6 +2,7 @@ package com.mhy.cescsap.controller;
 
 import com.mhy.cescsap.pojo.Result;
 import com.mhy.cescsap.pojo.Student;
+import com.mhy.cescsap.service.SCService;
 import com.mhy.cescsap.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class StudentController {
 
     @Autowired
     StudentService studentService;
+
+    @Autowired
+    SCService scService;
     //查询所有学生
     @GetMapping("/students")
     public Result getAllStudents(){
@@ -42,5 +46,11 @@ public class StudentController {
     @PutMapping("/student")
     public Result updateStudent(@RequestBody Student student){
         return new Result(studentService.updateStudent(student));
+    }
+
+    // 查看个人成绩
+    @GetMapping("/studentGrade/{id}")
+    public Result getStudentGrade(@PathVariable Long id){
+        return new Result(scService.getSC(id));
     }
 }

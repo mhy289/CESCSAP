@@ -19,5 +19,5 @@ public class Admin extends User{
     // 联系方式
     private String contact;
     //登陆状态
-    private boolean loginStatus;
+    private Integer loginStatus;
 }

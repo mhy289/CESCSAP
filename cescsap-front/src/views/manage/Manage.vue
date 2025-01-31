@@ -22,6 +22,10 @@
           ></Header>
         </el-header>
 
+        <!-- 点击按钮 -->
+         <el-button type="primary" @click="handleClick">Button</el-button>
+         
+
         <el-main :class="{bk: $route.path=='/manage/home'}">
           <router-view @refresh="getUser" />
         </el-main>
@@ -66,6 +70,7 @@ export default {
       sideWidth: 250,
       collapseIcon: "el-icon-s-fold",
       collapseTitle: "收缩",
+
     };
   },
   //组件
@@ -104,6 +109,10 @@ export default {
         });
       }
     },
+    handleClick(){
+        console.log(localStorage.getItem('role'));
+  
+    }
   },
   created () {
     this.getUser();
