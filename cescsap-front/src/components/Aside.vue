@@ -44,7 +44,7 @@
       <!-- 个人信息 -->
       <el-submenu v-if="Personal" index="person">
         <template slot="title">个人信息</template>
-        <el-menu-item index="/manage/gpa" v-if="menuFlags.gpaMenu">成绩</el-menu-item>
+        <el-menu-item index="/gpa" v-if="menuFlags.gpaMenu">成绩</el-menu-item>
         <el-menu-item index="/manage/kd" v-if="menuFlags.kdMenu">所属</el-menu-item>
       </el-submenu>
 
@@ -120,7 +120,7 @@
       //request.post("http://localhost:8888/role").then(res => {
       //从本地读取role
       console.log(this.role)
-      let res = await this.$http.post("/role")
+      //let res = await this.$http.post("/role")
       if (res.code === '200') {
         this.role = res.data;
         /*只有管理员有权限*/
