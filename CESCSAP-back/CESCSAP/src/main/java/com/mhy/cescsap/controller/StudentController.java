@@ -18,6 +18,7 @@ public class StudentController {
 
     @Autowired
     SCService scService;
+
     //查询所有学生
     @GetMapping("/students")
     public Result getAllStudents(){
@@ -52,5 +53,17 @@ public class StudentController {
     @GetMapping("/studentGrade/{id}")
     public Result getStudentGrade(@PathVariable Long id){
         return new Result(scService.getSC(id));
+    }
+
+    //分页获取
+    @GetMapping("/students/current/{current}/size/{size}")
+    public Result getAllPage(@PathVariable Integer current, @PathVariable Integer size) {
+        return new Result(scService.queryPage(current, size), "查询成功", 200);
+    }
+
+    // 条件分页查询
+    @PostMapping("/students/current/{current}/size/{size}")
+    public Result getConditionPage(@PathVariable Integer current, @PathVariable Integer size, @RequestBody Student student) {
+        return new Result(studentService.queryConditionPage(student, current, size), "查询成功", 200);
     }
 }

@@ -15,4 +15,8 @@ public interface SCMapper {
     // 添加学生选课
     @Insert("insert into studentcourse(student_id, course_id,score,exam_date) values (#{studentId}, #{courseId}, #{score}, #{examDate})")
     Integer addStudentCourse(StudentCourse studentCourse);
+
+    // 查询符合条件的学生选课
+    @Select("select * from studentcourse where sc_id = #{scId}")
+    List<StudentCourse> selectByCondition(StudentCourse sc);
 }

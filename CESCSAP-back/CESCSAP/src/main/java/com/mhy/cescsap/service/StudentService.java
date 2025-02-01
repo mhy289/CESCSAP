@@ -1,5 +1,6 @@
 package com.mhy.cescsap.service;
 
+import com.mhy.cescsap.pojo.PageItem;
 import com.mhy.cescsap.pojo.Student;
 
 import java.util.List;
@@ -19,4 +20,10 @@ public interface StudentService {
 
     //修改一个学生
     Integer updateStudent(Student student);
+
+    //分页查询
+    PageItem<Student> queryPage(Integer current, Integer size);
+
+    //条件分页查询
+    PageItem<Student> queryConditionPage(Student student, Integer current, Integer size);
 }
