@@ -2,6 +2,7 @@ package com.mhy.cescsap.controller;
 
 import com.mhy.cescsap.pojo.Result;
 import com.mhy.cescsap.pojo.Student;
+import com.mhy.cescsap.pojo.StudentCourse;
 import com.mhy.cescsap.service.SCService;
 import com.mhy.cescsap.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +65,6 @@ public class StudentController {
     // 条件分页查询
     @PostMapping("/students/current/{current}/size/{size}")
     public Result getConditionPage(@PathVariable Integer current, @PathVariable Integer size, @RequestBody Student student) {
-        return new Result(studentService.queryConditionPage(student, current, size), "查询成功", 200);
+        return new Result(scService.queryConditionPage(student, current, size), "查询成功", 200);
     }
 }

@@ -19,4 +19,7 @@ public interface SCMapper {
     // 查询符合条件的学生选课
     @Select("select * from studentcourse where sc_id = #{scId}")
     List<StudentCourse> selectByCondition(StudentCourse sc);
+
+    @Select("select * from studentcourse where student_id = #{studentId}")
+    List<StudentCourse> selectByCondition2(Long studentId);
 }

@@ -55,7 +55,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public PageItem<Student> queryConditionPage(Student student, Integer current, Integer size) {
         PageHelper.startPage(current, size);
-        List<Student> orderList = studentMapper.selectByCondition(student);
+        List<Student> orderList = studentMapper.selectByCondition2(student);
         Page<Student> info = (Page<Student>) orderList;
         long total = info.getTotal();
         return new PageItem<>(total, orderList);

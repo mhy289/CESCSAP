@@ -16,5 +16,5 @@ public interface SCService {
     Object queryPage(Integer current, Integer size);
 
     //条件分页查询
-    PageItem<StudentCourse> queryConditionPage(StudentCourse sc, Integer current, Integer size);
+    PageItem<StudentCourse> queryConditionPage(Student student, Integer current, Integer size);
 }

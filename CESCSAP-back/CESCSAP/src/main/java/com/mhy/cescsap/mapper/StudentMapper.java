@@ -36,4 +36,7 @@ public interface StudentMapper {
 
     @Select("select * from student where gender = #{gender}")
     List<Student> selectByCondition(Student student);
+
+    @Select("select * from student where name = #{name}")
+    List<Student> selectByCondition2(Student student);
 }

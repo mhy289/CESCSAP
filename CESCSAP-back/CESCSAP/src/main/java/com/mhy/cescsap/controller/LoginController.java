@@ -41,7 +41,7 @@ public class LoginController {
         String token = JwtUtils.createToken(addDb.getId().toString(), addDb.getName());
         result.setData(token);
         result.setCode(200);
-        result.setMsg("登陆成功");
+        result.setMsg(user.getName());
         return result;
     }
 
