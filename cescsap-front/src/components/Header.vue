@@ -76,8 +76,9 @@ export default {
   methods: {
     //登出
     logout () {
-      localStorage.removeItem("user");
+      localStorage.removeItem("name");
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
       this.$router.push('/login');
       this.$message.success("退出成功");
     },

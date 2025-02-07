@@ -110,8 +110,10 @@ export default {
       }
     },
     handleClick(){
+        // 点击事件
+        //console.log(res);
         console.log(localStorage.getItem('role'));
-  
+        this.$updateActivity();
     }
   },
   created () {

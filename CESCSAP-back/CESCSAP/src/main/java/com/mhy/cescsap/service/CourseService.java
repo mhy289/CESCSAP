@@ -15,4 +15,6 @@ public interface CourseService {
     Integer addCourse(Course course);
     //删除单个课程
     Integer deleteCourse(Long id);
+    // 查询课程分页
+    Object queryConditionPage(Course course, Integer current, Integer size);
 }

@@ -14,6 +14,8 @@ public class Course {
     private String courseName;
     //课程教师id
     private Long teacherId;
+    //教师名字
+    private String teacherName;
     //课程描述
     private String description;
     // 课程学分

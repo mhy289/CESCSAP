@@ -1,7 +1,9 @@
 package com.mhy.cescsap.controller;
 
 
+import com.mhy.cescsap.pojo.Course;
 import com.mhy.cescsap.pojo.Result;
+import com.mhy.cescsap.pojo.Student;
 import com.mhy.cescsap.service.CourseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +41,11 @@ public class CourseController {
     @PostMapping("/courses")
     public Result createCourse(@RequestBody com.mhy.cescsap.pojo.Course course) {
         return new Result(courseService.addCourse(course));
+    }
+
+    // 条件分页查询
+    @PostMapping("/courses/current/{current}/size/{size}")
+    public Result getConditionPage(@PathVariable Integer current, @PathVariable Integer size, @RequestBody Course course) {
+        return new Result(courseService.queryConditionPage(course, current, size), "查询成功", 200);
     }
 }

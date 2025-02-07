@@ -1,7 +1,12 @@
 package com.mhy.cescsap.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.mhy.cescsap.mapper.CourseMapper;
 import com.mhy.cescsap.pojo.Course;
+import com.mhy.cescsap.pojo.PageItem;
+import com.mhy.cescsap.pojo.Student;
+import com.mhy.cescsap.pojo.StudentCourse;
 import com.mhy.cescsap.service.CourseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +43,15 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Integer deleteCourse(Long id) {
         return courseMapper.deleteCourse(id);
+    }
+
+    @Override
+    public PageItem<Course> queryConditionPage(Course course, Integer current, Integer size) {
+        PageHelper.startPage(current, size);
+        List<Course> orderList = courseMapper.selectByCondition(course);
+        log.info("orderList is {}" , orderList);
+        Page<Course> info = (Page<Course>) orderList;
+        long total = info.getTotal();
+        return new PageItem<>(total, orderList);
     }
 }
