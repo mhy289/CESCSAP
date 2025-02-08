@@ -47,11 +47,19 @@ public class SCServiceImpl implements SCService {
 
     @Override
     public PageItem<StudentCourseHistory> queryConditionPage(Student student, Integer current, Integer size) {
-        List<StudentCourse> students = scMapper.getStudents(student.getStudentId());
+        // 在查询前启动分页，确保分页生效
+        PageHelper.startPage(current, size);
+        log.info("Student is {}" , student);
+        // 执行分页查询，此时返回的List实际上是Page类型
+        List<StudentCourse> students = scMapper.selectByCondition2(student.getStudentId());
+        log.debug("Student is {}",students);
+
+        // 将结果强制转换为Page以获取分页信息
+        Page<StudentCourse> page = (Page<StudentCourse>) students;
+
         List<StudentCourseHistory> schs = new ArrayList<>();
-        for(StudentCourse studentCourse : students) {
-            Long courseId = studentCourse.getCourseId();
-            Course course = courseMapper.getCourseById(courseId);
+        for (StudentCourse studentCourse : students) {
+            Course course = courseMapper.getCourseById(studentCourse.getCourseId());
             StudentCourseHistory sch = new StudentCourseHistory();
             sch.setCourseName(course.getCourseName());
             sch.setTeacherName(course.getTeacherName());
@@ -60,13 +68,11 @@ public class SCServiceImpl implements SCService {
             sch.setCredit(course.getCredit());
             sch.setExamDate(studentCourse.getExamDate());
             schs.add(sch);
+            log.debug("sch is {}",sch);
         }
-        PageHelper.startPage(current, size);
-        log.info("Student is {}" , student);
-        List<StudentCourseHistory> orderList = schs;
-        log.info("orderList is {}" , orderList);
-        Page<StudentCourseHistory> info = (Page<StudentCourseHistory>) orderList;
-        long total = info.getTotal();
-        return new PageItem<>(total, orderList);
+        log.debug("schs is {}",schs);
+        log.debug("pahe");
+        // 使用分页数据构造返回结果
+        return new PageItem<>(page.getTotal(), schs);
     }
 }

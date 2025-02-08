@@ -60,4 +60,9 @@ public class StudentServiceImpl implements StudentService {
         long total = info.getTotal();
         return new PageItem<>(total, orderList);
     }
+
+    @Override
+    public Student getStudentByName(String name) {
+        return studentMapper.getStudentByName(name);
+    }
 }

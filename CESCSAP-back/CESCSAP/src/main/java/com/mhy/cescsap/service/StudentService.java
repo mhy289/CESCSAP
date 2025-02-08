@@ -26,4 +26,7 @@ public interface StudentService {
 
     //条件分页查询
     PageItem<Student> queryConditionPage(Student student, Integer current, Integer size);
+
+    //根据名字查询学生
+    Student getStudentByName(String name);
 }

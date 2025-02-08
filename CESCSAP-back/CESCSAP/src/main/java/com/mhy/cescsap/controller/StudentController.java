@@ -1,5 +1,8 @@
 package com.mhy.cescsap.controller;
 
+import com.mhy.cescsap.advice.ProjectExceptionAdvice;
+import com.mhy.cescsap.myexception.BusinessException;
+import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.Result;
 import com.mhy.cescsap.pojo.Student;
 import com.mhy.cescsap.pojo.StudentCourse;
@@ -65,6 +68,11 @@ public class StudentController {
     // 条件分页查询
     @PostMapping("/students/current/{current}/size/{size}")
     public Result getConditionPage(@PathVariable Integer current, @PathVariable Integer size, @RequestBody Student student) {
-        return new Result(scService.queryConditionPage(student, current, size), "查询成功", 200);
+        if(student.getName() == null){
+            throw new BusinessException(ExceptionType.STUDENT_ID_NOT_FOUND,"没有对象");
+        }
+        Student student2 = studentService.getStudentByName(student.getName());
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAStudent is {}",student2);
+        return new Result(scService.queryConditionPage(student2, current, size), "查询成功", 200);
     }
 }
