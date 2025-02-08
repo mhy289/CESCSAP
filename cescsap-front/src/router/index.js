@@ -28,10 +28,18 @@ const routes = [{
         requireAuth: true
       }
     }, {
-        path: 'Gpa',
+        path: '/Gpa',
         name: 'gpa',
         component: () => import('../views/manage/file/Gpa.vue'),
         
+    },{
+        path:'/Form',
+        name:'form',
+        component: () => import('../views/manage/form/Form.vue'),
+    },{
+        path:'AdminForm',
+        name:'adminform',
+        component: () => import('../views/manage/form/AdminForm.vue'),
     }]
   },
   {

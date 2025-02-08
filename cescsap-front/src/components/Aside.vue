@@ -46,6 +46,8 @@
         <template slot="title">个人信息</template>
         <el-menu-item index="/gpa" v-if="menuFlags.gpaMenu">成绩</el-menu-item>
         <el-menu-item index="/manage/kd" v-if="menuFlags.kdMenu">所属</el-menu-item>
+        <el-menu-item index="/form" v-if="menuFlags.formMenu">修改信息</el-menu-item>
+        <el-menu-item index="/adminform" v-if="menuFlags.adminformMenu">修改管理员信息</el-menu-item>
       </el-submenu>
 
       <el-submenu v-if="incomeGroup" index="income">
@@ -84,6 +86,8 @@
           incomeRankMenu: false,
           gpaMenu: false,
           kdMenu: false,
+          formMenu: false,
+          adminformMenu:false
           //personal: false
         }
       }
@@ -101,7 +105,7 @@
         return this.menuFlags.incomeChartMenu || this.menuFlags.incomeRankMenu
       },
       Personal: function () {
-        return this.menuFlags.gpaMenu || this.menuFlags.kdMenu
+        return this.menuFlags.gpaMenu || this.menuFlags.kdMenu || this.menuFlags.formMenu || this.menuFlags.adminformMenu
       }
     },
     async created() {
@@ -116,12 +120,14 @@
       this.menuFlags.goodMenu = true
       this.menuFlags.kdMenu = true
       this.menuFlags.gpaMenu = true
+      this.menuFlags.formMenu = true
+      this.menuFlags.adminformMenu = true
       /*获取用户角色*/
       //request.post("http://localhost:8888/role").then(res => {
       //从本地读取role
       console.log(this.role)
       //let res = await this.$http.post("/role")
-      if (res.code === '200') {
+      /*if (res.code === '200') {
         this.role = res.data;
         /*只有管理员有权限*/
         if (this.role === 0) {
@@ -135,10 +141,11 @@
           this.menuFlags.goodMenu = true
           this.menuFlags.kdMenu = true
           this.menuFlags.gpaMenu = true
+          this.menuFlags.formMenu = true
         } else if (this.role === 1) {
 
         }
-      }
+      //}*/
       //})
     }
   }
