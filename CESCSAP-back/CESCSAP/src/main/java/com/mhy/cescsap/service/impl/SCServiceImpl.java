@@ -2,16 +2,16 @@ package com.mhy.cescsap.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.mhy.cescsap.mapper.CourseMapper;
 import com.mhy.cescsap.mapper.SCMapper;
 import com.mhy.cescsap.mapper.StudentMapper;
-import com.mhy.cescsap.pojo.PageItem;
-import com.mhy.cescsap.pojo.Student;
-import com.mhy.cescsap.pojo.StudentCourse;
+import com.mhy.cescsap.pojo.*;
 import com.mhy.cescsap.service.SCService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +23,9 @@ public class SCServiceImpl implements SCService {
 
     @Autowired
     StudentMapper studentMapper;
+
+    @Autowired
+    CourseMapper courseMapper;
 
     @Override
     public List<StudentCourse> getSC(Long scId) {
@@ -43,20 +46,26 @@ public class SCServiceImpl implements SCService {
     }
 
     @Override
-    public PageItem<StudentCourse> queryConditionPage(Student student, Integer current, Integer size) {
-        Student student1 = studentMapper.selectStudentByName(student.getName());
+    public PageItem<StudentCourseHistory> queryConditionPage(Student student, Integer current, Integer size) {
+        List<StudentCourse> students = scMapper.getStudents(student.getStudentId());
+        List<StudentCourseHistory> schs = new ArrayList<>();
+        for(StudentCourse studentCourse : students) {
+            Long courseId = studentCourse.getCourseId();
+            Course course = courseMapper.getCourseById(courseId);
+            StudentCourseHistory sch = new StudentCourseHistory();
+            sch.setCourseName(course.getCourseName());
+            sch.setTeacherName(course.getTeacherName());
+            sch.setScore(studentCourse.getScore());
+            sch.setGpa(studentCourse.getGpa());
+            sch.setCredit(course.getCredit());
+            sch.setExamDate(studentCourse.getExamDate());
+            schs.add(sch);
+        }
         PageHelper.startPage(current, size);
         log.info("Student is {}" , student);
-        //log.info("sc is {}",sc);
-        //Student student = studentMapper.selectStudentByName(sc);
-//        if(student==null){
-//            log.info("Student not found: {}", sc);
-//            return new PageItem<>(0L, null);
-//        }
-
-        List<StudentCourse> orderList = scMapper.selectByCondition2(student1.getStudentId());
+        List<StudentCourseHistory> orderList = schs;
         log.info("orderList is {}" , orderList);
-        Page<StudentCourse> info = (Page<StudentCourse>) orderList;
+        Page<StudentCourseHistory> info = (Page<StudentCourseHistory>) orderList;
         long total = info.getTotal();
         return new PageItem<>(total, orderList);
     }

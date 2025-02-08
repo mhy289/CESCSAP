@@ -10,12 +10,18 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentCourseHistory {
-    //历史成绩id
-    private Long schId;
-    // 学生课程id
-    private Long scId;
-    // 历史成绩
+    private String courseName;
     private Double score;
-    // 考试日期
+    private String teacherName;
+    private Double gpa;
     private Date examDate;
+    private Double credit;
+
+    public void setGpa() {
+        if(this.score<60){
+            this.gpa = 0.0;
+        } else{
+            this.gpa = (this.score - 50) / 10;
+        }
+    }
 }

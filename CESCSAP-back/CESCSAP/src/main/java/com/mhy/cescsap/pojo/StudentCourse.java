@@ -18,6 +18,16 @@ public class StudentCourse {
     private Long courseId;
     //学生课程成绩
     private Double score;
+    //绩点
+    private Double gpa;
     // 考试日期
     private Date examDate;
+
+    public void setGpa() {
+        if(this.score<60){
+            this.gpa = 0.0;
+        } else{
+            this.gpa = (this.score - 50) / 10;
+        }
+    }
 }

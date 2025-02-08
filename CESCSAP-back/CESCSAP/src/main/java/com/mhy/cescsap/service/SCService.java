@@ -3,6 +3,7 @@ package com.mhy.cescsap.service;
 import com.mhy.cescsap.pojo.PageItem;
 import com.mhy.cescsap.pojo.Student;
 import com.mhy.cescsap.pojo.StudentCourse;
+import com.mhy.cescsap.pojo.StudentCourseHistory;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface SCService {
     Object queryPage(Integer current, Integer size);
 
     //条件分页查询
-    PageItem<StudentCourse> queryConditionPage(Student student, Integer current, Integer size);
+    PageItem<StudentCourseHistory> queryConditionPage(Student student, Integer current, Integer size);
 }
