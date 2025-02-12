@@ -40,6 +40,7 @@ public class CourseController {
     // 新建课程
     @PostMapping("/courses")
     public Result createCourse(@RequestBody com.mhy.cescsap.pojo.Course course) {
+
         return new Result(courseService.addCourse(course));
     }
 

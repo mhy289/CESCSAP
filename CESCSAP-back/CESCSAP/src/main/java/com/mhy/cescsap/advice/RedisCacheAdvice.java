@@ -20,23 +20,23 @@ import java.lang.reflect.Method;
 @Aspect
 @Slf4j
 public class RedisCacheAdvice {
-
+/*
     @Autowired
     RedisTemplate redisTemplate;
 
     // 定义切入点
 
-    @Pointcut("execution(* com.zqu.ordersystem.maper.*Mapper.select*(..))")
+    @Pointcut("execution(* com.mhy.cescsap.mapper.*Mapper.select*(..))")
     public void ptSelectById(){
 
     }
 
-    @Pointcut("execution(* com.zqu.ordersystem.maper.*Mapper.update*(..))")
+    @Pointcut("execution(* com.mhy.cescsap.mapper.*Mapper.update*(..))")
     public void ptUpdate(){
 
     }
 
-    @Pointcut("execution(* com.zqu.ordersystem.maper.*Mapper.delete*(..))")
+    @Pointcut("execution(* com.mhy.cescsap.mapper.*Mapper.delete*(..))")
     public void ptDelete(){
 
     }
@@ -121,7 +121,7 @@ public class RedisCacheAdvice {
      * @param mapperClazz
      * @return
      */
-    private Class<?> getReturnType(Class<?> mapperClazz) {
+    /*private Class<?> getReturnType(Class<?> mapperClazz) {
         try {
             Method selectById = mapperClazz.getDeclaredMethod("selectById", Integer.class);
             Class<?> returnType = selectById.getReturnType();
@@ -129,5 +129,5 @@ public class RedisCacheAdvice {
         } catch (Exception e){
             throw new SystemException(ExceptionType.SYS_METHOD_MISSED, "方法不能找到",e);
         }
-    }
+    }*/
 }

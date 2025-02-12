@@ -20,4 +20,6 @@ public interface LogService {
     Integer deleteLog(Long logId);
     //修改一条日志
     Integer updateLog(Log log);
+
+
 }

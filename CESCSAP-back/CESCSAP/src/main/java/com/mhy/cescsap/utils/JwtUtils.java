@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class JwtUtils {
+    private static final String SECRET_SUFFIX = "hello888";
 
     /**
      签发对象：这个用户的id
@@ -29,7 +30,7 @@ public class JwtUtils {
                 .withIssuedAt(new Date())    //发行时间
                 .withExpiresAt(expiresDate)  //有效时间
                 .withClaim("userName", userName)    //载荷，随便写几个都可以
-                .sign(Algorithm.HMAC256(userId+"hello888"));   //加密
+                .sign(Algorithm.HMAC256(userId+SECRET_SUFFIX));   //加密
     }
 
     /**
@@ -40,7 +41,7 @@ public class JwtUtils {
         String  secret = getAudience(token);
         DecodedJWT jwt = null;
         try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret+"hello888")).build();
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret+SECRET_SUFFIX)).build();
             jwt = verifier.verify(token);
             return true;
         } catch (Exception e) {
@@ -71,4 +72,35 @@ public class JwtUtils {
     public static Claim getClaimByName(String token, String name){
         return JWT.decode(token).getClaim(name);
     }
+
+    /**
+     * 获取载荷中的用户名
+     */
+    public static String getUserName(String token) {
+        try {
+            return JWT.decode(token)
+                    .getClaim("userName")  // 这里对应你创建token时的key
+                    .asString();           // 根据数据类型选择对应方法
+        } catch (JWTDecodeException j) {
+            return null; // token解析失败
+        }
+    }
+
+    /**
+     * 通用方法获取指定载荷值
+     * @param claimName 载荷字段名（如 "userName"）
+     */
+    public static String getClaimValue(String token, String claimName) {
+        try {
+            return JWT.decode(token)
+                    .getClaim(claimName)
+                    .asString(); // 如果是其他类型可以用 asInt()/asBoolean() 等
+        } catch (JWTDecodeException j) {
+            return null;
+        }
+    }
+    // 使用示例
+    //String userName = getClaimValue(token, "userName");
+
+
 }

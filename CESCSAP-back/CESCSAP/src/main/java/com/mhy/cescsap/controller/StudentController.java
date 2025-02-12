@@ -75,4 +75,10 @@ public class StudentController {
         log.debug("AAAAAAAAAAAAAAAAAAAAAAStudent is {}",student2);
         return new Result(scService.queryConditionPage(student2, current, size), "查询成功", 200);
     }
+
+    //学生添加课程
+    @PostMapping("/student/addCourse")
+    public Result addStudentCourse(@RequestBody StudentCourse sc){
+        return new Result(scService.addSC(sc));
+    }
 }

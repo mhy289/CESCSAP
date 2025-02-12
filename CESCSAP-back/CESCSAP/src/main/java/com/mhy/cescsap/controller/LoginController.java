@@ -1,5 +1,7 @@
 package com.mhy.cescsap.controller;
 
+import com.mhy.cescsap.myexception.BusinessException;
+import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.Result;
 import com.mhy.cescsap.pojo.User;
 import com.mhy.cescsap.service.StudentService;
@@ -33,11 +35,16 @@ public class LoginController {
         log.debug("user is {}", user);
         Result result = new Result();
         User addDb = userService.login(user);
+        log.debug("user0");
         if (addDb == null) {
-            result.setCode(500);
-            result.setMsg("登陆失败");
-            return result;
+            log.debug("user1");
+            throw new BusinessException(ExceptionType.USER_NOT_FOUND,"找不到用户");
+
+//            result.setCode(500);
+//            result.setMsg("登陆失败");
+//            return result;
         }
+        log.debug("user2");
         String token = JwtUtils.createToken(addDb.getId().toString(), addDb.getName());
         result.setData(token);
         result.setCode(200);
