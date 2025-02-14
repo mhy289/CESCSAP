@@ -40,4 +40,9 @@ public class NoticeServiceImpl implements NoticeService {
     public Integer addNotice(Notice notice) {
         return noticeMapper.addNotice(notice);
     }
+
+    @Override
+    public List<Notice> getNoticeByContent(String content) {
+        return noticeMapper.getNoticesByContent(content);
+    }
 }

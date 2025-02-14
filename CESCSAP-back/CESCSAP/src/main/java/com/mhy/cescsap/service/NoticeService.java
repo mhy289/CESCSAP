@@ -15,4 +15,7 @@ public interface NoticeService {
     Integer deleteNotice(Long id);
     //添加公告
     Integer addNotice(Notice notice);
+
+    //根据内容查询公告
+    List<Notice> getNoticeByContent(String content);
 }

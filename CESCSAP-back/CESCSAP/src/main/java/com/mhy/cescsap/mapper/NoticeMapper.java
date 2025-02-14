@@ -23,4 +23,8 @@ public interface NoticeMapper {
     //删除公告
     @Delete("delete from notice where notice_id = #{noticeId}")
     Integer deleteNotice(Long noticeId);
+
+    //根据内容查询公告
+    @Select("select * from notice where title like concat('%', #{content}, '%') or contact like concat('%', #{content}, '%') or publisher like concat('%', #{content}, '%')")
+    List<Notice> getNoticesByContent(String content);
 }

@@ -45,4 +45,10 @@ public class NoticeController {
     public Result addNotice(@RequestBody Notice notice){
         return new Result(noticeService.addNotice(notice));
     }
+
+    //根据内容查询公告
+    @GetMapping("/notices/content/{content}")
+    public Result getNoticesByContent(@PathVariable String content){
+        return new Result(noticeService.getNoticeByContent(content));
+    }
 }
