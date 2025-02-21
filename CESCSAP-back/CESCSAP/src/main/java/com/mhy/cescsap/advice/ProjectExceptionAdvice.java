@@ -40,7 +40,7 @@ public class ProjectExceptionAdvice {
     }
 
     //统一处理所有的学生异常
-    @ExceptionHandler(BusinessException.class)
+    @ExceptionHandler(BusinessException.class) 
     public Result doStudentException(BusinessException e){
         createAndSaveLog(e,"STUDENT ERROR","学生相关异常");
         Result result = new Result(null,"学生相关异常",520);
