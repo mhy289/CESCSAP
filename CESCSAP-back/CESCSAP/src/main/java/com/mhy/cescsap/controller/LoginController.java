@@ -38,11 +38,11 @@ public class LoginController {
         log.debug("user0");
         if (addDb == null) {
             log.debug("user1");
-            throw new BusinessException(ExceptionType.USER_NOT_FOUND,"找不到用户");
+            //throw new BusinessException(ExceptionType.USER_NOT_FOUND,"找不到用户");
 
-//            result.setCode(500);
-//            result.setMsg("登陆失败");
-//            return result;
+            result.setCode(500);
+            result.setMsg("登陆失败");
+            return result;
         }
         log.debug("user2");
         String token = JwtUtils.createToken(addDb.getId().toString(), addDb.getName());
