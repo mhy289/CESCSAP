@@ -12,6 +12,10 @@ import java.util.Date;
 public class Reply {
     //评论id
     private Long replyId;
+    //分区id
+    private Long partitionId;
+    //帖子id
+    private Long postId;
     //用户id
     private Long userId;
     //内容
