@@ -22,6 +22,11 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
+    public List<Reply> getReplyByUser(Reply reply) {
+        return replyMapper.getReplyContent(reply);
+    }
+
+    @Override
     public Integer getReplyById(Long id) {
         return null;
     }
@@ -39,5 +44,15 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public Integer deleteReply(Long id) {
         return null;
+    }
+
+    @Override
+    public Integer deleteReplyByUser(Reply reply) {
+        return replyMapper.deleteReplyByUser(reply);
+    }
+
+    @Override
+    public Integer updateReplyByUser(Reply reply) {
+        return replyMapper.updateReplyByUser(reply);
     }
 }

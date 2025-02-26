@@ -8,6 +8,9 @@ public interface ReplyService {
     //查询所有回复
     List<Reply> getReplyCount();
 
+    //查询该分区帖子所有回复
+    List<Reply> getReplyByUser(Reply reply);
+
     //查询单个回复
     Integer getReplyById(Long id);
 
@@ -19,4 +22,9 @@ public interface ReplyService {
 
     //删除回复
     Integer deleteReply(Long id);
+
+    Integer deleteReplyByUser(Reply reply);
+
+    Integer updateReplyByUser(Reply reply);
+
 }
