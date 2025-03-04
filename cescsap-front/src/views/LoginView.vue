@@ -13,7 +13,7 @@
         </el-select>
       </el-form-item>
       <div class="input-group">
-        <el-form-item label="账号" prop="name">
+        <el-form-item label="用户名" prop="name">
           <el-input v-model="ruleForm.name" autocomplete="off" class="circled-input"></el-input>
         </el-form-item>
       </div>
@@ -42,7 +42,7 @@
         rules: {
           name: [{
             required: true,
-            message: '请输入账号',
+            message: '请输入用户名',
             trigger: 'blur'
           }],
           password: [{
@@ -75,6 +75,8 @@
         } else {
           console.log('登录失败');
           console.log(res.data)
+          //提示登录失败
+          this.$message.error('登录失败');
           // 跳转到登录页并提示登录失败
           //this.$router.push('/login');
         }

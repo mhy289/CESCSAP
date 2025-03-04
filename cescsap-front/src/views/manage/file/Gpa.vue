@@ -2,7 +2,6 @@
   <div>
     <!-- 成绩表格 -->
     <el-table :data="tableData" stripe border style="width: 100%">
-      <!-- <el-table-column prop="id" label="食品ID" width="80px"></el-table-column> -->
 
       <el-table-column prop="courseName" label="课程名称"></el-table-column>
 
@@ -11,17 +10,15 @@
 
       <el-table-column prop="teacherName" label="教师"></el-table-column>
 
-      <el-table-column prop="gpa" label="绩点">
-        <el-button type="primary" icon="el-icon-refresh" circle @click="flushed()"></el-button>
-      </el-table-column>
+      <el-table-column prop="examDate" label="考试时间"></el-table-column>
 
-      <!-- <el-table-column prop="recommend" label="推荐" width="150px">
-          <template slot-scope="scope">
-            <el-switch v-model="scope.row.recommend" @change="handleRecommend(scope.row)" active-color="#13ce66"
-              inactive-color="#ff4949">
-            </el-switch>
-          </template>
-        </el-table-column> -->
+      <el-table-column prop="gpa" label="绩点" width="180">
+        <template slot-scope="scope">
+          <span>{{ scope.row.gpa }}</span>
+          <el-button type="primary" icon="el-icon-refresh" circle class="table-action-button"
+            @click="handleFlush(scope.row)"></el-button>
+        </template>
+      </el-table-column>
 
       <el-table-column fixed="right" label="操作" width="200px">
         <template slot-scope="scope">
@@ -40,96 +37,14 @@
         :page-size="pageSize" :page-sizes="[5, 10, 20, 50]" layout="total, sizes, prev, pager, next, jumper"
         :total="total"></el-pagination>
     </div>
-    <!-- 
-      
-      <el-dialog title="新增食品" :visible.sync="dialogFormVisible" width="40%" :close-on-click-modal="false">
-        <el-form :model="entity">
-          <el-form-item label="食品名称" label-width="120px">
-            <el-input v-model="entity.dishesName" autocomplete="off" style="width: 100%;"></el-input>
-          </el-form-item>
-  
-          <el-form-item label="食品描述" label-width="120px">
-            <el-input v-model="entity.description" autocomplete="off" type="textarea" style="width: 100%;"></el-input>
-          </el-form-item>
-  
-          <el-form-item label="价格" label-width="120px">
-            <el-input v-model="entity.price" type="number" autocomplete="off" style="width: 100%;"></el-input>
-          </el-form-item>
-  
-          <el-form-item label="分类ID" label-width="120px">
-            <el-input v-model="entity.categoryId" autocomplete="off" style="width: 100%;"></el-input>
-          </el-form-item>
-  
-          <el-form-item label="推荐" label-width="120px">
-            <el-input v-model="entity.recommend" autocomplete="off" style="width: 100%;"></el-input>
-          </el-form-item>
-  
-          <el-form-item label="食品图片" label-width="120px">
-            <el-upload :accept="acceptAstrict" class="avatar-uploader" action="#" :http-request="uploadFiles"
-              :show-file-list="false">
-              <div class="iconBox">
-                <i title="点击上传图片" v-if="!imgUrl" class="el-icon-plus avatar-uploader-icon"></i>
-              </div>
-            </el-upload>
-            <el-image v-if="imgUrl" :src="imgUrl" :preview-src-list="[imgUrl]"></el-image>
-            <div title="点击删除图片" v-if="imgUrl" class="gbtpBox" @click="imageRemove"><span>×</span></div>
-          </el-form-item>
-        </el-form>
-  
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="save">确定</el-button>
-        </div>
-      </el-dialog>
-  
-      
-      <el-dialog title="新增食品" :visible.sync="dialogFormVisible2" width="40%" :close-on-click-modal="false">
-        <el-form :model="entity">
-          <el-form-item label="食品名称" label-width="120px">
-            <el-input v-model="entity.dishesName" autocomplete="off" style="width: 100%;"></el-input>
-          </el-form-item>
-  
-          <el-form-item label="食品描述" label-width="120px">
-            <el-input v-model="entity.description" autocomplete="off" type="textarea" style="width: 100%;"></el-input>
-          </el-form-item>
-  
-          <el-form-item label="价格" label-width="120px">
-            <el-input v-model="entity.price" type="number" autocomplete="off" style="width: 100%;"></el-input>
-          </el-form-item>
-  
-          <el-form-item label="分类ID" label-width="120px">
-            <el-input v-model="entity.categoryId" autocomplete="off" style="width: 100%;"></el-input>
-          </el-form-item>
-  
-          <el-form-item label="推荐" label-width="120px">
-            <el-input v-model="entity.recommend" autocomplete="off" style="width: 100%;"></el-input>
-          </el-form-item>
-  
-          <el-form-item label="食品图片" label-width="120px">
-            <el-upload :accept="acceptAstrict" class="avatar-uploader" action="#" :http-request="uploadFiles"
-              :show-file-list="false">
-              <div class="iconBox">
-                <i title="点击上传图片" v-if="!imgUrl" class="el-icon-plus avatar-uploader-icon"></i>
-              </div>
-            </el-upload>
-            <el-image v-if="imgUrl" :src="imgUrl" :preview-src-list="[imgUrl]"></el-image>
-            <div title="点击删除图片" v-if="imgUrl" class="gbtpBox" @click="imageRemove"><span>×</span></div>
-          </el-form-item>
-        </el-form>
-  
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="save2">确定</el-button>
-        </div>
-      </el-dialog> -->
-
-
+    
 
   </div>
 </template>
 
 <script>
   import axios from 'axios';
+  import * as echarts from 'echarts';
   //import { uploadFiles } from '@api/zjmj/zdqyjg'//引入的接口文件
 
   //const url = "/api/good/";
@@ -150,6 +65,7 @@
           courseName: '',
           sroce: '',
           teacherName: '',
+          examDate: '',
           gpa: ''
         },
         total: 0,
@@ -195,6 +111,7 @@
         if (res.code == 200) {
           console.log(res.data)
           this.tableData = res.data.list;
+
           this.total = res.data.total;
         } else {
           console.log(res)
@@ -326,3 +243,13 @@
   };
 
 </script>
+
+
+<style scoped>
+
+.table-action-button {
+  margin-left: 10px; /* 或者你需要的任何间距 */
+  float: right; /* 如果需要的话，但通常这不是必需的，因为你可以通过布局来控制 */
+}
+
+</style>

@@ -110,7 +110,7 @@
     },
     async created() {
 
-      this.menuFlags.userMenu = true
+      /* this.menuFlags.userMenu = true
       this.menuFlags.categoryMenu = true
       this.menuFlags.goodMenu = true
       this.menuFlags.carouselMenu = true
@@ -121,16 +121,18 @@
       this.menuFlags.kdMenu = true
       this.menuFlags.gpaMenu = true
       this.menuFlags.formMenu = true
-      this.menuFlags.adminformMenu = true
+      this.menuFlags.adminformMenu = true */
       /*获取用户角色*/
       //request.post("http://localhost:8888/role").then(res => {
       //从本地读取role
-      console.log(this.role)
+      this.role=localStorage.getItem('role');
+      console.log("role="+this.role)
       //let res = await this.$http.post("/role")
       /*if (res.code === '200') {
         this.role = res.data;
         /*只有管理员有权限*/
-        if (this.role === 0) {
+        if (this.role == 0) {
+            console.log("Please3")
           this.menuFlags.userMenu = true
           this.menuFlags.categoryMenu = true
           this.menuFlags.goodMenu = true
@@ -142,8 +144,28 @@
           this.menuFlags.kdMenu = true
           this.menuFlags.gpaMenu = true
           this.menuFlags.formMenu = true
-        } else if (this.role === 1) {
-
+        } else if (this.role == 1) {
+            console.log("Please2")
+            //教师权限
+            this.menuFlags.userMenu = true
+            this.menuFlags.categoryMenu = true
+            this.menuFlags.goodMenu = true
+            this.menuFlags.carouselMenu = true
+            this.menuFlags.orderMenu = true
+            this.menuFlags.incomeChartMenu = true
+            this.menuFlags.incomeRankMenu = true
+            this.menuFlags.goodMenu = true
+            this.menuFlags.kdMenu = true
+            this.menuFlags.gpaMenu = true
+            this.menuFlags.formMenu = false
+        } else if(this.role==2){
+            console.log("Please")
+            //学生权限
+            this.menuFlags.kdMenu = true
+            this.menuFlags.gpaMenu = true
+            this.menuFlags.formMenu = true
+        } else{
+            console.log("Noooooooooooooooooooooooooooooooooooooo")
         }
       //}*/
       //})
