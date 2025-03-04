@@ -36,12 +36,12 @@ public class ReplyController {
         return new Result(replyService.getReplyByUser(reply));
     }
     // 删除留言
-    @PostMapping("/reply")
+    @PostMapping("/del-reply")
     public Result deleteReply(Reply reply){
         return new Result(replyService.deleteReplyByUser(reply));
     }
     // 编辑留言
-    @PostMapping("/reply")
+    @PostMapping("/re-reply")
     public Result updateReply(Reply reply){
         return new Result(replyService.updateReplyByUser(reply));
     }
