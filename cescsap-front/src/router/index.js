@@ -28,10 +28,50 @@ const routes = [{
         requireAuth: true
       }
     }, {
+        path: '/Notice',
+        name: 'notice',
+        component: () => import('../views/manage/file/Notice.vue'),
+    },{
+        path: '/NoticeReply',
+        name:'noticeReply',
+        component: () => import('../views/manage/file/NoticeReply.vue'),
+    },{
+        path: '/Help',
+        name:'help',
+        component: () => import('../views/manage/file/Help.vue'),
+    },{
+        path:'/Link',
+        name:'link',
+        component: () => import('../views/manage/file/Link.vue'),
+    },{
+        path:'/LinkList',
+        name:'linklist',
+        component: () => import('../views/manage/file/LinkList.vue'),
+    },{
+        path:'/Forum',
+        name:'forum',
+        component: () => import('../views/manage/file/Forum.vue'),
+    },{
+        path:'/ForumReply',
+        name:'forumReply',
+        component: () => import('../views/manage/file/ForumReply.vue'),
+    },{
+        path:'/Evaluation',
+        name:'evaluation',
+        component: () => import('../views/manage/file/Evaluation.vue'),
+    },{
         path: '/Gpa',
         name: 'gpa',
         component: () => import('../views/manage/file/Gpa.vue'),
         
+    },{
+        path:'/Warn',
+        name:'warn',
+        component: () => import('../views/manage/file/Warn.vue'),
+    },{
+        path:'/Kd',
+        name:'kd',
+        component: () => import('../views/manage/file/Kd.vue'),
     },{
         path:'/Form',
         name:'form',

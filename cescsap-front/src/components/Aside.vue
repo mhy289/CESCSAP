@@ -11,49 +11,73 @@
     </div>
 
     <!-- 主页跳转 -->
-    <el-menu-item index="/manage/home">
+    <el-menu-item index="/">
       <i class="el-icon-house"></i><span slot="title">主页</span>
     </el-menu-item>
 
     <!-- 前台跳转   -->
-    <el-menu-item index="/">
+    <!-- <el-menu-item index="/">
       <i class="el-icon-house"></i><span slot="title">前台</span>
-    </el-menu-item>
+    </el-menu-item> -->
 
     <!-- 系统菜单栏  -->
     <el-submenu index="2">
       <template slot="title">
         <i class="el-icon-menu"></i><span slot="title">系统管理</span></template>
-      <el-submenu v-show="userGroup" index="user">
 
+      <el-submenu v-show="userGroup" index="user">
         <template slot="title">账户相关</template>
         <el-menu-item index="/manage/User" v-if="menuFlags.userMenu">用户管理</el-menu-item>
       </el-submenu>
 
-      
-      
+      <!-- 通知与公告 -->
+       <el-submenu v-if="noticeGroup" index="notice">
+        <template slot="title">通知与公告</template>
+        <el-menu-item index="/notice" v-if="menuFlags.noticeMenu">公告管理</el-menu-item>
+        <el-menu-item index="/noticeReply" v-if="menuFlags.noticeReplyMenu">回复管理</el-menu-item>
+      </el-submenu>
 
-      <el-submenu v-if="GoodGroup" index="good">
-        <template slot="title">前台管理</template>
-        <el-menu-item index="/manage/Foods" v-if="menuFlags.goodMenu">
-          食品管理
-        </el-menu-item>
-        <el-menu-item index="/manage/order" v-if="menuFlags.orderMenu">订单管理</el-menu-item>
+      <!-- 帮助中心 -->
+       <el-submenu v-if="helpGroup" index="help">
+        <template slot="title">帮助中心</template>
+        <el-menu-item index="/help" v-if="menuFlags.helpMenu">帮助首页</el-menu-item>
+        <el-menu-item index="/helpArticle" v-if="menuFlags.helpArticleMenu">帮助文章</el-menu-item>
+      </el-submenu>
+
+      <!-- 友情链接 -->
+       <el-submenu v-if="linkGroup" index="link">
+        <template slot="title">友情链接</template>
+        <el-menu-item index="/link" v-if="menuFlags.linkMenu">友情链接管理</el-menu-item>
+        <!-- 友情链接列表 -->
+         <el-menu-item index="/linkList" v-if="menuFlags.linkListMenu">友情链接列表</el-menu-item>
+      </el-submenu>
+
+      <!-- 学园论坛 -->
+       <el-submenu v-if="forumGroup" index="forum">
+        <template slot="title">学园论坛</template>
+        <el-menu-item index="/forum" v-if="menuFlags.forumMenu">论坛管理</el-menu-item>
+        <el-menu-item index="/forumReply" v-if="menuFlags.forumReplyMenu">讨论区</el-menu-item>
+      </el-submenu>
+
+      <!-- 综合评价功能 -->
+       <el-submenu v-if="evaluationGroup" index="evaluation">
+        <template slot="title">综合评价</template>
+        <!-- 自评 -->
+         <el-menu-item index="/selfevaluation" v-if="menuFlags.selfevaluationMenu">自评</el-menu-item>
+        <!-- 教师评价 -->
+         <el-menu-item index="/teacherevaluation" v-if="menuFlags.teacherevaluationMenu">教师评价</el-menu-item>
+        <!--查看全部评价 -->
+        <el-menu-item index="/evaluation" v-if="menuFlags.evaluationMenu">查看全部</el-menu-item>
       </el-submenu>
 
       <!-- 个人信息 -->
       <el-submenu v-if="Personal" index="person">
         <template slot="title">个人信息</template>
         <el-menu-item index="/gpa" v-if="menuFlags.gpaMenu">成绩</el-menu-item>
-        <el-menu-item index="/manage/kd" v-if="menuFlags.kdMenu">所属</el-menu-item>
+        <el-menu-item index="/kd" v-if="menuFlags.kdMenu">所属</el-menu-item>
         <el-menu-item index="/form" v-if="menuFlags.formMenu">修改信息</el-menu-item>
+        <el-menu-item index="/warn" v-if="menuFlags.warnMenu">预警信息</el-menu-item>
         <el-menu-item index="/adminform" v-if="menuFlags.adminformMenu">修改管理员信息</el-menu-item>
-      </el-submenu>
-
-      <el-submenu v-if="incomeGroup" index="income">
-        <template slot="title">销售额统计</template>
-        <el-menu-item index="/manage/incomeChart" v-if="menuFlags.incomeChartMenu">图表分析</el-menu-item>
-        <el-menu-item index="/manage/incomeRank" v-if="menuFlags.incomeRankMenu">收入排行榜</el-menu-item>
       </el-submenu>
 
     </el-submenu>
@@ -87,25 +111,40 @@
           gpaMenu: false,
           kdMenu: false,
           formMenu: false,
-          adminformMenu:false
+          adminformMenu: false,
+          warnMenu: false,
+          noticeMenu: false,
+          noticeReplyMenu: false,
+          helpMenu: false,
+          helpArticleMenu: false,
+          linkMenu: false,
           //personal: false
         }
       }
     },
 
     computed: {
+        noticeGroup: function () {
+        return this.menuFlags.noticeMenu || this.menuFlags.noticeReplyMenu
+      },
+      helpGroup: function () {
+        return this.menuFlags.helpMenu || this.menuFlags.helpArticleMenu
+      },
+      linkGroup: function () {
+        return this.menuFlags.linkMenu || this.menuFlags.linkListMenu
+      },
+      evaluationGroup: function () {
+        return this.menuFlags.selfevaluationMenu || this.menuFlags.teacherevaluationMenu || this.menuFlags.evaluationMenu
+      },
       userGroup: function () {
         return this.menuFlags.userMenu
       },
-      GoodGroup: function () {
-        return this.menuFlags.goodMenu || this.menuFlags.orderMenu || this.menuFlags.categoryMenu || this.menuFlags
-          .carouselMenu
-      },
-      incomeGroup: function () {
-        return this.menuFlags.incomeChartMenu || this.menuFlags.incomeRankMenu
+      forumGroup: function () {
+        return this.menuFlags.forumMenu || this.menuFlags.forumReplyMenu
       },
       Personal: function () {
-        return this.menuFlags.gpaMenu || this.menuFlags.kdMenu || this.menuFlags.formMenu || this.menuFlags.adminformMenu
+        return this.menuFlags.gpaMenu || this.menuFlags.kdMenu || this.menuFlags.formMenu || this.menuFlags
+          .adminformMenu || this.menuFlags.warnMenu
       }
     },
     async created() {
@@ -125,48 +164,60 @@
       /*获取用户角色*/
       //request.post("http://localhost:8888/role").then(res => {
       //从本地读取role
-      this.role=localStorage.getItem('role');
-      console.log("role="+this.role)
+      this.role = localStorage.getItem('role');
+      console.log("role=" + this.role)
       //let res = await this.$http.post("/role")
       /*if (res.code === '200') {
         this.role = res.data;
         /*只有管理员有权限*/
-        if (this.role == 0) {
-            console.log("Please3")
-          this.menuFlags.userMenu = true
-          this.menuFlags.categoryMenu = true
-          this.menuFlags.goodMenu = true
-          this.menuFlags.carouselMenu = true
-          this.menuFlags.orderMenu = true
-          this.menuFlags.incomeChartMenu = true
-          this.menuFlags.incomeRankMenu = true
-          this.menuFlags.goodMenu = true
-          this.menuFlags.kdMenu = true
-          this.menuFlags.gpaMenu = true
-          this.menuFlags.formMenu = true
-        } else if (this.role == 1) {
-            console.log("Please2")
-            //教师权限
-            this.menuFlags.userMenu = true
-            this.menuFlags.categoryMenu = true
-            this.menuFlags.goodMenu = true
-            this.menuFlags.carouselMenu = true
-            this.menuFlags.orderMenu = true
-            this.menuFlags.incomeChartMenu = true
-            this.menuFlags.incomeRankMenu = true
-            this.menuFlags.goodMenu = true
-            this.menuFlags.kdMenu = true
-            this.menuFlags.gpaMenu = true
-            this.menuFlags.formMenu = false
-        } else if(this.role==2){
-            console.log("Please")
-            //学生权限
-            this.menuFlags.kdMenu = true
-            this.menuFlags.gpaMenu = true
-            this.menuFlags.formMenu = true
-        } else{
-            console.log("Noooooooooooooooooooooooooooooooooooooo")
-        }
+      if (this.role == 0) {
+        console.log("Please3")
+        this.menuFlags.userMenu = true
+        this.menuFlags.categoryMenu = true
+        this.menuFlags.goodMenu = true
+        this.menuFlags.carouselMenu = true
+        this.menuFlags.orderMenu = true
+        this.menuFlags.incomeChartMenu = true
+        this.menuFlags.incomeRankMenu = true
+        this.menuFlags.goodMenu = true
+        this.menuFlags.kdMenu = true
+        this.menuFlags.gpaMenu = true
+        this.menuFlags.formMenu = true
+      } else if (this.role == 1) {
+        console.log("Please2")
+        //教师权限
+        this.menuFlags.userMenu = true
+        this.menuFlags.categoryMenu = true
+        this.menuFlags.goodMenu = true
+        this.menuFlags.carouselMenu = true
+        this.menuFlags.orderMenu = true
+        this.menuFlags.incomeChartMenu = true
+        this.menuFlags.incomeRankMenu = true
+        this.menuFlags.goodMenu = true
+        this.menuFlags.kdMenu = true
+        this.menuFlags.gpaMenu = true
+        this.menuFlags.formMenu = false
+      } else if (this.role == 2) {
+        console.log("Please")
+        //学生权限
+        this.menuFlags.kdMenu = true
+        this.menuFlags.gpaMenu = true
+        this.menuFlags.formMenu = true
+        this.menuFlags.warnMenu = true
+        this.menuFlags.forumMenu = true
+        this.menuFlags.forumReplyMenu = true
+        this.menuFlags.selfevaluationMenu = true
+        this.menuFlags.teacherevaluationMenu = true
+        this.menuFlags.evaluationMenu = true
+        this.menuFlags.helpMenuMenu = true
+        this.menuFlags.helpArticleMenu = true
+        this.menuFlags.linkMenu = true
+        this.menuFlags.linkListMenu = true
+        this.menuFlags.noticeMenu = true
+        this.menuFlags.noticeReplyMenu = true
+      } else {
+        console.log("Noooooooooooooooooooooooooooooooooooooo")
+      }
       //}*/
       //})
     }

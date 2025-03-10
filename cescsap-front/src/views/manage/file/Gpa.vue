@@ -2,7 +2,8 @@
   <div>
     <!-- 查询和筛选区域 -->
     <div class="filter-container">
-      <el-input v-model="searchQuery" placeholder="搜索课程/教师" style="width: 200px;" @keyup.enter.native="handleSearch" />
+      <el-input v-model="searchQuery1" placeholder="搜索课程" style="width: 150px;" @keyup.enter.native="handleSearch" />
+      <el-input v-model="searchQuery2" placeholder="搜索教师" style="width: 150px;" @keyup.enter.native="handleSearch" />
 
       <el-select v-model="filterCourse" placeholder="课程筛选" clearable style="margin-left: 10px; width: 150px">
         <el-option v-for="item in courseOptions" :key="item" :label="item" :value="item" />
@@ -88,7 +89,8 @@
         pageNum: 1,
         pageSize: 10,
         // 新增筛选相关数据
-        searchQuery: '',
+        searchQuery1: '',
+        searchQuery2: '',
         filterCourse: '',
         filterTeacher: '',
         filterDateRange: [],
@@ -356,7 +358,8 @@
 
       async loadFilterOptions() {
         // 获取筛选选项
-        const res = await this.$http.get('/courses/filter-options')
+        let thename = localStorage.getItem('name');
+        const res = await this.$http.post('/courses/filter-options',{name: thename})
         this.courseOptions = res.data.courses
         this.teacherOptions = res.data.teachers
       },
@@ -431,10 +434,11 @@
       },
 
       async fetchData() {
-        const params = {
+        const param = {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          search: this.searchQuery,
+          search1: this.searchQuery1,
+          search2: this.searchQuery2,
           course: this.filterCourse,
           teacher: this.filterTeacher,
           startDate: this.filterDateRange[0],
@@ -443,8 +447,8 @@
           sortOrder: this.sortOrder
         }
 
-        const res = await this.$http.get('/scores', {
-          params
+        const res = await this.$http.post('/student/queryCourse', {
+          param : param,
         })
         this.tableData = res.data.list
         this.total = res.data.total
