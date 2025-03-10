@@ -75,4 +75,9 @@ public class SCServiceImpl implements SCService {
         // 使用分页数据构造返回结果
         return new PageItem<>(page.getTotal(), schs);
     }
+
+    @Override
+    public Object queryStudentCourse(Student student) {
+        return null;
+    }
 }

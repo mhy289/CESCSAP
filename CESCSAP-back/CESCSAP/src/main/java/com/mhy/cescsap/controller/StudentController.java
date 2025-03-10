@@ -81,4 +81,16 @@ public class StudentController {
     public Result addStudentCourse(@RequestBody StudentCourse sc){
         return new Result(scService.addSC(sc));
     }
+
+    //按条件筛选课程
+    @PostMapping("/student/queryCourse")
+    public Result queryStudentCourse(@RequestBody Student student){
+        return new Result(scService.queryStudentCourse(student));
+    }
+
+    // 获取筛选选项
+    @PostMapping("/courses/filter-options")
+    public Result getFilterOptions(@RequestBody Student student){
+        return new Result(studentService.getFilterOptions(student));
+    }
 }

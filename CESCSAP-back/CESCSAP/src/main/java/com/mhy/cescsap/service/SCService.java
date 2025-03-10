@@ -18,4 +18,6 @@ public interface SCService {
 
     //条件分页查询
     PageItem<StudentCourseHistory> queryConditionPage(Student student, Integer current, Integer size);
+
+    Object queryStudentCourse(Student student);
 }

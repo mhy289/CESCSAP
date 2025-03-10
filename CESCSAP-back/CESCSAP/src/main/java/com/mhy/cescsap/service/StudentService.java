@@ -2,6 +2,7 @@ package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.PageItem;
 import com.mhy.cescsap.pojo.Student;
+import com.mhy.cescsap.pojo.TeacherCourse;
 
 import java.util.List;
 
@@ -29,4 +30,6 @@ public interface StudentService {
 
     //根据名字查询学生
     Student getStudentByName(String name);
+
+    List<TeacherCourse> getFilterOptions(Student student);
 }

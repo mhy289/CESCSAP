@@ -2,14 +2,16 @@ package com.mhy.cescsap.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.mhy.cescsap.mapper.CourseMapper;
+import com.mhy.cescsap.mapper.SCMapper;
 import com.mhy.cescsap.mapper.StudentMapper;
-import com.mhy.cescsap.pojo.PageItem;
-import com.mhy.cescsap.pojo.Student;
+import com.mhy.cescsap.pojo.*;
 import com.mhy.cescsap.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,6 +20,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     StudentMapper studentMapper;
+
+    @Autowired
+    SCMapper scMapper;
+
+    @Autowired
+    CourseMapper courseMapper;
 
     @Override
     public List<Student> getStudents() {
@@ -64,5 +72,21 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudentByName(String name) {
         return studentMapper.getStudentByName(name);
+    }
+
+    @Override
+    public List<TeacherCourse> getFilterOptions(Student student) {
+        String name = student.getName();
+        Student student1 = studentMapper.selectStudentByName(name);
+        Long studentId = student1.getStudentId();
+        List<StudentCourse> studentCourses = scMapper.selectByCondition2(studentId);
+        List<TeacherCourse> tclist=new ArrayList<>();
+        for(StudentCourse sc : studentCourses){
+            Long courseId = sc.getCourseId();
+            Course course = courseMapper.getCourseById(courseId);
+            TeacherCourse tc=new TeacherCourse(course.getTeacherName(),course.getCourseName());
+            tclist.add(tc);
+        }
+        return tclist;
     }
 }
