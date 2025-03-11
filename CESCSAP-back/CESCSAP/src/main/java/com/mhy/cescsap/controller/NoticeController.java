@@ -19,6 +19,9 @@ public class NoticeController {
     // 获取单个公告
     @GetMapping("/notice/{id}")
     public Result getNotice(@PathVariable Long id){
+        if(id == null){
+            return new Result(Result.fail(400, "参数不能为空"));
+        }
         return new Result(noticeService.getNotice(id));
     }
 
@@ -51,4 +54,35 @@ public class NoticeController {
     public Result getNoticesByContent(@PathVariable String content){
         return new Result(noticeService.getNoticeByContent(content));
     }
+
+    //根据标题查询公告
+    @GetMapping("/notices/title/{title}")
+    public Result getNoticesByTitle(@PathVariable String title){
+        return new Result(noticeService.getNoticeByTitle(title));
+    }
+
+    //分页查询公告
+    @GetMapping("/notices/page/{page}/size/{size}")
+    public Result getNoticesByPage(@PathVariable Integer page, @PathVariable Integer size){
+        return new Result(noticeService.getAllNotices(page, size));
+        //return new Result(noticeService.getNoticeList());
+    }
+
+    //根据标题 分页查询公告
+    @GetMapping("/notices/title/{title}/page/{page}/size/{size}")
+    public Result getNoticesByTitlePage(@PathVariable String title, @PathVariable Integer page, @PathVariable Integer size){
+        return new Result(noticeService.getNoticeByTitlePage(title, page, size));
+    }
+
+    //根据发布者查询公告
+    @GetMapping("/notices/publisher/{publisher}")
+    public Result getNoticesByPublisher(@PathVariable String publisher){
+        return new Result(noticeService.getNoticeByPublisher(publisher));
+    }
+
+    //查询公告具体内容
+//    @GetMapping("/notice/{id}")
+//    public Result getNoticeContent(@PathVariable Long id){
+//        return new Result(noticeService.getNotice(id));
+//    }
 }

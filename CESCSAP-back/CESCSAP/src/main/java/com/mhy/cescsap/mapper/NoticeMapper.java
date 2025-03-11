@@ -27,4 +27,12 @@ public interface NoticeMapper {
     //根据内容查询公告
     @Select("select * from notice where title like concat('%', #{content}, '%') or contact like concat('%', #{content}, '%') or publisher like concat('%', #{content}, '%')")
     List<Notice> getNoticesByContent(String content);
+
+    //根据标题查询公告
+    @Select("select * from notice where title like concat('%', #{title}, '%')")
+    List<Notice> getNoticesByTitle(String title);
+
+    //根据创建人查询公告
+    @Select("select * from notice where publisher = #{publisher}")
+    List<Notice> getNoticesByPublisher(String publisher);
 }

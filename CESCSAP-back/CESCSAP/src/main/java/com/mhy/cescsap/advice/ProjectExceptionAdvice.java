@@ -171,10 +171,10 @@ public class ProjectExceptionAdvice {
         String stackTrace = sw.toString();
 
         // 截断堆栈跟踪，防止过长
-        int maxLength = 1000; // 根据数据库定义调整这个值
-        if (stackTrace.length() > maxLength) {
-            stackTrace = stackTrace.substring(0, maxLength) + "...";
-        }
+//        int maxLength = 1000; // 根据数据库定义调整这个值
+//        if (stackTrace.length() > maxLength) {
+//            stackTrace = stackTrace.substring(0, maxLength) + "...";
+//        }
         log.setEventRemark(stackTrace);
 
         System.out.println(log);

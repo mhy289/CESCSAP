@@ -1,6 +1,7 @@
 package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.Notice;
+import com.mhy.cescsap.pojo.PageItem;
 
 import java.util.List;
 
@@ -18,4 +19,15 @@ public interface NoticeService {
 
     //根据内容查询公告
     List<Notice> getNoticeByContent(String content);
+
+    //根据标题查询公告
+    List<Notice> getNoticeByTitle(String title);
+
+    //根据标题 分页查询公告
+    PageItem<Notice> getNoticeByTitlePage(String title, Integer pageNum, Integer pageSize);
+
+    //根据创建人查询公告
+    List<Notice> getNoticeByPublisher(String publisher);
+
+    PageItem<Notice> getAllNotices(Integer page, Integer size);
 }
