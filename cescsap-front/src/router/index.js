@@ -32,9 +32,9 @@ const routes = [{
         name: 'notice',
         component: () => import('../views/manage/file/Notice.vue'),
     },{
-        path: '/NoticeReply',
-        name:'noticeReply',
-        component: () => import('../views/manage/file/NoticeReply.vue'),
+        path: '/Notice/:noticeId',
+        name:'noticedetial',
+        component: () => import('../views/manage/file/NoticeList.vue'),
     },{
         path: '/Help',
         name:'help',
