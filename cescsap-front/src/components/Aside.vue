@@ -214,7 +214,6 @@
         this.menuFlags.linkMenu = true
         this.menuFlags.linkListMenu = true
         this.menuFlags.noticeMenu = true
-        this.menuFlags.noticeReplyMenu = true
       } else {
         console.log("Noooooooooooooooooooooooooooooooooooooo")
       }

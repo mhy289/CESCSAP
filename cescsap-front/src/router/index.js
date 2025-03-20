@@ -28,58 +28,66 @@ const routes = [{
         requireAuth: true
       }
     }, {
-        path: '/Notice',
-        name: 'notice',
-        component: () => import('../views/manage/file/Notice.vue'),
-    },{
-        path: '/Notice/:noticeId',
-        name:'noticedetial',
-        component: () => import('../views/manage/file/NoticeList.vue'),
-    },{
-        path: '/Help',
-        name:'help',
-        component: () => import('../views/manage/file/Help.vue'),
-    },{
-        path:'/Link',
-        name:'link',
-        component: () => import('../views/manage/file/Link.vue'),
-    },{
-        path:'/LinkList',
-        name:'linklist',
-        component: () => import('../views/manage/file/LinkList.vue'),
-    },{
-        path:'/Forum',
-        name:'forum',
-        component: () => import('../views/manage/file/Forum.vue'),
-    },{
-        path:'/ForumReply',
-        name:'forumReply',
-        component: () => import('../views/manage/file/ForumReply.vue'),
-    },{
-        path:'/Evaluation',
-        name:'evaluation',
-        component: () => import('../views/manage/file/Evaluation.vue'),
-    },{
-        path: '/Gpa',
-        name: 'gpa',
-        component: () => import('../views/manage/file/Gpa.vue'),
-        
-    },{
-        path:'/Warn',
-        name:'warn',
-        component: () => import('../views/manage/file/Warn.vue'),
-    },{
-        path:'/Kd',
-        name:'kd',
-        component: () => import('../views/manage/file/Kd.vue'),
-    },{
-        path:'/Form',
-        name:'form',
-        component: () => import('../views/manage/form/Form.vue'),
-    },{
-        path:'AdminForm',
-        name:'adminform',
-        component: () => import('../views/manage/form/AdminForm.vue'),
+      path: '/Notice',
+      name: 'notice',
+      component: () => import('../views/manage/file/Notice.vue'),
+    }, {
+      path: '/Notice/:noticeId',
+      name: 'noticedetial',
+      component: () => import('../views/manage/file/NoticeList.vue'),
+    }, {
+      path: '/Help',
+      name: 'help',
+      component: () => import('../views/manage/file/Help.vue'),
+    }, {
+      path: '/Link',
+      name: 'link',
+      component: () => import('../views/manage/file/Link.vue'),
+    }, {
+      path: '/LinkList',
+      name: 'linklist',
+      component: () => import('../views/manage/file/LinkList.vue'),
+    }, {
+      path: '/Forum',
+      name: 'forum',
+      component: () => import('../views/manage/file/Forum.vue'),
+    }, {
+      path: '/section/:id',
+      name: 'SectionPosts',
+      component: () => import('../views/manage/file/SectionPosts.vue'),
+    }, {
+      path: '/ForumReply',
+      name: 'forumReply',
+      component: () => import('../views/manage/file/ForumReply.vue'),
+    }, {
+      path: '/Evaluation',
+      name: 'evaluation',
+      component: () => import('../views/manage/file/Evaluation.vue'),
+    }, {
+      path: '/TeacherEvaluation',
+      name: 'teacherEvaluation',
+      component: () => import('../views/manage/file/Teacherevaluation.vue'),
+    }, {
+      path: '/Gpa',
+      name: 'gpa',
+      component: () => import('../views/manage/file/Gpa.vue'),
+
+    }, {
+      path: '/Warn',
+      name: 'warn',
+      component: () => import('../views/manage/file/Warn.vue'),
+    }, {
+      path: '/Kd',
+      name: 'kd',
+      component: () => import('../views/manage/file/Kd.vue'),
+    }, {
+      path: '/Form',
+      name: 'form',
+      component: () => import('../views/manage/form/Form.vue'),
+    }, {
+      path: 'AdminForm',
+      name: 'adminform',
+      component: () => import('../views/manage/form/AdminForm.vue'),
     }]
   },
   {
