@@ -35,7 +35,11 @@ const routes = [{
       path: '/Notice/:noticeId',
       name: 'noticedetial',
       component: () => import('../views/manage/file/NoticeList.vue'),
-    }, {
+    },{
+        path: '/Noticemanage',
+        name: 'Noticemanage',
+      component: () => import('../views/manage/file/NoticeManage.vue'),
+    },{
       path: '/Help',
       name: 'help',
       component: () => import('../views/manage/file/Help.vue'),

@@ -1,45 +1,52 @@
 <template>
-  <div class="notice-container">
-    <!-- 搜索栏 -->
-    <div class="search-bar">
-      <el-input v-model="searchTitle" placeholder="请输入公告标题" style="width: 300px; margin-right: 15px" clearable
-        @keyup.enter.native="fetchNotices" />
-      <el-button type="primary" @click="fetchNotices">搜索</el-button>
+    <div class="notice-container">
+      <!-- 搜索栏 -->
+      <div class="search-bar">
+        <el-input
+          v-model="searchTitle"
+          placeholder="请输入公告标题"
+          style="width: 300px; margin-right: 15px"
+          clearable
+          @keyup.enter.native="fetchNotices"
+        />
+        <el-button type="primary" @click="fetchNotices">搜索</el-button>
+      </div>
+  
+      <!-- 公告卡片列表 -->
+      <div v-loading="loading" class="notice-list">
+        <el-card
+          class="notice-card"
+          v-for="notice in noticeList"
+          :key="notice.noticeId"
+          shadow="hover"
+        >
+          <div class="card-header">
+            <router-link :to="`/notice/${notice.noticeId}`" class="notice-title">
+              {{ notice.title }}
+            </router-link>
+          </div>
+          <div class="card-meta">
+            <span class="publisher">发布人：{{ notice.publisher }}</span>
+            <span class="create-time">发布时间：{{ formatTime(notice.createTime) }}</span>
+          </div>
+        </el-card>
+      </div>
+  
+      <!-- 分页 -->
+      <el-pagination
+        :current-page="pageNum"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
-
-    <!-- 公告表格 -->
-    <el-table :data="noticeList" style="width: 100%" border stripe v-loading="loading">
-      <el-table-column prop="title" label="标题" width="300">
-        <template slot-scope="{ row }">
-          <router-link :to="`/notice/${row.noticeId}`">{{ row.title }}</router-link>
-        </template>
-      </el-table-column>
-      <el-table-column prop="publisher" label="发布人" width="150" />
-      <el-table-column prop="createTime" label="发布时间" width="200">
-        <template slot-scope="{ row }">
-          {{ formatTime(row.createTime) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="120">
-        <template slot-scope="{ row }">
-          <el-button type="primary" size="mini" @click="$router.push(`/notice/${row.noticeId}`)">
-            查看
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <!-- 分页 -->
-    <el-pagination :current-page="pageNum" :page-sizes="[10, 20, 50, 100]" :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" />
-  </div>
-</template>
-
-<script>
-  //import { getNoticeList } from '@/api/notice'
+  </template>
+  
+  <script>
   import dayjs from 'dayjs'
-
   export default {
     name: 'NoticeList',
     data() {
@@ -53,21 +60,15 @@
       }
     },
     mounted() {
-      //this.fetchNotices()
       this.load()
     },
     methods: {
       async load() {
-        //默认分页查询所有公告
+        // 默认分页查询所有公告
         let res = await this.$http.get('/notices/page/' + this.pageNum + '/size/' + this.pageSize)
-        if (res.code == 200) {
-          //this.total = res.data.total
+        if (res.code === 200) {
+          this.total = res.data.total
           this.noticeList = res.data.list
-          console.log(res)
-          console.log(res.data)
-          console.log(res.list)
-          console.log(res.total)
-          console.log(this.noticeList)
         } else {
           console.error('获取公告列表失败:', res)
           this.noticeList = []
@@ -77,20 +78,17 @@
       async fetchNotices() {
         this.loading = true
         try {
-          let res = await this.$http.get('/notices/title/' + this.searchTitle + '/page/' + this.pageNum + '/size/' +
-            this.pageSize)
-          /* const params = {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize,
-            title: this.searchTitle
-          } */
-          /* const {
-            data
-          } = await getNoticeList(params) */
-          if (res.code == 200) {
+          let res = await this.$http.get(
+            '/notices/title/' +
+              this.searchTitle +
+              '/page/' +
+              this.pageNum +
+              '/size/' +
+              this.pageSize
+          )
+          if (res.code === 200) {
             this.total = res.data.total
             this.noticeList = res.data.list
-            console.log(this.noticeList)
           } else {
             console.error('获取公告列表失败:', res)
             this.noticeList = []
@@ -115,21 +113,59 @@
       }
     }
   }
-
-</script>
-
-<style scoped>
+  </script>
+  
+  <style scoped>
   .notice-container {
     padding: 20px;
   }
-
+  
   .search-bar {
     margin-bottom: 20px;
   }
-
+  
+  .notice-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .notice-card {
+    padding: 15px;
+    border-radius: 4px;
+    transition: box-shadow 0.3s;
+    cursor: pointer;
+  }
+  
+  .notice-card:hover {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .notice-title {
+    color: #409eff;
+    text-decoration: none;
+  }
+  
+  .notice-title:hover {
+    text-decoration: underline;
+  }
+  
+  .card-meta {
+    font-size: 14px;
+    color: #999;
+    display: flex;
+    justify-content: space-between;
+  }
+  
   .el-pagination {
     margin-top: 20px;
     text-align: right;
   }
-
-</style>
+  </style>
+  
