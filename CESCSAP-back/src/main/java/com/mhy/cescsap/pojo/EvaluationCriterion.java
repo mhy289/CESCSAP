@@ -11,17 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EvaluationCriterion {
     // 考核指标id
-    private Long evaluationCriterionId;
-    // 考核指标名称
-    private String evaluationCriterionName;
-    // 考核指标分值
-    private Integer evaluationCriterionScore;
-    // 考核指标描述
-    private String evaluationCriterionDescription;
+    private Long ecId;
+    private Long evaluationId;
     // 考核课程id
     private Long courseId;
+    private Long teacherId;
     // 考核课程
     private Course course;
-    //权重
-    private Double weight;
+    private Evaluation evaluation;
+    private Teacher teacher;
 }
