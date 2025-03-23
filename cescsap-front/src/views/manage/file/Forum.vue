@@ -5,6 +5,8 @@
         <el-card shadow="hover" @click.native="goToSection(section.id)" style="cursor:pointer">
           <div class="section-title">{{ section.partitionTitle }}</div>
           <div class="section-desc">{{ section.partitionContent }}</div>
+          <!--最近更新时间-->
+          <div class="section-updated-at">{{ section.partitionTime }}</div>
         </el-card>
       </el-col>
     </el-row>
@@ -12,7 +14,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
   export default {
     data() {
       return {
@@ -20,7 +21,7 @@
       }
     },
     created() {
-        load()
+        this.load()
       /* axios.get('/api/sections')
         .then(response => {
           this.sections = response.data
@@ -39,7 +40,8 @@
         })
       },
       async load() {
-        const res = await axios.$http.get('/sections')
+        console.log('什么情况')
+        const res = await this.$http.get('/sections')
         if(res.code==200){
             // 获取数据成功
             console.log(res)
@@ -65,5 +67,13 @@
     font-size: 14px;
     color: #666;
   }
+  
+ .section-updated-at {
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+ 
+ }
+
 
 </style>

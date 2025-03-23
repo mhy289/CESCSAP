@@ -55,7 +55,7 @@
       <!-- 学园论坛 -->
        <el-submenu v-if="forumGroup" index="forum">
         <template slot="title">学园论坛</template>
-        <el-menu-item index="/forum" v-if="menuFlags.forumMenu">论坛管理</el-menu-item>
+        <el-menu-item index="/forum" v-if="menuFlags.forumMenu">论坛</el-menu-item>
         <el-menu-item index="/forumReply" v-if="menuFlags.forumReplyMenu">讨论区</el-menu-item>
       </el-submenu>
 

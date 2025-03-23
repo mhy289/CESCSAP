@@ -1,6 +1,7 @@
 package com.mhy.cescsap.service.impl;
 
 import com.mhy.cescsap.mapper.ReplyMapper;
+import com.mhy.cescsap.mapper.SectionMapper;
 import com.mhy.cescsap.pojo.Partition;
 import com.mhy.cescsap.pojo.Reply;
 import com.mhy.cescsap.service.ReplyService;
@@ -16,6 +17,9 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Autowired
     ReplyMapper replyMapper;
+
+    @Autowired
+    SectionMapper sectionMapper;
 
     @Override
     public List<Reply> getReplyCount() {
@@ -59,6 +63,6 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public List<Partition> getSections() {
-        return null;
+        return sectionMapper.getAllSections();
     }
 }
