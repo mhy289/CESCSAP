@@ -33,7 +33,8 @@
       <!-- 通知与公告 -->
        <el-submenu v-if="noticeGroup" index="notice">
         <template slot="title">通知与公告</template>
-        <el-menu-item index="/notice" v-if="menuFlags.noticeMenu">公告管理</el-menu-item>
+        <el-menu-item index="/notice" v-if="menuFlags.noticeMenu">公告</el-menu-item>
+        <el-menu-item index="/noticemanage" v-if="menuFlags.noticemanageMenu">公告管理</el-menu-item>
         <el-menu-item index="/noticeReply" v-if="menuFlags.noticeReplyMenu">回复管理</el-menu-item>
       </el-submenu>
 
@@ -118,6 +119,7 @@
           helpMenu: false,
           helpArticleMenu: false,
           linkMenu: false,
+          noticemanageMenu: false,
           //personal: false
         }
       }
@@ -125,7 +127,7 @@
 
     computed: {
         noticeGroup: function () {
-        return this.menuFlags.noticeMenu || this.menuFlags.noticeReplyMenu
+        return this.menuFlags.noticeMenu || this.menuFlags.noticeReplyMenu || this.menuFlags.noticemanageMenu
       },
       helpGroup: function () {
         return this.menuFlags.helpMenu || this.menuFlags.helpArticleMenu
@@ -183,6 +185,8 @@
         this.menuFlags.kdMenu = true
         this.menuFlags.gpaMenu = true
         this.menuFlags.formMenu = true
+        this.menuFlags.noticeMenu = true
+        this.menuFlags.noticemanageMenu=true
       } else if (this.role == 1) {
         console.log("Please2")
         //教师权限

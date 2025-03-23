@@ -1,6 +1,8 @@
 package com.mhy.cescsap.controller;
 
 
+import com.mhy.cescsap.myexception.BusinessException;
+import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.Notice;
 import com.mhy.cescsap.pojo.Result;
 import com.mhy.cescsap.service.NoticeService;
@@ -46,6 +48,9 @@ public class NoticeController {
     // 新增公告
     @PostMapping("/notice")
     public Result addNotice(@RequestBody Notice notice){
+        if(notice == null){
+            throw new BusinessException(ExceptionType.PARAM_PASS_ERROR,"参数传递失败");
+        }
         return new Result(noticeService.addNotice(notice));
     }
 

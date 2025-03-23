@@ -15,17 +15,17 @@ public interface NoticeMapper {
     @Select("select * from notice")
     List<Notice> getAllNotices();
     //添加公告
-    @Insert("insert into notice(notice_id, title, contact, publisher, create_time) values (#{noticeId}, #{title}, #{contact},#{publisher}, #{createTime})")
+    @Insert("insert into notice(notice_id, title, content, publisher, create_time) values (#{noticeId}, #{title}, #{content},#{publisher}, #{createTime})")
     Integer addNotice(Notice notice);
     //修改公告
-    @Update("update notice set title = #{title}, contact = #{contact}, publisher = #{publisher}, create_time = #{createTime} where notice_id = #{noticeId}")
+    @Update("update notice set title = #{title}, content = #{content}, publisher = #{publisher}, create_time = #{createTime} where notice_id = #{noticeId}")
     Integer updateNotice(Notice notice);
     //删除公告
     @Delete("delete from notice where notice_id = #{noticeId}")
     Integer deleteNotice(Long noticeId);
 
     //根据内容查询公告
-    @Select("select * from notice where title like concat('%', #{content}, '%') or contact like concat('%', #{content}, '%') or publisher like concat('%', #{content}, '%')")
+    @Select("select * from notice where title like concat('%', #{content}, '%') or content like concat('%', #{content}, '%') or publisher like concat('%', #{content}, '%')")
     List<Notice> getNoticesByContent(String content);
 
     //根据标题查询公告

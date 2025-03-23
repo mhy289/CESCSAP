@@ -7,6 +7,9 @@ public enum ExceptionType {
     BUS_INTEGER_ABC,
     BUS_INVALID_KEY,
     BUS_DELETED_EXIST_DATA,
+    //参数传递失败
+    PARAM_PASS_ERROR,
+    //SQL 执行出错
     BUS_DELETED_SQL_NUM_ERROR,
     SERVER_ERROR,
     BUS_INVALID_DATA,
