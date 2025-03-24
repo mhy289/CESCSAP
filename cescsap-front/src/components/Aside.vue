@@ -187,6 +187,8 @@
         this.menuFlags.formMenu = true
         this.menuFlags.noticeMenu = true
         this.menuFlags.noticemanageMenu=true
+        this.menuFlags.helpMenu = true
+        this.menuFlags.helpArticleMenu = true
       } else if (this.role == 1) {
         console.log("Please2")
         //教师权限
