@@ -93,4 +93,16 @@ public class StudentController {
     public Result getFilterOptions(@RequestBody Student student){
         return new Result(studentService.getFilterOptions(student));
     }
+
+    //刷新绩点
+    @PostMapping("/student/refreshGPA")
+    public Result refreshGPA(@RequestBody Student student){
+        return new Result(scService.refreshGPA(student));
+    }
+
+    //修改评价状态
+    @PutMapping("/student/updateCommentStatus")
+    public Result updateCommentStatus(){
+        return new Result(studentService.updateCommentStatus());
+    }
 }

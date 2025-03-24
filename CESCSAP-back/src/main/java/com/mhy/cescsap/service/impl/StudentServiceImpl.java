@@ -89,4 +89,14 @@ public class StudentServiceImpl implements StudentService {
         }
         return tclist;
     }
+
+    @Override
+    public Integer updateCommentStatus() {
+        return studentMapper.updateEvaluateStatus(1);
+    }
+
+    @Override
+    public Integer updateCommentStatus(Student student) {
+        return studentMapper.updateEvaluateStatus1(student);
+    }
 }

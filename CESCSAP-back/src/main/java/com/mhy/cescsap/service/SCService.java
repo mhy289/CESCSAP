@@ -20,4 +20,6 @@ public interface SCService {
     PageItem<StudentCourseHistory> queryConditionPage(Student student, Integer current, Integer size);
 
     Object queryStudentCourse(Student student);
+
+    Integer refreshGPA(Student student);
 }

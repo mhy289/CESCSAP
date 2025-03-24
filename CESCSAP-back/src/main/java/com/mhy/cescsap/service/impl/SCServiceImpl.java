@@ -27,6 +27,8 @@ public class SCServiceImpl implements SCService {
     @Autowired
     CourseMapper courseMapper;
 
+
+
     @Override
     public List<StudentCourse> getSC(Long scId) {
         return scMapper.getStudents(scId);
@@ -79,5 +81,29 @@ public class SCServiceImpl implements SCService {
     @Override
     public Object queryStudentCourse(Student student) {
         return null;
+    }
+
+    @Override
+    public Integer refreshGPA(Student student) {
+        String name = student.getName();
+        Student student1 = studentMapper.getStudentByName(name);
+        Long studentId = student1.getStudentId();
+        List<StudentCourse> studentCourses = scMapper.selectByCondition2(studentId);
+        Double allGpa=0.0;
+        int cnt = 0;
+        for(StudentCourse sc : studentCourses){
+            Double gpa = sc.getGpa();
+            cnt++;
+            allGpa += gpa;
+        }
+        if(cnt > 0){
+            Double avgGpa = allGpa / cnt;
+            student.setGpa(avgGpa);
+            return studentMapper.updateStudent(student);
+        } else{
+            log.info("Not found student {} in the database", name);
+            student.setGpa(0.0);
+            return studentMapper.updateStudent(student);
+        }
     }
 }

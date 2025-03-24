@@ -29,6 +29,8 @@ public class Student extends User{
     private String contact;
     //绩点
     private Double gpa;
+    //评价状态
+    private Integer evaluateStatus;
     //登陆状态
     private Integer loginStatus;
 }

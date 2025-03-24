@@ -42,4 +42,11 @@ public interface StudentMapper {
 
     @Select("SELECT * FROM student WHERE name = #{name}")
     Student getStudentByName(String name);
+
+    //更新所有学生的评价状态
+    @Update("update student set evaluate_status = #{evaluateStatus}")
+    Integer updateEvaluateStatus(Integer evaluateStatus);
+
+    @Update("update student set evaluate_status = #{evaluateStatus} where student_id = #{studentId}")
+    Integer updateEvaluateStatus1(Student student);
 }

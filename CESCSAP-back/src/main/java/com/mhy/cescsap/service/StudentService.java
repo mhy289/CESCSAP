@@ -32,4 +32,8 @@ public interface StudentService {
     Student getStudentByName(String name);
 
     List<TeacherCourse> getFilterOptions(Student student);
+
+    Integer updateCommentStatus();
+
+    Integer updateCommentStatus(Student student);
 }
