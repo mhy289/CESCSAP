@@ -106,4 +106,9 @@ public class SCServiceImpl implements SCService {
             return studentMapper.updateStudent(student);
         }
     }
+
+    @Override
+    public List<StudentCourse> getAllSCByStudentId(Long studentId) {
+        return scMapper.selectByCondition2(studentId);
+    }
 }

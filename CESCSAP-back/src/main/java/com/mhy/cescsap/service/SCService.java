@@ -22,4 +22,7 @@ public interface SCService {
     Object queryStudentCourse(Student student);
 
     Integer refreshGPA(Student student);
+
+    //查询学生所有课程
+    List<StudentCourse> getAllSCByStudentId(Long studentId);
 }

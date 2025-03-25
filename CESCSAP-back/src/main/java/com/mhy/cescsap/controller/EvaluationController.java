@@ -1,15 +1,17 @@
 package com.mhy.cescsap.controller;
 
-import com.mhy.cescsap.pojo.EvaluationCriterion;
-import com.mhy.cescsap.pojo.Result;
-import com.mhy.cescsap.pojo.Student;
-import com.mhy.cescsap.pojo.Teacher;
+import com.mhy.cescsap.myexception.BusinessException;
+import com.mhy.cescsap.myexception.ExceptionType;
+import com.mhy.cescsap.pojo.*;
+import com.mhy.cescsap.service.CourseService;
 import com.mhy.cescsap.service.EvaluationService;
+import com.mhy.cescsap.service.SCService;
 import com.mhy.cescsap.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,12 +26,40 @@ public class EvaluationController {
     @Autowired
     StudentService studentService;
 
+    @Autowired
+    SCService scService;
+
+    @Autowired
+    CourseService courseService;
+
     //获取教师评价
     @GetMapping("/eval")
-    public Result getEvaluationByTeacher(@RequestBody Teacher teacher){
+    public Result getEvaluationByTeacher_old(@RequestBody Teacher teacher){
         Long teacherId = teacher.getTeacherId();
         List<EvaluationCriterion> evaluations = evaluationService.getEvaluationsByTeacherId(teacherId);
         return new Result(evaluations);
+    }
+
+    @PostMapping("/evals")
+    public Result getEvaluationByTeacher(@RequestBody Student student){
+        if(student.getName()==null){
+            throw  new BusinessException(ExceptionType.STUDENT_NAME_ERROR,"学生名字传输错误");
+        }
+        log.debug("-------------------------------");
+        log.debug("getEvaluationByTeacher : " + student.getName());
+        String name = student.getName();
+        student = studentService.getStudentByName(name);
+        Long studentId = student.getStudentId();
+        List<StudentCourse> studentCourses = scService.getAllSCByStudentId(studentId);
+        List<List<EvaluationCriterion>> evaluationss = new ArrayList<>();
+        for(StudentCourse studentCourse : studentCourses) {
+            Long courseId = studentCourse.getCourseId();
+            Course course = courseService.getCourseById(courseId);
+            Long teacherId = course.getTeacherId();
+            List<EvaluationCriterion> evaluations = evaluationService.getEvaluationsByTeacherId(teacherId);
+            evaluationss.add(evaluations);
+        }
+        return new Result(evaluationss);
     }
 
     //评价教师

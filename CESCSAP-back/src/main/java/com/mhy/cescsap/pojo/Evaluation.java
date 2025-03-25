@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Evaluation {
     private Long evaluationId;
+    private Long ecId;
     private Double score;
     private String comment;
     private Integer number;

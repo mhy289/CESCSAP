@@ -21,4 +21,8 @@ public interface EvaluationCriterionMapper {
     // 获取指定课程指定教师的评价
     @Select("select * from evaluationcriterion where teacher_id = #{teacherId} and course_id = #{courseId}")
     EvaluationCriterion getEvaluationCriterion(Long teacherId, Long courseId);
+
+    // 获取指定课程所有教师的评价
+    @Select("select * from evaluation where ec_id = #{ecId}")
+    List<Evaluation> getEvaluationsByecId(Long ecId);
 }
