@@ -49,4 +49,11 @@ public class LogController {
         logService.addLog(log);
         return new Result("Add log success");
     }
+
+    //分页查询公告
+    @GetMapping("/logs/page/{page}/size/{size}")
+    public Result getNoticesByPage(@PathVariable Integer page, @PathVariable Integer size){
+        return new Result(logService.getAllNotices(page, size));
+        //return new Result(noticeService.getNoticeList());
+    }
 }

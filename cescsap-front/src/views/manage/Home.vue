@@ -3,7 +3,7 @@
 -->
 <template>
   <div style="text-align: center;width: 100%;font-size: 32px;">
-    <h1>点餐后台管理系统</h1>
+    <h1>高校学生学业综合评价系统</h1>
   </div>
 </template>
 

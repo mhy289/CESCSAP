@@ -7,7 +7,7 @@
 
     <!-- 标题，图标等   -->
     <div style="height: 60px;margin-left: 30px; line-height: 60px">
-      <span slot="title" style="color: aliceblue;font-size: 20px" v-show="!isCollapse">后台管理</span>
+      <span slot="title" style="color: aliceblue;font-size: 20px" v-show="!isCollapse">高校学生学业综合评价系统</span>
     </div>
 
     <!-- 主页跳转 -->
@@ -28,6 +28,12 @@
       <el-submenu v-show="userGroup" index="user">
         <template slot="title">账户相关</template>
         <el-menu-item index="/manage/User" v-if="menuFlags.userMenu">用户管理</el-menu-item>
+      </el-submenu>
+
+    <!-- 日志管理-->
+     <el-submenu v-if="logGroup" index="log">
+        <template slot="title">日志管理</template>
+        <el-menu-item index="/loglist" v-if="menuFlags.logMenu">日志管理</el-menu-item>
       </el-submenu>
 
       <!-- 通知与公告 -->
@@ -120,12 +126,16 @@
           helpArticleMenu: false,
           linkMenu: false,
           noticemanageMenu: false,
+          logMenu: false,
           //personal: false
         }
       }
     },
 
     computed: {
+        logGroup:function(){
+            return this.menuFlags.logMenu
+        },
         noticeGroup: function () {
         return this.menuFlags.noticeMenu || this.menuFlags.noticeReplyMenu || this.menuFlags.noticemanageMenu
       },
@@ -189,6 +199,7 @@
         this.menuFlags.noticemanageMenu=true
         this.menuFlags.helpMenu = true
         this.menuFlags.helpArticleMenu = true
+        this.menuFlags.logMenu = true
       } else if (this.role == 1) {
         console.log("Please2")
         //教师权限

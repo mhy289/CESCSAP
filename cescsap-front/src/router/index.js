@@ -35,11 +35,11 @@ const routes = [{
       path: '/Notice/:noticeId',
       name: 'noticedetial',
       component: () => import('../views/manage/file/NoticeList.vue'),
-    },{
-        path: '/Noticemanage',
-        name: 'Noticemanage',
+    }, {
+      path: '/Noticemanage',
+      name: 'Noticemanage',
       component: () => import('../views/manage/file/NoticeManage.vue'),
-    },{
+    }, {
       path: '/Help',
       name: 'help',
       component: () => import('../views/manage/file/Help.vue'),
@@ -51,6 +51,10 @@ const routes = [{
       path: '/LinkList',
       name: 'linklist',
       component: () => import('../views/manage/file/LinkList.vue'),
+    }, {
+      path: '/LogList',
+      name: 'loglist',
+      component: () => import('../views/manage/file/LogList.vue'),
     }, {
       path: '/Forum',
       name: 'forum',

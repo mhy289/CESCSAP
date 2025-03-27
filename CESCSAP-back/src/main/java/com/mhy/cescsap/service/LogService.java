@@ -22,4 +22,6 @@ public interface LogService {
     Integer updateLog(Log log);
 
 
+
+    Object getAllNotices(Integer page, Integer size);
 }
