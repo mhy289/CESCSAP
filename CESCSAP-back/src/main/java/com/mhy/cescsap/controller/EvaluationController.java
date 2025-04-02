@@ -36,7 +36,7 @@ public class EvaluationController {
     @GetMapping("/eval")
     public Result getEvaluationByTeacher_old(@RequestBody Teacher teacher){
         Long teacherId = teacher.getTeacherId();
-        List<EvaluationCriterion> evaluations = evaluationService.getEvaluationsByTeacherId(teacherId);
+        List<EvaluationCriterion> evaluations = evaluationService.getEvaluationsByTeacherId_old(teacherId);
         return new Result(evaluations);
     }
 
@@ -56,7 +56,7 @@ public class EvaluationController {
             Long courseId = studentCourse.getCourseId();
             Course course = courseService.getCourseById(courseId);
             Long teacherId = course.getTeacherId();
-            List<EvaluationCriterion> evaluations = evaluationService.getEvaluationsByTeacherId(teacherId);
+            List<EvaluationCriterion> evaluations = evaluationService.getEvaluationsByTeacherId_old(teacherId);
             evaluationss.add(evaluations);
         }
         return new Result(evaluationss);
@@ -75,4 +75,14 @@ public class EvaluationController {
         student.setEvaluateStatus(0); // 标记为已评论
         return new Result(studentService.updateCommentStatus(student),"success");
     }
+
+    //教师查看自己评价
+    //学生查看教师评价
+    @GetMapping("/teacherEval")
+    public Result getTeacherEvaluation(@RequestBody Teacher teacher){
+        Long teacherId = teacher.getTeacherId();
+        List<Evaluation> evaluations = evaluationService.getEvaluationsByTeacherId(teacherId);
+        return new Result(evaluations);
+    }
+
 }

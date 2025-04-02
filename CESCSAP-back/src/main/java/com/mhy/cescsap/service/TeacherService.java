@@ -25,4 +25,6 @@ public interface TeacherService {
     //教师登录
     Teacher login(Teacher teacher);
 
+    //查询单个教师的评价
+    Teacher getTeacherEvaluate(Long id);
 }

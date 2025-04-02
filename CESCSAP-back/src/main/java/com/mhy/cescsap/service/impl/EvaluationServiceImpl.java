@@ -1,12 +1,11 @@
 package com.mhy.cescsap.service.impl;
 
-import com.mhy.cescsap.mapper.CourseMapper;
-import com.mhy.cescsap.mapper.EvaluationCriterionMapper;
-import com.mhy.cescsap.mapper.TeacherMapper;
+import com.mhy.cescsap.mapper.*;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.Evaluation;
 import com.mhy.cescsap.pojo.EvaluationCriterion;
+import com.mhy.cescsap.pojo.EvaluationDetail;
 import com.mhy.cescsap.pojo.Teacher;
 import com.mhy.cescsap.service.EvaluationService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +30,14 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Autowired
     EvaluationCriterionMapper ecMapper;
 
+    @Autowired
+    EvaluationMapper evaluationMapper;
+
+    @Autowired
+    EvaluationDetailMapper evaluationDetailMapper;
+
     @Override
-    public List<EvaluationCriterion> getEvaluationsByTeacherId(Long teacherId) {
+    public List<EvaluationCriterion> getEvaluationsByTeacherId_old(Long teacherId) {
         List<EvaluationCriterion> evaluationCriterionList = ECMapper.getEvaluationCriterionList(teacherId);
         for(EvaluationCriterion evaluationCriterion : evaluationCriterionList){
             evaluationCriterion.setTeacher(teacherMapper.selectTeacherById(evaluationCriterion.getTeacherId()));
@@ -46,31 +51,52 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
+    public List<Evaluation> getEvaluationsByTeacherId(Long teacherId) {
+        return null;
+    }
+
+    @Override
     public Integer updateEvaluationByTeacher(EvaluationCriterion ec,Double s) {
-        //Double score = ec.getEvaluation().getScore();
-        Long teacherId = ec.getTeacherId();
-        Long courseId = ec.getCourseId();
-        EvaluationCriterion evaluationCriterion = ECMapper.getEvaluationCriterion(teacherId, courseId);
-        List<Evaluation> evaluations = evaluationCriterion.getEvaluation();
-        for(Evaluation evaluation : evaluations){
-            if(evaluation.getNumber()==0 || evaluation.getScore()==null){
-                evaluation.setNumber(1);
-                evaluation.setScore(s);
-                if(evaluation.getEvaluationId()!=null) {
-                    return ECMapper.evaluateChange(evaluation);
-                }else{
-                    throw new BusinessException(ExceptionType.EVAL_ERROR,"添加评价错误");
-                }
-            }else{
-                evaluation.setScore((evaluation.getScore()*evaluation.getNumber()+s)/(evaluation.getNumber()+1));
-                evaluation.setNumber(evaluation.getNumber()+1);
-                if(evaluation.getEvaluationId()!=null) {
-                    return ECMapper.evaluateChange(evaluation);
-                }else{
-                    throw new BusinessException(ExceptionType.EVAL_ERROR,"添加评价错误");
+//        //Double score = ec.getEvaluation().getScore();
+//        Long teacherId = ec.getTeacherId();
+//        Long courseId = ec.getCourseId();
+//        EvaluationCriterion evaluationCriterion = ECMapper.getEvaluationCriterion(teacherId, courseId);
+//        List<Evaluation> evaluations = evaluationCriterion.getEvaluation();
+//        for(Evaluation evaluation : evaluations){
+//            if(evaluation.getNumber()==0 || evaluation.getScore()==null){
+//                evaluation.setNumber(1);
+//                evaluation.setScore(s);
+//                if(evaluation.getEvaluationId()!=null) {
+//                    return ECMapper.evaluateChange(evaluation);
+//                }else{
+//                    throw new BusinessException(ExceptionType.EVAL_ERROR,"添加评价错误");
+//                }
+//            }else{
+//                evaluation.setScore((evaluation.getScore()*evaluation.getNumber()+s)/(evaluation.getNumber()+1));
+//                evaluation.setNumber(evaluation.getNumber()+1);
+//                if(evaluation.getEvaluationId()!=null) {
+//                    return ECMapper.evaluateChange(evaluation);
+//                }else{
+//                    throw new BusinessException(ExceptionType.EVAL_ERROR,"添加评价错误");
+//                }
+//            }
+//        }
+        return null;
+    }
+
+    @Override
+    public Integer saveEvaluation(Evaluation evaluation) {
+        Integer i = evaluationMapper.insertEvaluation(evaluation);
+
+        if(evaluation.getEvaluationDetails()!=null) {
+            for (EvaluationDetail evaluationDetail : evaluation.getEvaluationDetails()) {
+                evaluationDetail.setEvaluationId(evaluation.getEvaluationId());
+                Integer i1 = evaluationDetailMapper.insertEvaluationDetail(evaluationDetail);
+                if (i1 == null || i1 <= 0) {
+                    throw new BusinessException(ExceptionType.EVAL_DTL_ERR, "评价细节提交错误");
                 }
             }
         }
-        return null;
+        return i;
     }
 }

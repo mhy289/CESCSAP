@@ -1,7 +1,9 @@
 package com.mhy.cescsap.service.impl;
 
+import com.mhy.cescsap.mapper.TeacherEvaluationStatsMapper;
 import com.mhy.cescsap.mapper.TeacherMapper;
 import com.mhy.cescsap.pojo.Teacher;
+import com.mhy.cescsap.pojo.TeacherEvaluationStats;
 import com.mhy.cescsap.service.TeacherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     TeacherMapper teacherMapper;
+
+    @Autowired
+    TeacherEvaluationStatsMapper teacherEvaluationStatsMapper;
 
     @Override
     public List<Teacher> getTeachers() {
@@ -53,5 +58,13 @@ public class TeacherServiceImpl implements TeacherService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Teacher getTeacherEvaluate(Long id) {
+        List<TeacherEvaluationStats> teacherEvaluationStatsByTeacherId = teacherEvaluationStatsMapper.getTeacherEvaluationStatsByTeacherId(id);
+        Teacher teacher = teacherMapper.selectTeacherById(id);
+        teacher.setTeacherEvaluationStats(teacherEvaluationStatsByTeacherId);
+        return teacher;
     }
 }

@@ -25,6 +25,9 @@ public class Teacher extends User{
     private Date birthDate;
     //联系方式
     private String contact;
+
+    private List<Course> courses;
+    private List<TeacherEvaluationStats> teacherEvaluationStats;
     //登陆状态
     private Integer loginStatus;
 }
