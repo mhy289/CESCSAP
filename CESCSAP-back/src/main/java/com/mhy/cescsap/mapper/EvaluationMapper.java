@@ -1,6 +1,7 @@
 package com.mhy.cescsap.mapper;
 
 import com.mhy.cescsap.pojo.Evaluation;
+import com.mhy.cescsap.pojo.EvaluationDimension;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -14,4 +15,7 @@ public interface EvaluationMapper {
 
     @Insert("insert into evaluation(student_id, course_id, teacher_id, evaluation_time) values (#{studentId},#{courseId},#{teahcerId},#{evaluationTime})")
     Integer insertEvaluation(Evaluation evaluation);
+
+    @Select("select * from evaluationdimension")
+    List<EvaluationDimension> getEvaluationDimensions();
 }

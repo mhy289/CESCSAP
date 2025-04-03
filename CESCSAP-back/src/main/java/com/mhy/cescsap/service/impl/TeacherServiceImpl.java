@@ -1,14 +1,15 @@
 package com.mhy.cescsap.service.impl;
 
-import com.mhy.cescsap.mapper.TeacherEvaluationStatsMapper;
-import com.mhy.cescsap.mapper.TeacherMapper;
-import com.mhy.cescsap.pojo.Teacher;
-import com.mhy.cescsap.pojo.TeacherEvaluationStats;
+import com.mhy.cescsap.mapper.*;
+import com.mhy.cescsap.myexception.BusinessException;
+import com.mhy.cescsap.myexception.ExceptionType;
+import com.mhy.cescsap.pojo.*;
 import com.mhy.cescsap.service.TeacherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +21,18 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     TeacherEvaluationStatsMapper teacherEvaluationStatsMapper;
+
+    @Autowired
+    SCMapper scMapper;
+
+    @Autowired
+    CourseMapper courseMapper;
+
+    @Autowired
+    EvaluationMapper evaluationMapper;
+
+    @Autowired
+    EvaluationDetailMapper evaluationDetailMapper;
 
     @Override
     public List<Teacher> getTeachers() {
@@ -66,5 +79,59 @@ public class TeacherServiceImpl implements TeacherService {
         Teacher teacher = teacherMapper.selectTeacherById(id);
         teacher.setTeacherEvaluationStats(teacherEvaluationStatsByTeacherId);
         return teacher;
+    }
+
+    @Override
+    public List<Teacher> getTeachersByStudent(Student student) {
+        // 根据 studentId 查询该学生选修的课程（StudentCourse 关联记录）
+        if(student.getStudentId() == null){
+            throw new BusinessException(ExceptionType.STU_ERR,"学生错误");
+        }
+        List<StudentCourse> studentCourses = scMapper.selectByCondition2(student.getStudentId());
+        List<Teacher> teachers = new ArrayList<Teacher>();
+        // 遍历每条关联记录，根据 courseId 查询课程，再由课程获取教师信息
+        if(studentCourses !=null && studentCourses.isEmpty()){
+            for(StudentCourse sc : studentCourses){
+                Long courseId = sc.getCourseId();
+                Course course = courseMapper.getCourseById(courseId);
+                if(course != null){
+                    Teacher teacher = teacherMapper.selectTeacherById(course.getTeacherId());
+                    if(teacher != null){
+                        teachers.add(teacher);
+                    }else{
+                        throw new BusinessException(ExceptionType.TEACHER_ERR,"教师查询失败");
+                    }
+                }else{
+                    throw new BusinessException(ExceptionType.COURSE_ERR,"课程查询失败");
+                }
+            }
+        }
+        return teachers;
+    }
+
+    @Override
+    public Integer saveEvaluations(TeacherEvaluationsDTO teacherEvaluationsDTO) {
+        List<Evaluation> evaluationList = teacherEvaluationsDTO.getEvaluationList();
+        if(evaluationList== null || evaluationList.isEmpty()){
+            throw new BusinessException(ExceptionType.EVALUATE_ERR,"评价为空");
+        }
+        for(Evaluation evaluation : evaluationList){
+            // 保存评价主记录
+            Integer i1 = evaluationMapper.insertEvaluation(evaluation);
+            if(i1 == null || i1<=0){
+                throw new BusinessException(ExceptionType.EVALUATE_ERR,"评价主记录保存失败");
+            }
+            // 保存对应的评价明细，设置外键 evaluationId
+            if(evaluation.getEvaluationDetails()!=null){
+                for(EvaluationDetail evaluationDetail : evaluation.getEvaluationDetails()){
+                    evaluationDetail.setEvaluationId(evaluation.getEvaluationId());
+                    Integer i = evaluationDetailMapper.insertEvaluationDetail(evaluationDetail);
+                    if(i == null || i<=0){
+                        throw new BusinessException(ExceptionType.EVALUATE_ERR,"评价明细保存失败");
+                    }
+                }
+            }
+        }
+        return 1;
     }
 }

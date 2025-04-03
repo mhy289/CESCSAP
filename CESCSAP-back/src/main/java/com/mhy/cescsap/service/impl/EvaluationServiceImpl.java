@@ -3,10 +3,7 @@ package com.mhy.cescsap.service.impl;
 import com.mhy.cescsap.mapper.*;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
-import com.mhy.cescsap.pojo.Evaluation;
-import com.mhy.cescsap.pojo.EvaluationCriterion;
-import com.mhy.cescsap.pojo.EvaluationDetail;
-import com.mhy.cescsap.pojo.Teacher;
+import com.mhy.cescsap.pojo.*;
 import com.mhy.cescsap.service.EvaluationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +95,15 @@ public class EvaluationServiceImpl implements EvaluationService {
             }
         }
         return i;
+    }
+
+    @Override
+    public List<EvaluationDimension> getEvaluationDimensions() {
+        // 获取所有评价维度
+        List<EvaluationDimension>  evaluationDimensions = evaluationMapper.getEvaluationDimensions();
+        if(evaluationDimensions == null || evaluationDimensions.isEmpty()){
+            throw new BusinessException(ExceptionType.EVAL_DIM_ERR, "获取评价维度错误");
+        }
+        return evaluationDimensions;
     }
 }
