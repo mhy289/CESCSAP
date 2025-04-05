@@ -62,4 +62,10 @@ public class QuestionAnswerController {
             throw new BusinessException(ExceptionType.INTERNAL_SERVER_ERROR,"删除失败");
         }
     }
+
+    // 分页获取问答
+    @GetMapping("/qas/page/{page}/size/{size}")
+    public Result getQasByPage(@PathVariable Integer page, @PathVariable Integer size){
+        return new Result(questionAnswerService.getQasByPage(page, size));
+    }
 }

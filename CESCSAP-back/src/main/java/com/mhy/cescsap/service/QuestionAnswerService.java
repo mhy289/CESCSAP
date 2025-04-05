@@ -1,5 +1,7 @@
 package com.mhy.cescsap.service;
 
+import com.mhy.cescsap.pojo.Notice;
+import com.mhy.cescsap.pojo.PageItem;
 import com.mhy.cescsap.pojo.QuestionAnswer;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface QuestionAnswerService {
 
     //删除一条问答
     Integer deleteQuestionAnswer(Long qaId);
+
+    PageItem<QuestionAnswer> getQasByPage(Integer page, Integer size);
 }

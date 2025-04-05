@@ -1,5 +1,6 @@
 package com.mhy.cescsap.controller;
 
+import com.mhy.cescsap.mapper.CourseMapper;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.Evaluation;
@@ -28,6 +29,7 @@ public class TeacherController {
     TeacherEvaluationStatsService teacherEvaluationStatsService;
 
     @Autowired
+    CourseMapper courseMapper;
 
     // 教师相关操作
     // 获取单个教师

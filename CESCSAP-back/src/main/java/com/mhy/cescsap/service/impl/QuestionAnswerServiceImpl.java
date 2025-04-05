@@ -1,6 +1,9 @@
 package com.mhy.cescsap.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.mhy.cescsap.mapper.QuestionAnswerMapper;
+import com.mhy.cescsap.pojo.PageItem;
 import com.mhy.cescsap.pojo.QuestionAnswer;
 import com.mhy.cescsap.service.QuestionAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +40,13 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
     @Override
     public Integer deleteQuestionAnswer(Long qaId) {
         return questionAnswerMapper.deleteQuestionAnswer(qaId);
+    }
+
+    @Override
+    public PageItem<QuestionAnswer> getQasByPage(Integer page, Integer size) {
+        PageHelper.startPage(page, size);
+        List<QuestionAnswer> questionAnswers = questionAnswerMapper.selectAllAnswers();
+        Page<QuestionAnswer> pages = (Page<QuestionAnswer>)questionAnswers;
+        return new PageItem<>(pages.getTotal(), questionAnswers);
     }
 }

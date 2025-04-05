@@ -40,7 +40,7 @@ public class EvaluationController {
         return new Result(evaluations);
     }
 
-    @PostMapping("/evals")
+    @PostMapping("/evals_old")
     public Result getEvaluationByTeacher_old2(@RequestBody Student student){
         if(student.getName()==null){
             throw  new BusinessException(ExceptionType.STUDENT_NAME_ERROR,"学生名字传输错误");

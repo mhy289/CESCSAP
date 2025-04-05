@@ -2,6 +2,8 @@ package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.mapper.LogMapper;
 import com.mhy.cescsap.pojo.Log;
+import com.mhy.cescsap.pojo.Notice;
+import com.mhy.cescsap.pojo.PageItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +25,5 @@ public interface LogService {
 
 
 
-    Object getAllNotices(Integer page, Integer size);
+    PageItem<Log> getAllLogs(Integer page, Integer size);
 }

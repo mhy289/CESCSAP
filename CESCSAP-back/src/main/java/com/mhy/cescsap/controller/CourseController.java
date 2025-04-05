@@ -34,12 +34,12 @@ public class CourseController {
     }
     // 编辑课程
     @PutMapping("/courses")
-    public Result updateCourse(@RequestBody com.mhy.cescsap.pojo.Course course) {
+    public Result updateCourse(@RequestBody Course course) {
         return new Result(courseService.updateCourse(course));
     }
     // 新建课程
     @PostMapping("/courses")
-    public Result createCourse(@RequestBody com.mhy.cescsap.pojo.Course course) {
+    public Result createCourse(@RequestBody Course course) {
 
         return new Result(courseService.addCourse(course));
     }

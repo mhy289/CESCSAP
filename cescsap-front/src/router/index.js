@@ -44,6 +44,10 @@ const routes = [{
       name: 'help',
       component: () => import('../views/manage/file/Help.vue'),
     }, {
+        path:'/Helpmange',
+        name: 'helpmange',
+        component: () => import('../views/manage/file/Helpmange.vue'),
+    },{
       path: '/Link',
       name: 'link',
       component: () => import('../views/manage/file/Link.vue'),
@@ -56,6 +60,10 @@ const routes = [{
       name: 'loglist',
       component: () => import('../views/manage/file/LogList.vue'),
     }, {
+        path:'QaList',
+        name: 'qaList',
+        component: () => import('../views/manage/file/QaList.vue'),
+    },{
       path: '/Forum',
       name: 'forum',
       component: () => import('../views/manage/file/Forum.vue'),

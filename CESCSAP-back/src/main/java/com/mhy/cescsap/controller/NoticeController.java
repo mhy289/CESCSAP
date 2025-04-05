@@ -36,6 +36,7 @@ public class NoticeController {
     // 删除公告
     @DeleteMapping("/notice/{id}")
     public Result deleteNotice(@PathVariable Long id){
+        log.debug("id is {}",id);
         return new Result(noticeService.deleteNotice(id));
     }
 

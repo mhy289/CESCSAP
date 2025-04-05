@@ -2,7 +2,7 @@
   <div class="notice-container">
     <!-- 搜索栏 -->
     <div class="search-bar">
-      <el-input v-model="searchTitle" placeholder="请输入公告标题" style="width: 300px; margin-right: 15px" clearable
+      <el-input v-model="searchTitle" placeholder="请输入事件内容" style="width: 300px; margin-right: 15px" clearable
         @keyup.enter.native="fetchNotices" />
       <el-button type="primary" @click="fetchNotices">搜索</el-button>
     </div>
@@ -11,7 +11,7 @@
       <el-table-column prop="logId" label="ID" width="80" align="center" />
       <el-table-column prop="eventType" label="事件类型" width="150" />
       <el-table-column prop="eventContent" label="事件内容" min-width="200" />
-      <el-table-column prop="eventTime" label="发生时间" width="180" sortable>
+      <el-table-column prop="eventTime" label="发生时间" width="180">
         <template slot-scope="{row}">
           {{ formatTime(row.eventTime) }}
         </template>
@@ -34,11 +34,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <!-- 添加公告按钮 -->
-    <div class="add-button">
-      <el-button type="success" @click="openAddNoticeDialog">添加公告</el-button>
-    </div>
 
     <!-- 分页 -->
     <el-pagination :current-page="pageNum" :page-sizes="[10, 20, 50, 100]" :page-size="pageSize"
@@ -88,29 +83,20 @@
         }
       },
       async fetchNotices() {
-        this.loading = true
-        try {
-          let res = await this.$http.get(
-            '/notices/title/' +
-            this.searchTitle +
-            '/page/' +
-            this.pageNum +
-            '/size/' +
-            this.pageSize
-          )
-          if (res.code === 200) {
-            this.total = res.data.total
-            this.noticeList = res.data.list
-          } else {
-            console.error('获取公告列表失败:', res)
-            this.noticeList = []
-            this.total = 0
-          }
-        } catch (error) {
-          console.error('获取公告列表失败:', error)
-        } finally {
-          this.loading = false
+        let res = await this.$http.get('/logs/page/' + this.pageNum + '/size/' + this.pageSize)
+        if (res.code === 200) {
+          console.log(res.data)
+          this.total = res.data.total
+          this.logList = res.data.list
+        } else {
+          console.error('获取公告列表失败:', res)
+          this.noticeList = []
+          this.total = 0
         }
+      },
+      showDetail(row){
+        //弹窗提醒
+        this.$message.info('敬请期待')
       },
       formatTime(time) {
         return dayjs(time).format('YYYY-MM-DD HH:mm')
@@ -127,38 +113,13 @@
       editNotice(noticeId) {
         this.$router.push(`/notice/edit/${noticeId}`)
       },
-      // 删除公告
-      deleteNotice(noticeId) {
-        this.$confirm('此操作将永久删除该公告, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          try {
-            let res = await this.$http.delete('/notices/' + noticeId)
-            if (res.code === 200) {
-              this.$message.success('删除成功')
-              this.fetchNotices()
-            } else {
-              this.$message.error('删除失败')
-            }
-          } catch (error) {
-            console.error('删除公告失败:', error)
+      async deleteLog(logId){
+        let res = await this.$http.delete('/log/'+ logId)
+        if(res.code === 200){
+            this.$message.success('删除成功')
+            this.fetchNotices()
+        }else{
             this.$message.error('删除失败')
-          }
-        }).catch(() => {
-          // 取消删除操作
-        })
-      },
-      // 打开添加公告弹窗
-      openAddNoticeDialog() {
-        this.addNoticeDialogVisible = true
-        // 重置公告表单数据
-        this.newNotice = {
-          title: '',
-          content: '',
-          publisher: '',
-          createTime: ''
         }
       },
       articleHtml() {
@@ -174,33 +135,6 @@
         const seconds = date.getSeconds().toString().padStart(2, '0');
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       },
-      // 提交添加公告
-      async submitAddNotice() {
-        // 可在此处添加表单校验
-        if (!this.newNotice.title || !this.newNotice.content) {
-          this.$message.error('请填写完整的公告信息')
-          console.log(this.newNotice)
-          return
-        }
-        var name = localStorage.getItem("name")
-        console.log(name)
-        this.newNotice.publisher = name
-        this.newNotice.createTime = this.formatDate(new Date())
-        try {
-          let res = await this.$http.post('/notice', this.newNotice)
-          if (res.code === 200) {
-            this.$message.success('添加公告成功')
-            this.addNoticeDialogVisible = false
-            // 刷新公告列表
-            this.fetchNotices()
-          } else {
-            this.$message.error('添加公告失败')
-          }
-        } catch (error) {
-          console.error('添加公告失败:', error)
-          this.$message.error('添加公告失败')
-        }
-      }
     }
   }
 

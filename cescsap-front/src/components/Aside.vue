@@ -32,23 +32,27 @@
 
     <!-- 日志管理-->
      <el-submenu v-if="logGroup" index="log">
-        <template slot="title">日志管理</template>
+        <template slot="title">管理员界面</template>
         <el-menu-item index="/loglist" v-if="menuFlags.logMenu">日志管理</el-menu-item>
+        <el-menu-item index="/noticemanage" v-if="menuFlags.noticemanageMenu">公告管理</el-menu-item>
+        <el-menu-item index="/qaList" v-if="menuFlags.qaMenu">问答管理</el-menu-item>
+        <el-menu-item index="/helpmange" v-if="menuFlags.helpmangeMenu">帮助管理</el-menu-item>
+        <el-menu-item index="/linkList" v-if="menuFlags.linkMenu">链接管理</el-menu-item>
       </el-submenu>
 
       <!-- 通知与公告 -->
        <el-submenu v-if="noticeGroup" index="notice">
         <template slot="title">通知与公告</template>
         <el-menu-item index="/notice" v-if="menuFlags.noticeMenu">公告</el-menu-item>
-        <el-menu-item index="/noticemanage" v-if="menuFlags.noticemanageMenu">公告管理</el-menu-item>
+        
         <el-menu-item index="/noticeReply" v-if="menuFlags.noticeReplyMenu">回复管理</el-menu-item>
       </el-submenu>
 
       <!-- 帮助中心 -->
        <el-submenu v-if="helpGroup" index="help">
         <template slot="title">帮助中心</template>
-        <el-menu-item index="/help" v-if="menuFlags.helpMenu">帮助首页</el-menu-item>
-        <el-menu-item index="/helpArticle" v-if="menuFlags.helpArticleMenu">帮助文章</el-menu-item>
+        <el-menu-item index="/help" v-if="menuFlags.helpMenu">常见问题</el-menu-item>
+        <!-- <el-menu-item index="/helpArticle" v-if="menuFlags.helpArticleMenu">帮助文章</el-menu-item> -->
       </el-submenu>
 
       <!-- 友情链接 -->
@@ -140,7 +144,7 @@
         return this.menuFlags.noticeMenu || this.menuFlags.noticeReplyMenu || this.menuFlags.noticemanageMenu
       },
       helpGroup: function () {
-        return this.menuFlags.helpMenu || this.menuFlags.helpArticleMenu
+        return this.menuFlags.helpMenu || this.menuFlags.helpArticleMenu || this.menuFlags.helpmangeMenu
       },
       linkGroup: function () {
         return this.menuFlags.linkMenu || this.menuFlags.linkListMenu
@@ -200,6 +204,8 @@
         this.menuFlags.helpMenu = true
         this.menuFlags.helpArticleMenu = true
         this.menuFlags.logMenu = true
+        this.menuFlags.helpmangeMenu = true
+        this.menuFlags.linkMenu = true
       } else if (this.role == 1) {
         console.log("Please2")
         //教师权限

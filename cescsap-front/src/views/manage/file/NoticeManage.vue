@@ -1,11 +1,11 @@
 <template>
   <div class="notice-container">
     <!-- 搜索栏 -->
-    <div class="search-bar">
+    <!-- <div class="search-bar">
       <el-input v-model="searchTitle" placeholder="请输入公告标题" style="width: 300px; margin-right: 15px" clearable
         @keyup.enter.native="fetchNotices" />
       <el-button type="primary" @click="fetchNotices">搜索</el-button>
-    </div>
+    </div> -->
 
     <!-- 公告表格 -->
     <el-table :data="noticeList" style="width: 100%" border stripe v-loading="loading">
@@ -99,9 +99,7 @@
         this.loading = true
         try {
           let res = await this.$http.get(
-            '/notices/title/' +
-            this.searchTitle +
-            '/page/' +
+            '/notices/page/' +
             this.pageNum +
             '/size/' +
             this.pageSize
@@ -136,14 +134,14 @@
         this.$router.push(`/notice/edit/${noticeId}`)
       },
       // 删除公告
-      deleteNotice(noticeId) {
+      async deleteNotice(noticeId) {
         this.$confirm('此操作将永久删除该公告, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
           try {
-            let res = await this.$http.delete('/notices/' + noticeId)
+            let res = await this.$http.delete('/notice/' + noticeId)
             if (res.code === 200) {
               this.$message.success('删除成功')
               this.fetchNotices()

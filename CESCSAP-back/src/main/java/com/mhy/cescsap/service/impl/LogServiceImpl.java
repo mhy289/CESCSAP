@@ -46,7 +46,7 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public Object getAllNotices(Integer page, Integer size) {
+    public PageItem<Log> getAllLogs(Integer page, Integer size) {
         if(page == null || size==null){
             throw new RuntimeException();
         }
