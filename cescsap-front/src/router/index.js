@@ -104,6 +104,22 @@ const routes = [{
       path: 'AdminForm',
       name: 'adminform',
       component: () => import('../views/manage/form/AdminForm.vue'),
+    },{
+        path:'/StuManage',
+        name:'stuManage',
+        component: () => import('../views/manage/file/StuManage.vue'),
+    },{
+        path:'/TeacherManage',
+        name:'teacherManage',
+        component: () => import('../views/manage/file/Teachermanage.vue'),
+    },{
+        path:'/ClassManage',
+        name:'classManage',
+        component: () => import('../views/manage/file/Classmanage.vue'),
+    },{
+        path:'/CourseManage',
+        name:'courseManage',
+        component: () => import('../views/manage/file/Coursemanage.vue'),
     }]
   },
   {

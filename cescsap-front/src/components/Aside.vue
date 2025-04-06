@@ -38,6 +38,9 @@
         <el-menu-item index="/qaList" v-if="menuFlags.qaMenu">问答管理</el-menu-item>
         <el-menu-item index="/helpmange" v-if="menuFlags.helpmangeMenu">帮助管理</el-menu-item>
         <el-menu-item index="/linkList" v-if="menuFlags.linkMenu">链接管理</el-menu-item>
+        <el-menu-item index="/stumanage" v-if="menuFlags.stuMenu">学生管理</el-menu-item>
+        <el-menu-item index="/teachermanage" v-if="menuFlags.techerMenu">教师管理</el-menu-item>
+        <el-menu-item index="/coursemanage" v-if="menuFlags.courseMenu">课程管理</el-menu-item>
       </el-submenu>
 
       <!-- 通知与公告 -->
@@ -138,7 +141,7 @@
 
     computed: {
         logGroup:function(){
-            return this.menuFlags.logMenu
+            return this.menuFlags.logMenu || this.menuFlags.stuMenu || this.menuFlags.techerMenu || this.menuFlags.courseMenu
         },
         noticeGroup: function () {
         return this.menuFlags.noticeMenu || this.menuFlags.noticeReplyMenu || this.menuFlags.noticemanageMenu
@@ -206,6 +209,9 @@
         this.menuFlags.logMenu = true
         this.menuFlags.helpmangeMenu = true
         this.menuFlags.linkMenu = true
+        this.menuFlags.stuMenu = true
+        this.menuFlags.techerMenu = true
+        this.menuFlags.courseMenu = true
       } else if (this.role == 1) {
         console.log("Please2")
         //教师权限
