@@ -1,6 +1,7 @@
 package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.Course;
+import com.mhy.cescsap.pojo.PageItem;
 
 import java.util.List;
 
@@ -17,4 +18,9 @@ public interface CourseService {
     Integer deleteCourse(Long id);
     // 查询课程分页
     Object queryConditionPage(Course course, Integer current, Integer size);
+
+    // 课程批量添加学生
+    Integer addStudents(Long courseId, Long[] studentIds);
+
+    PageItem<Course> queryPage(Integer current, Integer size);
 }

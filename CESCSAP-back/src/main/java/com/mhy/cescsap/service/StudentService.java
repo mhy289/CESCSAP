@@ -36,4 +36,8 @@ public interface StudentService {
     Integer updateCommentStatus();
 
     Integer updateCommentStatus(Student student);
+
+    PageItem<Student> getAllPage(Integer current, Integer size);
+
+    Integer updateMajor();
 }

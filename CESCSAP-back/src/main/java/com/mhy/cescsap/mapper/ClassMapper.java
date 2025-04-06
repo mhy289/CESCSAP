@@ -22,4 +22,8 @@ public interface ClassMapper {
     //修改单个班级
     @Update("update class set class_name = #{className}, major = #{major}, teacher_id = #{teacherId} where class_id = #{classId}")
     Integer updateClass(Class clazz);
+
+    //检查班级是否存在
+    @Select("select COUNT(*) from class where major = #{major}")
+    Integer checkMajor(String major);
 }

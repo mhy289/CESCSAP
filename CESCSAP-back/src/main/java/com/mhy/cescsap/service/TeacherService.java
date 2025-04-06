@@ -1,5 +1,6 @@
 package com.mhy.cescsap.service;
 
+import com.mhy.cescsap.pojo.PageItem;
 import com.mhy.cescsap.pojo.Student;
 import com.mhy.cescsap.pojo.Teacher;
 import com.mhy.cescsap.pojo.TeacherEvaluationsDTO;
@@ -35,4 +36,7 @@ public interface TeacherService {
 
     //提交评价
     Integer saveEvaluations(TeacherEvaluationsDTO teacherEvaluationsDTO);
+
+
+    PageItem<Teacher> queryPage(Integer current, Integer size);
 }

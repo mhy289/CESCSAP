@@ -53,13 +53,13 @@ public class WarningController {
     }
 
     //教师查询可以发送的预警
-    @GetMapping("/teacher/{teacherId}")
+    @GetMapping("/teacher/warnings/{teacherId}")
     public Result getWarningsForTeacher(@PathVariable Long teacherId) {
             List<Warning> warnings = warningService.getWarningsForTeacher(teacherId);
             return new Result( warnings, "查询成功",200);
     }
     //学生查询待处理的预警
-    @GetMapping("/student/{studentId}")
+    @GetMapping("/student/warnings/{studentId}")
     public Result getWarningsForStudent(@PathVariable Long studentId) {
         List<Warning> warnings = warningService.getWarningsForStudent(studentId);
         return new Result(warnings, "查询成功", 200);

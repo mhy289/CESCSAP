@@ -51,4 +51,6 @@ public class ReplyController {
     public Result getReplyByPage(){
         return new Result(replyService.getSections());
     }
+
+    //获取某一分区的留言
 }

@@ -22,4 +22,8 @@ public interface SCMapper {
 
     @Select("select * from studentcourse where student_id = #{studentId}")
     List<StudentCourse> selectByCondition2(Long studentId);
+
+    //学生课程查重
+    @Select("select count(*) from studentcourse where student_id = #{studentId} and course_id = #{courseId}")
+    Integer countByStudentAndCourse(Long studentId, Long courseId);
 }

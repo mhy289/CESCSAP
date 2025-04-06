@@ -25,4 +25,6 @@ public interface SCService {
 
     //查询学生所有课程
     List<StudentCourse> getAllSCByStudentId(Long studentId);
+
+    Integer getAllSC();
 }

@@ -10,4 +10,6 @@ import lombok.NoArgsConstructor;
 public class Post {
     // 贴子id
     private Long postId;
+    // 分区id
+    private Long partitionId;
 }

@@ -2,16 +2,21 @@ package com.mhy.cescsap.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.mhy.cescsap.mapper.ClassMapper;
 import com.mhy.cescsap.mapper.CourseMapper;
 import com.mhy.cescsap.mapper.SCMapper;
 import com.mhy.cescsap.mapper.StudentMapper;
+import com.mhy.cescsap.myexception.BusinessException;
+import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.*;
+import com.mhy.cescsap.pojo.Class;
 import com.mhy.cescsap.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,6 +32,9 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     CourseMapper courseMapper;
 
+    @Autowired
+    ClassMapper classMapper;
+
     @Override
     public List<Student> getStudents() {
         return studentMapper.getStudents();
@@ -39,6 +47,19 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Integer addStudent(Student student) {
+        Long classId = student.getClassId();
+        if(classId==null) {
+            throw new BusinessException(ExceptionType.CLASS_NOT_FOUND,"班级不能为空");
+        }
+        if(classMapper.getClassByClassId(classId)==null){
+            throw new BusinessException(ExceptionType.CLASS_NOT_FOUND,"班级不存在");
+        }
+        student.setPassword("123456");
+        student.setContact("777");
+        student.setRole(2L);
+        student.setEvaluateStatus(0);
+        student.setBirthDate(new Date());
+        log.debug("stu is {}",student);
         return studentMapper.addStudent(student);
     }
 
@@ -98,5 +119,30 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Integer updateCommentStatus(Student student) {
         return studentMapper.updateEvaluateStatus1(student);
+    }
+
+    @Override
+    public PageItem<Student> getAllPage(Integer current, Integer size) {
+        return null;
+    }
+
+    @Override
+    public Integer updateMajor() {
+        List<Student> students = studentMapper.getStudents();
+        int sum=0;
+        for(Student student : students){
+            String major = student.getMajor();
+            Long classId = student.getClassId();
+            Integer i = classMapper.checkMajor(major);
+            student.setPassword("123456");
+            if(i == null || i<=0){
+                Class clazz = classMapper.getClassByClassId(classId);
+                student.setMajor(clazz.getMajor());
+
+                Integer i1 = studentMapper.updateStudent(student);
+                sum++;
+            }
+        }
+        return sum;
     }
 }

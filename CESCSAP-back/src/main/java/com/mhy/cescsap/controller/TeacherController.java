@@ -46,7 +46,10 @@ public class TeacherController {
 
     // 增加一个教师
     @PostMapping("/teacher")
-    public Result addTeacher(Teacher teacher){
+    public Result addTeacher(@RequestBody Teacher teacher){
+        if(teacher.getName() == null){
+            throw new BusinessException(ExceptionType.TEACHER_NAME_NULL,"教师名称不能为空");
+        }
         return new Result(teacherService.addTeacher(teacher));
     }
 
@@ -58,7 +61,7 @@ public class TeacherController {
 
     // 修改一个教师
     @PutMapping("/teacher")
-    public Result updateTeacher(Teacher teacher){
+    public Result updateTeacher(@RequestBody Teacher teacher){
         return new Result(teacherService.updateTeacher(teacher));
     }
 
@@ -80,5 +83,11 @@ public class TeacherController {
                 throw new BusinessException(ExceptionType.EVAL_STATISTICS_ERR,"评价统计失败");
             }
             return new Result("评价存入成功");
+    }
+
+    // 分页获取教师
+    @GetMapping("/teachers/page/{current}/size/{size}")
+    public Result getTeachersByPage(@PathVariable Integer current, @PathVariable Integer size){
+        return new Result(teacherService.queryPage(current,size));
     }
 }

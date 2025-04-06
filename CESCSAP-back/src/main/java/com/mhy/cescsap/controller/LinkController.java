@@ -49,7 +49,7 @@ public class LinkController {
     public Result getLinksByPage(@PathVariable Integer page, @PathVariable Integer size) {
         //暂停10s
         try {
-            Thread.sleep(10000);
+            Thread.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

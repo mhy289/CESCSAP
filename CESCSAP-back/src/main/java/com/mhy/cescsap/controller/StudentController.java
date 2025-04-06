@@ -60,9 +60,10 @@ public class StudentController {
     }
 
     //分页获取
-    @GetMapping("/students/current/{current}/size/{size}")
+    @GetMapping("/students/page/{current}/size/{size}")
     public Result getAllPage(@PathVariable Integer current, @PathVariable Integer size) {
-        return new Result(scService.queryPage(current, size), "查询成功", 200);
+        return new Result(studentService.queryPage(current, size));
+        //return new Result(scService.queryPage(current, size), "查询成功", 200);
     }
 
     // 条件分页查询
@@ -104,5 +105,22 @@ public class StudentController {
     @PutMapping("/student/updateCommentStatus")
     public Result updateCommentStatus(){
         return new Result(studentService.updateCommentStatus());
+    }
+
+    //所有学生专业合法化检测
+    @GetMapping("/student/major")
+    public Result updateMajorStatus(){
+        return new Result(studentService.updateMajor());
+    }
+
+    //计算所有学生的平均绩点
+    @GetMapping("/students/averageGPA")
+    public Result averageGPA(){
+        Integer allSC = scService.getAllSC();
+        if(allSC>0){
+            return new Result(allSC);
+        }else{
+            throw new BusinessException(ExceptionType.GPA_ERR,"计算失败");
+        }
     }
 }

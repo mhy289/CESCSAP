@@ -40,13 +40,23 @@ public class CourseController {
     // 新建课程
     @PostMapping("/courses")
     public Result createCourse(@RequestBody Course course) {
-
         return new Result(courseService.addCourse(course));
     }
 
     // 条件分页查询
-    @PostMapping("/courses/current/{current}/size/{size}")
+    @PostMapping("/courses/page/{current}/size/{size}")
     public Result getConditionPage(@PathVariable Integer current, @PathVariable Integer size, @RequestBody Course course) {
         return new Result(courseService.queryConditionPage(course, current, size), "查询成功", 200);
+    }
+
+    @GetMapping("/courses/page/{current}/size/{size}")
+    public Result getConditionPage(@PathVariable Integer current, @PathVariable Integer size) {
+        return new Result(courseService.queryPage(current, size), "查询成功", 200);
+    }
+
+    //课程批量添加学生
+    @PostMapping("/courses/{courseId}/students")
+    public Result addStudents(@PathVariable Long courseId, @RequestBody Long[] studentIds) {
+        return new Result(courseService.addStudents(courseId, studentIds));
     }
 }

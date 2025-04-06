@@ -1,5 +1,7 @@
 package com.mhy.cescsap.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.mhy.cescsap.mapper.*;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
@@ -46,6 +48,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Integer addTeacher(Teacher teacher) {
+        log.debug("Teacher is {}", teacher);
+        teacher.setPassword("123456");
         return teacherMapper.insertTeacher(teacher);
     }
 
@@ -133,5 +137,13 @@ public class TeacherServiceImpl implements TeacherService {
             }
         }
         return 1;
+    }
+
+    @Override
+    public PageItem<Teacher> queryPage(Integer current, Integer size) {
+        PageHelper.startPage(current, size);
+        List<Teacher> teachers = teacherMapper.selectAllTeachers();
+        Page<Teacher> pages = (Page<Teacher>) teachers;
+        return new PageItem<>(pages.getTotal(), teachers);
     }
 }
