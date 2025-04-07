@@ -93,6 +93,7 @@
               <el-table-column prop="studentId" label="学号" width="100"></el-table-column>
               <el-table-column prop="name" label="姓名" width="150"></el-table-column>
               <el-table-column prop="major" label="专业" width="150"></el-table-column>
+              <!-- <el-table-column prop="score" label="成绩" width="150"></el-table-column> -->
               <el-table-column label="操作" width="120">
                 <template slot-scope="{ row }">
                   <el-button type="danger" size="mini" @click="deleteEnrolledStudent(row.studentId)">删除</el-button>
@@ -283,8 +284,9 @@
       async loadEnrolledStudents() {
         // 调用 API 获取当前课程已选学生列表
         try {
-          let res = await this.$http.get('/courses/' + this.currentCourse.courseId + '/students');
+          let res = await this.$http.get('/course/' + this.currentCourse.courseId + '/students');
           if (res.code === 200) {
+            console.log(res.data)
             this.enrolledStudents = res.data;
           } else {
             this.$message.error('获取已选学生列表失败');
@@ -296,7 +298,7 @@
       async loadNotEnrolledStudents() {
         // 调用 API 获取当前课程未选学生列表
         try {
-          let res = await this.$http.get('/courses/' + this.currentCourse.courseId + '/notEnrolledStudents');
+          let res = await this.$http.get('/course/' + this.currentCourse.courseId + '/no_students');
           if (res.code === 200) {
             this.notEnrolledStudents = res.data;
           } else {
@@ -319,7 +321,7 @@
         }
         try {
           let res = await this.$http.delete('/courses/' + this.currentCourse.courseId + '/students', {
-            params: { ids: this.selectedEnrolledStudentIds.join(',') }
+            data: this.selectedEnrolledStudentIds
           });
           if (res.code === 200) {
             this.$message.success('批量删除成功');
@@ -338,9 +340,7 @@
           return;
         }
         try {
-          let res = await this.$http.post('/courses/' + this.currentCourse.courseId + '/students', {
-            ids: this.selectedNotEnrolledStudentIds.join(',')
-          });
+          let res = await this.$http.post('/courses/' + this.currentCourse.courseId + '/students', this.selectedNotEnrolledStudentIds);
           if (res.code === 200) {
             this.$message.success('批量添加成功');
             this.loadEnrolledStudents();
@@ -355,7 +355,7 @@
       // 单个删除已选学生
       async deleteEnrolledStudent(studentId) {
         try {
-          let res = await this.$http.delete('/courses/' + this.currentCourse.courseId + '/student/' + studentId);
+          let res = await this.$http.delete('/course/' + this.currentCourse.courseId + '/student/' + studentId);
           if (res.code === 200) {
             this.$message.success('删除成功');
             this.loadEnrolledStudents();

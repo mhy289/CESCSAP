@@ -34,6 +34,7 @@
   export default {
     data() {
       return {
+        //
         ruleForm: {
           name: '',
           password: '',
