@@ -23,6 +23,10 @@ public class StudentCourse {
     // 考试日期
     private Date examDate;
 
+    private Student student;
+
+    private Course course;
+
     public void setGpa() {
         if(this.score<60){
             this.gpa = 0.0;

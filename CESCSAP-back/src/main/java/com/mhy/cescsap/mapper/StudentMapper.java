@@ -50,6 +50,9 @@ public interface StudentMapper {
     @Update("update student set evaluate_status = #{evaluateStatus} where student_id = #{studentId}")
     Integer updateEvaluateStatus1(Student student);
 
+    @Select("select * from student where  student_id = #{studentId}")
+    Student getNoStudentById(Long studentId);
+
     //检测学生专业
 
 }

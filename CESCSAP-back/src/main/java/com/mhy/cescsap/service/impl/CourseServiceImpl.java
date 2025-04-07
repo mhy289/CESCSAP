@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mhy.cescsap.mapper.CourseMapper;
 import com.mhy.cescsap.mapper.SCMapper;
+import com.mhy.cescsap.mapper.StudentMapper;
 import com.mhy.cescsap.mapper.TeacherMapper;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +29,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     TeacherMapper teacherMapper;
+
+    @Autowired
+    StudentMapper studentMapper;
 
     @Override
     public List<Course> getCourseList() {
@@ -53,6 +58,8 @@ public class CourseServiceImpl implements CourseService {
         course.setTeacherName(teacher.getName());
         return courseMapper.addCourse(course);
     }
+
+
 
     @Override
     public Integer deleteCourse(Long id) {
@@ -92,5 +99,54 @@ public class CourseServiceImpl implements CourseService {
         Page<Course> info = (Page<Course>) orderList;
         Long total = info.getTotal();
         return new PageItem<>(total, orderList);
+    }
+
+    @Override
+    public List<Student> getStudentsByCourse(Long courseId) {
+        return initStudent(courseId);
+    }
+
+    @Override
+    public List<Student> getNoStudentsByCourse(Long courseId) {
+        List<Student> students = initStudent(courseId);
+        List<Student> studentList = studentMapper.getStudents();
+        studentList.removeAll(students);
+        return studentList;
+    }
+
+    @Override
+    public Integer deleteStudentsByCourse(Long courseId, Long[] studentIds) {
+        for(Long studentId : studentIds){
+            StudentCourse sc = new StudentCourse();
+            sc.setCourseId(courseId);
+            sc.setStudentId(studentId);
+            //查重
+            Integer count = scMapper.countByStudentAndCourse(studentId, courseId);
+            if(count>0){
+                scMapper.deleteStudentsByCourse(sc);
+            } else {
+                return 0;
+            }
+        }
+        return 1;
+    }
+
+    @Override
+    public Integer deleteStudentByc(Long courseId, Long studentId) {
+        StudentCourse sc =new StudentCourse();
+        sc.setCourseId(courseId);
+        sc.setStudentId(studentId);
+        return scMapper.deleteStudentsByCourse(sc);
+    }
+
+    private List<Student> initStudent(Long courseId) {
+        List<StudentCourse> scs = scMapper.getStudentsByCourse(courseId);
+        List<Student> students =new ArrayList<>();
+        for(StudentCourse sc : scs){
+            Long studentId = sc.getStudentId();
+            Student student = studentMapper.getStudentById(studentId);
+            students.add(student);
+        }
+        return students;
     }
 }

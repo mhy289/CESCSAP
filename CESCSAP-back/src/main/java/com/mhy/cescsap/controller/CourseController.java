@@ -1,6 +1,8 @@
 package com.mhy.cescsap.controller;
 
 
+import com.mhy.cescsap.myexception.BusinessException;
+import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.Course;
 import com.mhy.cescsap.pojo.Result;
 import com.mhy.cescsap.pojo.Student;
@@ -58,5 +60,33 @@ public class CourseController {
     @PostMapping("/courses/{courseId}/students")
     public Result addStudents(@PathVariable Long courseId, @RequestBody Long[] studentIds) {
         return new Result(courseService.addStudents(courseId, studentIds));
+    }
+
+    //获取当前课程已选学生列表
+    @GetMapping("/course/{courseId}/students")
+    public Result getStudentsByCourse(@PathVariable Long courseId){
+        return new Result(courseService.getStudentsByCourse(courseId));
+    }
+
+    //获取当前课程未选学生列表
+    @GetMapping("/course/{courseId}/no_students")
+    public Result getNoStudentsByCourse(@PathVariable Long courseId){
+        return new Result(courseService.getNoStudentsByCourse(courseId));
+    }
+
+    //批量删除学生
+    @DeleteMapping("/courses/{courseId}/students")
+    public Result deleteStudentsByCourse(@PathVariable Long courseId, @RequestBody Long[] studentIds){
+        if(studentIds.length==0){
+            throw new BusinessException(ExceptionType.STU_ERR,"未传入数据");
+        }
+        log.debug("students is {}",studentIds);
+        return new Result(courseService.deleteStudentsByCourse(courseId,studentIds));
+    }
+
+    //单独删除学生
+    @DeleteMapping("/course/{courseId}/student/{studentId}")
+    public Result deleteStudentByc(@PathVariable Long courseId,@PathVariable Long studentId){
+        return new Result(courseService.deleteStudentByc(courseId,studentId));
     }
 }

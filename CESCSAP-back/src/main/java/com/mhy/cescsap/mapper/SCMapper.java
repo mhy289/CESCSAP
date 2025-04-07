@@ -1,6 +1,7 @@
 package com.mhy.cescsap.mapper;
 
 import com.mhy.cescsap.pojo.StudentCourse;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -26,4 +27,10 @@ public interface SCMapper {
     //学生课程查重
     @Select("select count(*) from studentcourse where student_id = #{studentId} and course_id = #{courseId}")
     Integer countByStudentAndCourse(Long studentId, Long courseId);
+
+    @Select("select * from  studentcourse where course_id = #{courseId}")
+    List<StudentCourse> getStudentsByCourse(Long courseId);
+
+    @Delete("delete from studentcourse where course_id = #{courseId} and student_id = #{studentId}")
+    Integer deleteStudentsByCourse(StudentCourse sc);
 }
