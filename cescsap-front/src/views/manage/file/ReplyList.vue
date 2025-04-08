@@ -1,41 +1,34 @@
 <template>
-    <div class="reply-container">
-      <!-- 帖子正文 -->
-      <el-card class="mb">
-        <h3>1L {{ post.postAuthor }} · {{ post.createTime }}</h3>
-        <p>{{ post.postContent }}</p>
-      </el-card>
-  
-      <!-- 回复列表 -->
-      <el-card
-        v-for="(r, i) in replies"
-        :key="r.replyId"
-        class="mb"
-      >
-        <h4>{{ i + 2 }}L {{ r.userName }} · {{ r.replyTime }}</h4>
-        <p>{{ r.content }}</p>
-      </el-card>
-  
-      <!-- 回复输入 -->
-      <el-card>
-        <el-form :model="replyForm" label-position="top">
-          <el-form-item label="我的回复">
-            <el-input
-              type="textarea"
-              v-model="replyForm.content"
-              :rows="3"
-              placeholder="请输入回复内容"
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitReply">回复</el-button>
-          </el-form-item>
-        </el-form>
-      </el-card>
-    </div>
-  </template>
-  
-  <script>
+  <div class="reply-container">
+    <!-- 帖子正文 -->
+    <el-card class="mb">
+      <!-- 新增标题行 -->
+      <h2 class="post-title">{{ post.postTitle }}</h2>
+      <h3 class="post-meta">1L {{ post.postAuthor }} · {{ post.createTime }}</h3>
+      <p class="post-content">{{ post.postContent }}</p>
+    </el-card>
+
+    <!-- 回复列表 -->
+    <el-card v-for="(r, i) in replies" :key="r.replyId" class="mb">
+      <h4>{{ i + 2 }}L {{ r.userName }} · {{ r.replyTime }}</h4>
+      <p>{{ r.content }}</p>
+    </el-card>
+
+    <!-- 回复输入 -->
+    <el-card>
+      <el-form :model="replyForm" label-position="top">
+        <el-form-item label="我的回复">
+          <el-input type="textarea" v-model="replyForm.content" :rows="3" placeholder="请输入回复内容" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitReply">回复</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+  </div>
+</template>
+
+<script>
   import dayjs from 'dayjs'
   export default {
     name: 'ReplyList',
@@ -74,6 +67,7 @@
             `/forum/posts/${this.$route.params.postId}/replies`
           )
           if (res.code === 200) {
+            console.log(res.data)
             this.replies = res.data.map(r => ({
               ...r,
               // 假设后端返回 replyTime ISO 字符串
@@ -115,21 +109,40 @@
       }
     }
   }
-  </script>
-  
-  <style scoped>
+
+</script>
+
+<style scoped>
   .reply-container {
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
   }
-  
+
   .mb {
     margin-bottom: 16px;
   }
-  
+
   .el-form {
     width: 100%;
   }
-  </style>
-  
+  .post-title {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+  color: #303133;
+}
+
+.post-meta {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #909399;
+}
+
+.post-content {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #606266;
+}
+
+</style>

@@ -45,6 +45,10 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public Integer addReply(Reply reply) {
+        log.debug("reply:{} ", reply);
+        if(reply.getUserName()== null){
+            throw new BusinessException(ExceptionType.OTHER, "用户名不能为空");
+        }
         try {
             Integer i = replyMapper.addReply(reply);
         } catch (Exception e){

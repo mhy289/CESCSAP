@@ -16,21 +16,21 @@ public interface ReplyMapper {
     List<Reply> getReplyList();
 
     //修改回复
-    @Update("update reply set contact = #{contact} where reply_id = #{replyId}")
+    @Update("update reply set content = #{content} where reply_id = #{replyId}")
     Integer updateReply(Reply reply);
 
-    @Update("update reply set contact = #{contact} where  reply_id = #{replyId}  and post_id = #{postId}")
+    @Update("update reply set content = #{content} where  reply_id = #{replyId}  and post_id = #{postId}")
     Integer updateReplyByUser(Reply reply);
 
     //删除回复
-    @Update("update reply set contact = #{contact} where reply_id = #{replyId}")
+    @Update("update reply set content = #{content} where reply_id = #{replyId}")
     Integer deleteReply(Reply reply);
 
-    @Update("update reply set contact = #{contact} where  reply_id = #{replyId} and  post_id = #{postId}")
+    @Update("update reply set content = #{content} where  reply_id = #{replyId} and  post_id = #{postId}")
     Integer deleteReplyByUser(Reply reply);
 
     //添加回复
-    @Insert("insert into reply(post_id, user_name, contact, reply_time) values (#{postId}, #{userName},#{contact},#{replyTime})")
+    @Insert("insert into reply(post_id, user_name, content, reply_time) values (#{postId}, #{userName},#{content},#{replyTime})")
     Integer addReply(Reply reply);
 
     @Select("select * from reply where post_id = #{postId}")
