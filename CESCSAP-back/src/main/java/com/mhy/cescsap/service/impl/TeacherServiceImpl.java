@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mhy.cescsap.utils.AccountGeneratorUtils.generateAccount;
+
 @Service
 @Slf4j
 public class TeacherServiceImpl implements TeacherService {
@@ -49,6 +51,11 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Integer addTeacher(Teacher teacher) {
         log.debug("Teacher is {}", teacher);
+        long account;
+        do {
+            account =generateAccount();
+        } while (teacherMapper.existsByAccount(account)); // 查重
+        teacher.setAccount(account);
         teacher.setPassword("123456");
         return teacherMapper.insertTeacher(teacher);
     }

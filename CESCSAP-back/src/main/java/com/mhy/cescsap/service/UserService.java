@@ -10,4 +10,6 @@ public interface UserService {
 
     //检查身份
     Integer checkAdmin(Integer integer);
+
+    User getUser(User user);
 }

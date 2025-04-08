@@ -11,7 +11,7 @@ public class User {
 
     private Long id;
     //账号
-    //private String account;
+    private Long account;
     private String name;
     private String password;
     //身份标识

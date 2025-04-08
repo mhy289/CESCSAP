@@ -16,7 +16,7 @@ public interface TeacherMapper {
     List<Teacher> selectAllTeachers();
 
     //增加一个教师
-    @Insert("insert into teacher (name, gender, department, birth_date, contact,login_status,role) values (#{name}, #{gender}, #{department}, #{birthDate}, #{contact},#{loginStatus},#{role})")
+    @Insert("insert into teacher (account,name, gender, department, birth_date, contact,login_status,role) values (#{account},#{name}, #{gender}, #{department}, #{birthDate}, #{contact},#{loginStatus},#{role})")
     Integer insertTeacher(Teacher teacher);
 
     // 删除一个教师
@@ -29,4 +29,7 @@ public interface TeacherMapper {
 
     @Select("select * from teacher where name = #{name}")
     Teacher selectTeacherByName(String teacherName);
+
+    @Select("SELECT COUNT(1) FROM teacher WHERE account = #{account}")
+    Boolean existsByAccount(Long account);
 }

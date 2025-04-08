@@ -25,7 +25,7 @@
       <span class="el-dropdown-link">
         <div style="display: inline-block">
           <img :src=" user.avatarUrl" class="avatar">
-          {{user.nickname }}
+          {{user.name }}
           <i class="el-icon-arrow-down el-icon--right" style="margin-right: 15px"></i>
         </div>
       </span>

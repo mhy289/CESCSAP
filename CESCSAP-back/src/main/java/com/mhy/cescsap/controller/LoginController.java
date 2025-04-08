@@ -10,6 +10,7 @@ import com.mhy.cescsap.service.UserService;
 import com.mhy.cescsap.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jsqlparser.expression.LongValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,6 @@ public class LoginController {
         if (addDb == null) {
             log.debug("user1");
             //throw new BusinessException(ExceptionType.USER_NOT_FOUND,"找不到用户");
-
             result.setCode(500);
             result.setMsg("登陆失败");
             return result;
@@ -61,5 +61,18 @@ public class LoginController {
         Integer isAdmin = userService.checkAdmin(Integer.valueOf(audience));
         System.out.println(isAdmin);
         return new Result(isAdmin);
+    }
+
+    @GetMapping("/person")
+    public Result getUser(@RequestParam String name, @RequestParam Long role) {
+        if(name==null || role==null){
+            throw new BusinessException(ExceptionType.USER_NOT_FOUND,"用户未传入");
+        }
+        User user=new User();
+        user.setName(name);
+        user.setRole(role);
+        User user1 = userService.getUser(user);
+        log.debug("user is {}",user1);
+        return new Result(user1);
     }
 }

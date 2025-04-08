@@ -127,9 +127,14 @@ public class ProjectExceptionAdvice {
                 r = Result.fail(503,"菜品找不到");
                 r.setData(e.getMessage());
                 break;
+            case USER_ERR:
+                r = Result.fail(504,"用户错误");
+                r.setData(e.getMessage());
+                break;
             default:
                 r.setMsg(e.getMessage());
                 r.setCode(505);
+                r.setData(e.getMessage());
                 break;
         }
         log.debug("ddd");

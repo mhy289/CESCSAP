@@ -61,7 +61,7 @@
       <!-- 友情链接 -->
        <el-submenu v-if="linkGroup" index="link">
         <template slot="title">友情链接</template>
-        <el-menu-item index="/link" v-if="menuFlags.linkMenu">友情链接管理</el-menu-item>
+        <el-menu-item index="/link" v-if="menuFlags.linkMenu">友情链接列表</el-menu-item>
         <!-- 友情链接列表 -->
          <el-menu-item index="/linkList" v-if="menuFlags.linkListMenu">友情链接列表</el-menu-item>
       </el-submenu>

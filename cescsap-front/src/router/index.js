@@ -127,6 +127,10 @@ const routes = [{
     name: 'login',
     component: () => import('../views/LoginView.vue')
     // route level code-splitting
+  },{
+    path:'/Person',
+    name:'person',
+    component:() => import('../views/Person.vue')
   },
   {
     path: '/about',

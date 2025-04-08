@@ -20,7 +20,7 @@ public interface StudentMapper {
     Student getStudentById(Long studentId);
 
     //增加一个学生
-    @Insert("insert into student(name,password, gender, birth_date, major, class_id, contact,evaluate_status,login_status,role) values(#{name},#{password}, #{gender}, #{birthDate}, #{major}, #{classId}, #{contact},#{evaluateStatus},#{loginStatus},#{role})")
+    @Insert("insert into student(account,name,password, gender, birth_date, major, class_id, contact,evaluate_status,login_status,role) values(#{account},#{name},#{password}, #{gender}, #{birthDate}, #{major}, #{classId}, #{contact},#{evaluateStatus},#{loginStatus},#{role})")
     Integer addStudent(Student student);
 
     // 删除一个学生
@@ -52,6 +52,12 @@ public interface StudentMapper {
 
     @Select("select * from student where  student_id = #{studentId}")
     Student getNoStudentById(Long studentId);
+
+    @Select("SELECT COUNT(1) FROM student WHERE account = #{account}")
+    Boolean existsByAccount(Long account);
+
+    @Update("update student set account = #{account} where student_id = #{studentId}")
+    Integer addStudentForAccount(Student student);
 
     //检测学生专业
 

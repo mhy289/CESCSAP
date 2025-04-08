@@ -3,6 +3,8 @@ package com.mhy.cescsap.service.impl;
 import com.mhy.cescsap.mapper.AdminMapper;
 import com.mhy.cescsap.mapper.StudentMapper;
 import com.mhy.cescsap.mapper.TeacherMapper;
+import com.mhy.cescsap.myexception.BusinessException;
+import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.Admin;
 import com.mhy.cescsap.pojo.Student;
 import com.mhy.cescsap.pojo.Teacher;
@@ -92,5 +94,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer checkAdmin(Integer integer) {
         return null;
+    }
+
+    @Override
+    public User getUser(User user) {
+        //管理员
+        if(user.getRole()==0){
+            Admin admin = adminMapper.selectAdminByName(user.getName());
+            if(admin==null){
+                throw new BusinessException(ExceptionType.USER_NOT_FOUND,"不存在");
+            }
+            return admin;
+        } else if (user.getRole()==1) {
+            Teacher teacher = teacherMapper.selectTeacherByName(user.getName());
+            if(teacher==null){
+                throw new BusinessException(ExceptionType.USER_NOT_FOUND,"不存在");
+            }
+            return teacher;
+        } else if (user.getRole()==2) {
+            Student student = studentMapper.selectStudentByName(user.getName());
+            if(student==null){
+                throw new BusinessException(ExceptionType.USER_NOT_FOUND,"不存在");
+            }
+            return student;
+        }else {
+            throw new BusinessException(ExceptionType.USER_ERR,"不存在");
+        }
     }
 }

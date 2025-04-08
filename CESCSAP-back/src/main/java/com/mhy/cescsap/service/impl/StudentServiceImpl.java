@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.mhy.cescsap.utils.AccountGeneratorUtils.generateAccount;
+
 @Service
 @Slf4j
 public class StudentServiceImpl implements StudentService {
@@ -54,6 +56,11 @@ public class StudentServiceImpl implements StudentService {
         if(classMapper.getClassByClassId(classId)==null){
             throw new BusinessException(ExceptionType.CLASS_NOT_FOUND,"班级不存在");
         }
+        long account;
+        do {
+            account =generateAccount();
+        } while (studentMapper.existsByAccount(account)); // 查重
+        student.setAccount(account);
         student.setPassword("123456");
         student.setContact("777");
         student.setRole(2L);
@@ -131,6 +138,14 @@ public class StudentServiceImpl implements StudentService {
         List<Student> students = studentMapper.getStudents();
         int sum=0;
         for(Student student : students){
+            if(student.getAccount()==null){
+                long account;
+                do {
+                    account =generateAccount();
+                } while (studentMapper.existsByAccount(account)); // 查重
+                student.setAccount(account);
+                Integer i = studentMapper.addStudentForAccount(student);
+            }
             String major = student.getMajor();
             Long classId = student.getClassId();
             Integer i = classMapper.checkMajor(major);
@@ -138,7 +153,6 @@ public class StudentServiceImpl implements StudentService {
             if(i == null || i<=0){
                 Class clazz = classMapper.getClassByClassId(classId);
                 student.setMajor(clazz.getMajor());
-
                 Integer i1 = studentMapper.updateStudent(student);
                 sum++;
             }

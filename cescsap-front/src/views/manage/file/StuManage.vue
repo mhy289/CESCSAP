@@ -7,14 +7,15 @@
             {{ row.studentId }}
           </template>
         </el-table-column>
+        <el-table-column prop="account" label="账号" width="100" />
         <el-table-column prop="name" label="姓名" width="100" />
         <el-table-column prop="password" label="密码" width="100" />
-        <el-table-column prop="birthDate" label="出生日期" width="150">
+        <el-table-column prop="birthDate" label="出生日期" width="100">
           <template slot-scope="{ row }">
             {{ formatTime(row.birthDate) }}
           </template>
         </el-table-column>
-        <el-table-column prop="classId" label="班级" width="100" />
+        <el-table-column prop="classId" label="班级" width="75" />
         <el-table-column prop="contact" label="联系方式" width="100" />
         <el-table-column prop="gpa" label="绩点" width="50" />
         <el-table-column prop="major" label="专业" width="150" />
