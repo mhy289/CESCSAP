@@ -17,6 +17,7 @@ mybatis:
   mapper-locations: classpath:/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
 
@@ -26,3 +27,4 @@ logging:
     com:
       mhy:
         cescsap: debug
+          #mapper: TRACE  # 从 DEBUG 改为 TRACE

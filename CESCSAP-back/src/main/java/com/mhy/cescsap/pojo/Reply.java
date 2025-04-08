@@ -12,14 +12,16 @@ import java.util.Date;
 public class Reply {
     //评论id
     private Long replyId;
-    //分区id
-    private Long partitionId;
     //帖子id
     private Long postId;
-    //用户id
-    private Long userId;
+    //用户名
+    private String userName;
     //内容
     private String content;
     //发言时间
     private Date replyTime;
+
+    public Reply(Long postId) {
+        this.postId = postId;
+    }
 }

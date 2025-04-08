@@ -2,9 +2,11 @@ package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.Partition;
 import com.mhy.cescsap.pojo.Reply;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface ReplyService {
     //查询所有回复
     List<Reply> getReplyCount();
@@ -29,4 +31,6 @@ public interface ReplyService {
     Integer updateReplyByUser(Reply reply);
 
     List<Partition> getSections();
+
+    List<Reply> listByPost(Long postId);
 }

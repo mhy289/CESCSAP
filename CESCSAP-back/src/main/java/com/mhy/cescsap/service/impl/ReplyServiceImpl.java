@@ -2,6 +2,8 @@ package com.mhy.cescsap.service.impl;
 
 import com.mhy.cescsap.mapper.ReplyMapper;
 import com.mhy.cescsap.mapper.SectionMapper;
+import com.mhy.cescsap.myexception.BusinessException;
+import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.Partition;
 import com.mhy.cescsap.pojo.Reply;
 import com.mhy.cescsap.service.ReplyService;
@@ -43,7 +45,12 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public Integer addReply(Reply reply) {
-        return replyMapper.addReply(reply);
+        try {
+            Integer i = replyMapper.addReply(reply);
+        } catch (Exception e){
+            throw new BusinessException(ExceptionType.OTHER, "添加失败");
+        }
+        return 1;
     }
 
     @Override
@@ -64,5 +71,10 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public List<Partition> getSections() {
         return sectionMapper.getAllSections();
+    }
+
+    @Override
+    public List<Reply> listByPost(Long postId) {
+        return replyMapper.getReplyContent(new Reply(postId));
     }
 }

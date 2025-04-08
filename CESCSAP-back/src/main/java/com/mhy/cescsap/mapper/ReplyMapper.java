@@ -19,20 +19,20 @@ public interface ReplyMapper {
     @Update("update reply set contact = #{contact} where reply_id = #{replyId}")
     Integer updateReply(Reply reply);
 
-    @Update("update reply set contact = #{contact} where user_id = #{userId} and reply_id = #{replyId} and partition_id = #{partitionId} and post_id = #{postId}")
+    @Update("update reply set contact = #{contact} where  reply_id = #{replyId}  and post_id = #{postId}")
     Integer updateReplyByUser(Reply reply);
 
     //删除回复
     @Update("update reply set contact = #{contact} where reply_id = #{replyId}")
     Integer deleteReply(Reply reply);
 
-    @Update("update reply set contact = #{contact} where user_id = #{userId} and reply_id = #{replyId} and partition_id = #{partitionId} and post_id = #{postId}")
+    @Update("update reply set contact = #{contact} where  reply_id = #{replyId} and  post_id = #{postId}")
     Integer deleteReplyByUser(Reply reply);
 
     //添加回复
-    @Insert("insert into reply(reply_id, partition_id, post_id, user_id, contact, reply_time) values (#{replyId}, #{partitionId}, #{postId}, #{userId},#{contact},#{replyTime})")
+    @Insert("insert into reply(post_id, user_name, contact, reply_time) values (#{postId}, #{userName},#{contact},#{replyTime})")
     Integer addReply(Reply reply);
 
-    @Select("select * from reply where partition_id = #{partitionId} and post_id = #{postId}")
+    @Select("select * from reply where post_id = #{postId}")
     List<Reply> getReplyContent(Reply reply);
 }

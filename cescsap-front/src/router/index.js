@@ -64,7 +64,7 @@ const routes = [{
         name: 'qaList',
         component: () => import('../views/manage/file/QaList.vue'),
     },{
-      path: '/Forum',
+      path: '/Forum_old',
       name: 'forum',
       component: () => import('../views/manage/file/Forum.vue'),
     }, {
@@ -120,7 +120,21 @@ const routes = [{
         path:'/CourseManage',
         name:'courseManage',
         component: () => import('../views/manage/file/Coursemanage.vue'),
-    }]
+    },{
+        path:'/forum',
+        name:'partitionlist',
+        component: () => import('../views/manage/file/PartitionList.vue'),
+    },{
+        path: '/forum/partition/:partitionId',
+        name: 'PostList',
+        component: () => import('../views/manage/file/PostList.vue'),
+        props: true
+      },{
+        path: '/forum/post/:postId',
+        name: 'ReplyList',
+        component: () => import('../views/manage/file/ReplyList.vue'),
+        props: true
+      }]
   },
   {
     path: '/login',

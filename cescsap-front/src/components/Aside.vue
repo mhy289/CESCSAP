@@ -212,6 +212,8 @@
         this.menuFlags.stuMenu = true
         this.menuFlags.techerMenu = true
         this.menuFlags.courseMenu = true
+        this.menuFlags.forumMenu = true
+        this.menuFlags.forumReplyMenu = true
       } else if (this.role == 1) {
         console.log("Please2")
         //教师权限
