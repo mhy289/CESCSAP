@@ -6,6 +6,8 @@ import com.mhy.cescsap.service.EvaluationDimensionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EvaluationDimensionServiceImpl implements EvaluationDimensionService {
 
@@ -15,5 +17,10 @@ public class EvaluationDimensionServiceImpl implements EvaluationDimensionServic
     @Override
     public Integer getEvaluationDimension(EvaluationDimension evaluationDimension) {
         return evaluationDimensionMapper.setEvaluationdimension(evaluationDimension);
+    }
+
+    @Override
+    public List<EvaluationDimension> getAllEvaluationDimension() {
+        return evaluationDimensionMapper.getAllEvaluationDimension();
     }
 }

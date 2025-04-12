@@ -31,6 +31,9 @@
 </template>
 
 <script>
+  import {
+    jwtDecode
+  } from "jwt-decode";
   export default {
     data() {
       return {
@@ -71,6 +74,9 @@
           localStorage.setItem('token', res.data); // 存储token
           localStorage.setItem('role', this.ruleForm.role); // 存储role
           localStorage.setItem('name', this.ruleForm.name); //存储name
+          const user = jwtDecode(res.data)
+          console.log(user)
+          localStorage.setItem('id', user.aud);
           this.$router.push('/')
           //this.$router.push('/teacher');
         } else {

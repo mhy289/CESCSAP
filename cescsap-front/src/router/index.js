@@ -134,7 +134,11 @@ const routes = [{
         name: 'ReplyList',
         component: () => import('../views/manage/file/ReplyList.vue'),
         props: true
-      }]
+      },{
+        path:'/PendingEvaluations',
+        name:'pendingEvaluations',
+        component: () => import('../views/manage/file/PendingEvaluations.vue'),
+    }]
   },
   {
     path: '/login',

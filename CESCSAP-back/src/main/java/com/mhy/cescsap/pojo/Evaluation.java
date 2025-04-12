@@ -15,10 +15,10 @@ public class Evaluation {
     private Long studentId;
     private Long courseId;
     private Long teacherId;
+    private String comment;
     private Date evaluationTime;
     private Student student;
     private Course course;
     private Teacher teacher;
-
     private List<EvaluationDetail> evaluationDetails;
 }

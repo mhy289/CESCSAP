@@ -32,6 +32,9 @@ public class EvaluationController {
     @Autowired
     TeacherService teacherService;
 
+    @Autowired
+    EvaluationDimensionService evaluationDimensionService;
+
     //获取教师评价
     @GetMapping("/eval")
     public Result getEvaluationByTeacher_old(@RequestBody Teacher teacher){
@@ -104,6 +107,31 @@ public class EvaluationController {
         Long teacherId = teacher.getTeacherId();
         List<Evaluation> evaluations = evaluationService.getEvaluationsByTeacherId(teacherId);
         return new Result(evaluations);
+    }
+
+    //获取可以评价的教师
+    @GetMapping("student/{studentId}/pending-evals")
+    public Result pending(@PathVariable Long studentId) {
+        List<PendingEvalDTO> pending = scService.getPendingEvaluationsWithNames(studentId);
+        return new Result(pending);
+    }
+
+    //获取评价维度
+    @GetMapping("/eval/dimensions")
+    public Result getDimensions() {
+        List<EvaluationDimension> dims = evaluationDimensionService.getAllEvaluationDimension();
+        return new Result(dims);
+    }
+
+    //验证课程完整性
+    @GetMapping("/courses/check")
+    public Result checkCourse(){
+        Integer allCheck = scService.getAllCheck();
+        log.debug("allCheck :{} " ,allCheck);
+        if(allCheck==0){
+            throw new BusinessException(ExceptionType.COURSE_NOT_COMPLETE,"课程未完成");
+        }
+        return new Result(allCheck);
     }
 
 }

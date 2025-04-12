@@ -79,7 +79,7 @@
         <!-- 自评 -->
          <el-menu-item index="/selfevaluation" v-if="menuFlags.selfevaluationMenu">自评</el-menu-item>
         <!-- 教师评价 -->
-         <el-menu-item index="/teacherevaluation" v-if="menuFlags.teacherevaluationMenu">教师评价</el-menu-item>
+         <el-menu-item index="/PendingEvaluations" v-if="menuFlags.teacherevaluationMenu">教师评价</el-menu-item>
         <!--查看全部评价 -->
         <el-menu-item index="/evaluation" v-if="menuFlags.evaluationMenu">查看全部</el-menu-item>
       </el-submenu>

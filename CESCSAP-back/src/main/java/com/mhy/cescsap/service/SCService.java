@@ -1,9 +1,6 @@
 package com.mhy.cescsap.service;
 
-import com.mhy.cescsap.pojo.PageItem;
-import com.mhy.cescsap.pojo.Student;
-import com.mhy.cescsap.pojo.StudentCourse;
-import com.mhy.cescsap.pojo.StudentCourseHistory;
+import com.mhy.cescsap.pojo.*;
 
 import java.util.List;
 
@@ -27,4 +24,12 @@ public interface SCService {
     List<StudentCourse> getAllSCByStudentId(Long studentId);
 
     Integer getAllSC();
+
+    //获取可以评价的教师
+    List<StudentCourse> getPending(Long sid);
+
+    //验证所有课程完整性
+    Integer getAllCheck();
+
+    List<PendingEvalDTO> getPendingEvaluationsWithNames(Long studentId);
 }

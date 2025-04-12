@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.mhy.cescsap.mapper.CourseMapper;
 import com.mhy.cescsap.mapper.SCMapper;
 import com.mhy.cescsap.mapper.StudentMapper;
+import com.mhy.cescsap.mapper.TeacherMapper;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.*;
@@ -28,6 +29,9 @@ public class SCServiceImpl implements SCService {
 
     @Autowired
     CourseMapper courseMapper;
+
+    @Autowired
+    TeacherMapper teacherMapper;
 
 
     @Override
@@ -182,5 +186,43 @@ public class SCServiceImpl implements SCService {
             }
         }
         return successUpdateCount;
+    }
+
+    @Override
+    public List<StudentCourse> getPending(Long sid) {
+        return scMapper.findPendingEvaluations(sid);
+    }
+
+    @Override
+    public Integer getAllCheck() {
+        List<StudentCourse> studentCourseList = scMapper.getAllSC();
+        int sum=0;
+        //验证是否有空，有就补充
+        for(StudentCourse sc : studentCourseList){
+            if(sc.getStudentName()==null){
+                Student student = studentMapper.getStudentById(sc.getStudentId());
+                sc.setStudentName(student.getName());
+                sum++;
+            }
+            if(sc.getCourseName()==null){
+                Course course = courseMapper.getCourseById(sc.getCourseId());
+                sc.setCourseName(course.getCourseName());
+                sum++;
+            }
+            if(sc.getTeacherId()==null){
+                Course course = courseMapper.getCourseById(sc.getCourseId());
+                sc.setTeacherName(course.getTeacherName());
+                sc.setTeacherId(course.getTeacherId());
+                sum++;
+            }
+            //更新至数据库
+            scMapper.updateSC(sc);
+        }
+        return sum;
+    }
+
+    @Override
+    public List<PendingEvalDTO> getPendingEvaluationsWithNames(Long studentId) {
+        return scMapper.getPendingEvals(studentId);
     }
 }
