@@ -3,28 +3,39 @@
     :style="{ backgroundImage: 'url(' + require('@/assets/img/back2.png') + ')', backgroundSize: 'cover', backgroundPosition: 'center' }">
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
       class="demo-ruleForm bordered-form readable-text">
-      <!-- 表单项内容 -->
-      <h1 class="system-title" style="color: black;">高校综合评价系统</h1>
-      <el-form-item label="登录身份">
-        <el-select v-model="ruleForm.role" placeholder="请选择登录身份">
+      <h1 class="system-title">高校综合评价系统</h1>
+      <el-form-item label="登录身份" prop="role">
+        <el-select v-model="ruleForm.role" placeholder="请选择登录身份" class="full-width-select">
           <el-option label="学生" value="2"></el-option>
           <el-option label="教师" value="1"></el-option>
           <el-option label="管理员" value="0"></el-option>
         </el-select>
       </el-form-item>
-      <div class="input-group">
-        <el-form-item label="用户名" prop="name">
-          <el-input v-model="ruleForm.name" autocomplete="off" class="circled-input"></el-input>
-        </el-form-item>
-      </div>
-      <div class="input-group">
-        <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="ruleForm.password" autocomplete="off" class="circled-input"></el-input>
-        </el-form-item>
-      </div>
+
+      <el-form-item label="用户名" prop="name">
+        <el-input v-model="ruleForm.name" autocomplete="off" class="circled-input" placeholder="请输入用户名">
+          <template #prefix>
+            <i class="el-icon-user"></i>
+          </template>
+        </el-input>
+      </el-form-item>
+
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="ruleForm.password" autocomplete="off" class="circled-input"
+          placeholder="请输入密码" show-password>
+          <template #prefix>
+            <i class="el-icon-lock"></i>
+          </template>
+        </el-input>
+      </el-form-item>
+
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <el-button type="primary" :loading="loading" @click="submitForm" class="submit-btn">
+          登录
+        </el-button>
+        <el-button @click="resetForm" class="reset-btn">
+          重置
+        </el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -34,64 +45,131 @@
   import {
     jwtDecode
   } from "jwt-decode";
+
   export default {
     data() {
       return {
-        //
+        loading: false,
         ruleForm: {
           name: '',
           password: '',
-          role: '' // 新增的登录身份属性
+          role: ''
         },
         rules: {
           name: [{
-            required: true,
-            message: '请输入用户名',
-            trigger: 'blur'
-          }],
+              required: true,
+              message: '请输入用户名',
+              trigger: 'blur'
+            },
+            {
+              min: 1,
+              max: 20,
+              message: '长度在1到20个字符',
+              trigger: 'blur'
+            }
+          ],
           password: [{
-            required: true,
-            message: '请输入密码',
-            trigger: 'blur'
-          }],
+              required: true,
+              message: '请输入密码',
+              trigger: 'blur'
+            },
+            {
+              min: 6,
+              max: 20,
+              message: '长度在6到20个字符',
+              trigger: 'blur'
+            }
+          ],
           role: [{
             required: true,
             message: '请选择登录身份',
             trigger: 'change'
-          }] // 新增的验证规则
-        },
+          }]
+        }
       };
     },
     methods: {
       async submitForm() {
-        console.log(this.ruleForm);
-        // 在这里根据role的值进行不同的登录处理
-        let res = await this.$http.post("/login", this.ruleForm)
-        if (res.code === 200) {
-          console.log('登录成功');
-          console.log(res.data)
-          // 跳转到首页
-          localStorage.setItem('token', res.data); // 存储token
-          localStorage.setItem('role', this.ruleForm.role); // 存储role
-          localStorage.setItem('name', this.ruleForm.name); //存储name
-          const user = jwtDecode(res.data)
-          console.log(user)
-          localStorage.setItem('id', user.aud);
-          this.$router.push('/')
-          //this.$router.push('/teacher');
-        } else {
-          console.log('登录失败');
-          console.log(res.data)
-          //提示登录失败
-          this.$message.error('登录失败');
-          // 跳转到登录页并提示登录失败
-          //this.$router.push('/login');
+        try {
+          // 表单验证
+          await this.$refs.ruleForm.validate();
+          this.loading = true;
+
+          // 发送请求（设置5秒超时）
+          const res = await this.$http.post("/login", this.ruleForm, {
+            timeout: 5000
+          });
+
+          if (res.code === 200) {
+            this.handleLoginSuccess(res);
+          } else {
+            this.handleLoginFailure(res);
+          }
+        } catch (error) {
+          this.handleRequestError(error);
+        } finally {
+          this.loading = false;
         }
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+
+      handleLoginSuccess(res) {
+        const token = res.data;
+        const user = jwtDecode(token);
+
+        // 存储用户信息
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', this.ruleForm.role);
+        localStorage.setItem('name', this.ruleForm.name);
+        localStorage.setItem('id', user.aud);
+
+        // 跳转路由
+        const redirectPath = this.getRedirectPath();
+        this.$router.push('/');
+
+        this.$message.success('登录成功');
       },
-    },
+
+      getRedirectPath() {
+        switch (this.ruleForm.role) {
+          case '0':
+            return '/admin/dashboard';
+          case '1':
+            return '/teacher/home';
+          case '2':
+            return '/student/profile';
+          default:
+            return '/';
+        }
+      },
+
+      handleLoginFailure(res) {
+        const errorMessage = res.message || '登录失败，请检查身份和凭证';
+        this.$message.error(errorMessage);
+      },
+
+      handleRequestError(error) {
+        if (!error.response) {
+          if (error.code === 'ECONNABORTED') {
+            this.$message.error('请求超时，请稍后重试');
+          } else {
+            this.$message.error('网络连接异常，请检查网络设置');
+          }
+        } else {
+          const status = error.response.status;
+          const errorMap = {
+            401: '用户名或密码错误',
+            403: '权限不足，请联系管理员',
+            500: '服务器内部错误'
+          };
+          this.$message.error(errorMap[status] || `请求失败（${status}）`);
+        }
+      },
+
+      resetForm() {
+        this.$refs.ruleForm.resetFields();
+        this.$message.success('表单已重置');
+      }
+    }
   };
 
 </script>
@@ -99,56 +177,69 @@
 <style scoped>
   .login-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    height: 100vh;
+    align-items: center;
+    min-height: 100vh;
     padding: 20px;
-    box-sizing: border-box;
   }
 
   .system-title {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: white;
-    /* 根据背景图调整文字颜色以确保可读性 */
+    margin: 0 0 30px 0;
+    font-size: 28px;
+    font-weight: bold;
+    color: #2c3e50;
     text-align: center;
-  }
-
-  .input-group {
-    margin-bottom: 20px;
-  }
-
-  .circled-input .el-input__inner {
-    border-radius: 20px;
-    /* 圆形边框半径 */
-    padding: 10px 20px;
-    border: 1px solid #cccccc;
-    /* 边框颜色，可根据需要调整 */
-    box-sizing: border-box;
-  }
-
-  .circled-input .el-input__inner:focus {
-    border-color: #409EFF;
-    /* 聚焦时边框颜色 */
-    outline: none;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
   }
 
   .bordered-form {
-    border: 1px solid #dcdcdc;
-    padding: 20px;
-    border-radius: 5px;
+    width: 100%;
+    max-width: 450px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .circled-input {
+    margin-bottom: 20px;
+  }
+
+  .circled-input :deep(.el-input__inner) {
+    border-radius: 24px;
+    padding: 12px 20px 12px 40px;
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .full-width-select :deep(.el-select) {
+    width: 100%;
+  }
+
+  .submit-btn {
+    width: 100%;
+    height: 48px;
+    font-size: 16px;
+    border-radius: 24px;
+    margin-top: 10px;
+  }
+
+  .reset-btn {
+    width: 100%;
+    height: 48px;
+    font-size: 16px;
+    border-radius: 24px;
+    margin-top: 10px;
+  }
+
+  .el-form-item__label {
+    font-weight: bold;
+    color: #606266;
   }
 
   .readable-text {
-    /* 设置一个确保文本可读性的背景颜色 */
-    background-color: rgba(255, 255, 255, 0.8);
-    /* 半透明白色背景 */
-    /* 或者使用纯色背景，例如：background-color: #ffffff; */
-    /* 确保文本颜色与背景形成高对比度 */
-    color: #000000;
-    /* 黑色文本 */
-    /* 如果文本颜色也是动态的，你可能需要根据背景动态调整文本颜色 */
+    color: #303133;
+    line-height: 1.6;
   }
 
 </style>

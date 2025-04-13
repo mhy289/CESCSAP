@@ -13,7 +13,7 @@ public interface EvaluationMapper {
     @Select("select * from evaluation where teacher_id = #{teacherId}")
     List<Evaluation> getEvaluations(Long teacherId);
 
-    @Insert("insert into evaluation(student_id, course_id, teacher_id, evaluation_time) values (#{studentId},#{courseId},#{teahcerId},#{evaluationTime})")
+    @Insert("insert into evaluation(student_id, course_id, teacher_id, comment, evaluation_time) values (#{studentId},#{courseId},#{teahcerId},#{comment},#{evaluationTime})")
     Integer insertEvaluation(Evaluation evaluation);
 
     @Select("select * from evaluationdimension")
