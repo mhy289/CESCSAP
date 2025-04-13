@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,6 +32,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public Integer updateNotice(Notice notice) {
+        notice.setCreateTime(new Date());
         return noticeMapper.updateNotice(notice);
     }
 

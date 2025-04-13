@@ -35,7 +35,7 @@
         </el-form-item>
         <el-form-item label="URL" prop="url">
           <el-input v-model="currentLink.url" placeholder="请输入链接地址">
-            <template slot="prepend">https://</template>
+            <!-- <template slot="prepend">https://</template> -->
           </el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
@@ -114,13 +114,19 @@
 
       async submitLink() {
         const method = this.dialogType === 'add' ? 'post' : 'put'
-        const url = this.dialogType === 'add' ? '/links' : `/links/${this.currentLink.linkId}`
+        const url = this.dialogType === 'add' ? '/link' : `/link`
 
         const res = await this.$http[method](url, this.currentLink)
         if (res.code === 200) {
           this.$message.success('操作成功')
           this.dialogVisible = false
           this.fetchLinks()
+        } else if(res.code === 201){
+            this.$message.error('非法链接',res.msg)
+        }else if(res.code === 202){
+            this.$message.error('链接已存在',res.msg)
+        }else {
+          this.$message.error(res.msg || '操作失败')
         }
       },
 

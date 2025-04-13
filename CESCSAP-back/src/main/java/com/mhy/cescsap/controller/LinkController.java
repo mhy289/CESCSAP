@@ -27,15 +27,26 @@ public class LinkController {
 
     // 新增超链
     @PostMapping("/link")
-    public Result addLink(Link link) {
+    public Result addLink(@RequestBody Link link) {
         Integer id = linkService.addLink(link);
+        if(id==0){
+            return new Result("非法链接","非法链接",201);
+        }
         return new Result(id);
     }
 
     // 更新超链
     @PutMapping("/link")
-    public Result updateLink(Link link) {
-        return new Result(linkService.updateLink(link));
+    public Result updateLink(@RequestBody Link link) {
+        //判断link是否传入
+        if (link == null || link.getLinkId() == null) {
+            return new Result("link is null");
+        }
+        Integer i = linkService.updateLink(link);
+        if (i == 0) {
+            return new Result("非法链接","非法链接",201);
+        }
+        return new Result(i);
     }
 
     // 删除超链

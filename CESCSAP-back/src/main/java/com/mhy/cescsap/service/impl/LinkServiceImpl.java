@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.mhy.cescsap.utils.RegexValidatorUtils.isValidDomain;
+
 @Service
 public class LinkServiceImpl implements LinkService {
 
@@ -29,12 +31,45 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public Integer addLink(Link link) {
-        return linkMapper.addLink(link);
+        //验证链接合法性
+        String url = link.getUrl();
+        //使用正则表达式工具类验证链接合法性
+        if(isValidDomain(url)){
+            //判断是否已经存在该链接
+            Link link1 = linkMapper.getLinkById(link.getLinkId());
+            if(link1 == null){
+                //不存在该链接，添加
+                return linkMapper.addLink(link);
+            }else {
+                //存在该链接，更新
+                link.setLinkId(link1.getLinkId());
+                return linkMapper.updateLink(link);
+            }
+        }else {
+            return 0;
+        }
+
     }
 
     @Override
     public Integer updateLink(Link link) {
-        return linkMapper.updateLink(link);
+        //验证链接合法性
+        String url = link.getUrl();
+        //使用正则表达式工具类验证链接合法性
+        if(isValidDomain(url)){
+            //判断是否已经存在该链接
+            Link link1 = linkMapper.getLinkById(link.getLinkId());
+            if(link1 == null){
+                //不存在该链接，添加
+                return linkMapper.addLink(link);
+            }else {
+                //存在该链接，更新
+                link.setLinkId(link1.getLinkId());
+                return linkMapper.updateLink(link);
+            }
+        }else {
+            return 0;
+        }
     }
 
     @Override

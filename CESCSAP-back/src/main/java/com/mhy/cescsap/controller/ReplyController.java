@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import static com.mhy.cescsap.utils.IpUtils.getClientIpAddress;
+
 @RestController
 @CrossOrigin
 @Slf4j
@@ -20,6 +22,8 @@ public class ReplyController {
     public Result sendReply(Reply reply) {
         Result r = new Result();
         Integer i = replyService.addReply(reply);
+        //通过工具类获取发言者ip
+        //getClientIpAddress(reply);
         if (i > 0) {
             r.setMsg("留言成功");
             r.setCode(200);

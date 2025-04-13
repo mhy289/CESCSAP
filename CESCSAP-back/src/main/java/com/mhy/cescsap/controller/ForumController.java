@@ -7,6 +7,7 @@ import com.mhy.cescsap.pojo.Result;
 import com.mhy.cescsap.service.PartitionService;
 import com.mhy.cescsap.service.PostService;
 import com.mhy.cescsap.service.ReplyService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+
+import static com.mhy.cescsap.utils.IpUtils.getClientIpAddress;
 
 @RestController
 @CrossOrigin
@@ -54,7 +57,10 @@ public class ForumController {
 
     // 发帖（正文即 1L）
     @PostMapping("/partitions/{pid}/posts")
-    public Result createPost(@PathVariable Long pid, @RequestBody Post p) {
+    public Result createPost(@PathVariable Long pid, @RequestBody Post p, HttpServletRequest request) {
+        // 获取当前用户ip
+        String ip = request.getRemoteAddr();
+        log.debug("ip:{}", ip);
         p.setPartitionId(pid);
         p.setCreateTime(LocalDateTime.now().toString());
         p.setViewCount(0L);
@@ -81,7 +87,11 @@ public class ForumController {
 
     // 回复帖子
     @PostMapping("/posts/{postId}/replies")
-    public Result createReply(@PathVariable Long postId, @RequestBody Reply r) {
+    public Result createReply(@PathVariable Long postId, @RequestBody Reply r, HttpServletRequest request) {
+        String ip = request.getRemoteAddr();
+        String clientIpAddress = getClientIpAddress(request);
+        log.debug("ip:{}", ip);
+        log.debug("clientIpAddress:{}", clientIpAddress);
         r.setPostId(postId);
         r.setReplyTime(new Date());
         Integer i = replyService.addReply(r);

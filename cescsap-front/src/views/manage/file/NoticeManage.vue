@@ -2,10 +2,10 @@
   <div class="notice-container">
     <!-- 搜索栏 -->
     <!-- <div class="search-bar">
-      <el-input v-model="searchTitle" placeholder="请输入公告标题" style="width: 300px; margin-right: 15px" clearable
-        @keyup.enter.native="fetchNotices" />
-      <el-button type="primary" @click="fetchNotices">搜索</el-button>
-    </div> -->
+        <el-input v-model="searchTitle" placeholder="请输入公告标题" style="width: 300px; margin-right: 15px" clearable
+          @keyup.enter.native="fetchNotices" />
+        <el-button type="primary" @click="fetchNotices">搜索</el-button>
+      </div> -->
 
     <!-- 公告表格 -->
     <el-table :data="noticeList" style="width: 100%" border stripe v-loading="loading">
@@ -22,7 +22,7 @@
       </el-table-column>
       <el-table-column label="操作" width="180">
         <template slot-scope="{ row }">
-          <el-button type="primary" size="mini" @click="editNotice(row.noticeId)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="openEditNoticeDialog(row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="deleteNotice(row.noticeId)">删除</el-button>
         </template>
       </el-table-column>
@@ -53,6 +53,22 @@
         <el-button type="primary" @click="submitAddNotice">提交</el-button>
       </span>
     </el-dialog>
+
+    <!-- 编辑公告弹窗 -->
+    <el-dialog title="编辑公告" :visible.sync="editNoticeDialogVisible">
+      <el-form :model="editNoticeData" ref="editNoticeForm" label-width="80px">
+        <el-form-item label="标题">
+          <el-input v-model="editNoticeData.title" placeholder="请输入公告标题" />
+        </el-form-item>
+        <el-form-item label="内容">
+          <el-input type="textarea" v-model="editNoticeData.content" placeholder="请输入公告内容" />
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editNoticeDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitEditNotice">提交</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -76,6 +92,15 @@
           content: '',
           publisher: ''
           // createTime 由后端设置
+        },
+        // 控制编辑公告弹窗显示
+        editNoticeDialogVisible: false,
+        // 编辑公告数据
+        editNoticeData: {
+          noticeId: '',
+          title: '',
+          content: '',
+          publisher: ''
         }
       }
     },
@@ -129,9 +154,15 @@
         this.pageNum = page
         this.fetchNotices()
       },
-      // 编辑公告，具体实现根据需求自行调整
-      editNotice(noticeId) {
-        this.$router.push(`/notice/edit/${noticeId}`)
+      // 打开编辑公告弹窗
+      openEditNoticeDialog(row) {
+        this.editNoticeDialogVisible = true
+        this.editNoticeData = {
+          noticeId: row.noticeId,
+          title: row.title,
+          content: row.content,
+          publisher: row.publisher
+        }
       },
       // 删除公告
       async deleteNotice(noticeId) {
@@ -190,8 +221,8 @@
         }
         var name = localStorage.getItem("name")
         console.log(name)
-        this.newNotice.publisher=name
-        this.newNotice.createTime=this.formatDate(new Date())
+        this.newNotice.publisher = name
+        this.newNotice.createTime = this.formatDate(new Date())
         try {
           let res = await this.$http.post('/notice', this.newNotice)
           if (res.code === 200) {
@@ -205,6 +236,28 @@
         } catch (error) {
           console.error('添加公告失败:', error)
           this.$message.error('添加公告失败')
+        }
+      },
+      // 提交编辑公告
+      async submitEditNotice() {
+        // 可在此处添加表单校验
+        if (!this.editNoticeData.title || !this.editNoticeData.content) {
+          this.$message.error('请填写完整的公告信息')
+          return
+        }
+        try {
+          let res = await this.$http.put('/notice', this.editNoticeData)
+          if (res.code === 200) {
+            this.$message.success('编辑公告成功')
+            this.editNoticeDialogVisible = false
+            // 刷新公告列表
+            this.fetchNotices()
+          } else {
+            this.$message.error('编辑公告失败')
+          }
+        } catch (error) {
+          console.error('编辑公告失败:', error)
+          this.$message.error('编辑公告失败 错误')
         }
       }
     }
