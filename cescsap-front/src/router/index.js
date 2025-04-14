@@ -138,6 +138,18 @@ const routes = [{
         path:'/PendingEvaluations',
         name:'pendingEvaluations',
         component: () => import('../views/manage/file/PendingEvaluations.vue'),
+    },{
+        path:'/TeacherClasses',
+        name:'teacherClasses',
+        component: () => import('../views/manage/file/TeacherClasses.vue'),
+    },{
+        path:'/TeacherCourses',
+        name:'teacherCourses',
+        component: () => import('../views/manage/file/TeacherCourses.vue'),
+    },{
+        path:'/TeacherStudents',
+        name:'teacherStudents',
+        component: () => import('../views/manage/file/TeacherStudents.vue'),
     }]
   },
   {

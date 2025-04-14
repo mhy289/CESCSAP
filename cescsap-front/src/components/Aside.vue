@@ -30,8 +30,8 @@
         <el-menu-item index="/manage/User" v-if="menuFlags.userMenu">用户管理</el-menu-item>
       </el-submenu>
 
-    <!-- 日志管理-->
-     <el-submenu v-if="logGroup" index="log">
+      <!-- 日志管理-->
+      <el-submenu v-if="logGroup" index="log">
         <template slot="title">管理员界面</template>
         <el-menu-item index="/loglist" v-if="menuFlags.logMenu">日志管理</el-menu-item>
         <el-menu-item index="/noticemanage" v-if="menuFlags.noticemanageMenu">公告管理</el-menu-item>
@@ -44,42 +44,50 @@
       </el-submenu>
 
       <!-- 通知与公告 -->
-       <el-submenu v-if="noticeGroup" index="notice">
+      <el-submenu v-if="noticeGroup" index="notice">
         <template slot="title">通知与公告</template>
         <el-menu-item index="/notice" v-if="menuFlags.noticeMenu">公告</el-menu-item>
-        
+
         <el-menu-item index="/noticeReply" v-if="menuFlags.noticeReplyMenu">回复管理</el-menu-item>
       </el-submenu>
 
       <!-- 帮助中心 -->
-       <el-submenu v-if="helpGroup" index="help">
+      <el-submenu v-if="helpGroup" index="help">
         <template slot="title">帮助中心</template>
         <el-menu-item index="/help" v-if="menuFlags.helpMenu">常见问题</el-menu-item>
         <!-- <el-menu-item index="/helpArticle" v-if="menuFlags.helpArticleMenu">帮助文章</el-menu-item> -->
       </el-submenu>
 
       <!-- 友情链接 -->
-       <el-submenu v-if="linkGroup" index="link">
+      <el-submenu v-if="linkGroup" index="link">
         <template slot="title">友情链接</template>
         <el-menu-item index="/link" v-if="menuFlags.linkMenu">友情链接列表</el-menu-item>
         <!-- 友情链接列表 -->
-         <el-menu-item index="/linkList" v-if="menuFlags.linkListMenu">友情链接列表</el-menu-item>
+        <el-menu-item index="/linkList" v-if="menuFlags.linkListMenu">友情链接列表</el-menu-item>
+      </el-submenu>
+
+      <!--教师功能-->
+      <el-submenu v-if="teacherGroup" index="teacher">
+        <template slot="title">教师界面</template>
+        <!-- <el-menu-item index="/teacher" v-if="menuFlags.teacherMenu">教师主页</el-menu-item> -->
+        <el-menu-item index="/TeacherClasses" v-if="menuFlags.teacherClassMenu">我的班级</el-menu-item>
+        <el-menu-item index="/teacherClassCourse" v-if="menuFlags.teacherCourseMenu">我的课程</el-menu-item>
       </el-submenu>
 
       <!-- 学园论坛 -->
-       <el-submenu v-if="forumGroup" index="forum">
+      <el-submenu v-if="forumGroup" index="forum">
         <template slot="title">学园论坛</template>
         <el-menu-item index="/forum" v-if="menuFlags.forumMenu">论坛</el-menu-item>
         <el-menu-item index="/forumReply" v-if="menuFlags.forumReplyMenu">讨论区</el-menu-item>
       </el-submenu>
 
       <!-- 综合评价功能 -->
-       <el-submenu v-if="evaluationGroup" index="evaluation">
+      <el-submenu v-if="evaluationGroup" index="evaluation">
         <template slot="title">综合评价</template>
         <!-- 自评 -->
-         <el-menu-item index="/selfevaluation" v-if="menuFlags.selfevaluationMenu">自评</el-menu-item>
+        <el-menu-item index="/selfevaluation" v-if="menuFlags.selfevaluationMenu">自评</el-menu-item>
         <!-- 教师评价 -->
-         <el-menu-item index="/PendingEvaluations" v-if="menuFlags.teacherevaluationMenu">教师评价</el-menu-item>
+        <el-menu-item index="/PendingEvaluations" v-if="menuFlags.teacherevaluationMenu">教师评价</el-menu-item>
         <!--查看全部评价 -->
         <el-menu-item index="/evaluation" v-if="menuFlags.evaluationMenu">查看全部</el-menu-item>
       </el-submenu>
@@ -134,16 +142,42 @@
           linkMenu: false,
           noticemanageMenu: false,
           logMenu: false,
+          qaMenu: false,
+          teacherMenu: false,
+          teacherClassMenu: false,
+          teacherCourseMenu: false,
+          forumMenu: false,
+          forumReplyMenu: false,
+          studentMenu: false,
+          studentClassMenu: false,
+          studentClassCourseMenu: false,
+          courseMenu: false,
+          courseClassMenu: false,
+          courseClassCourseMenu: false,
+          studentCourseMenu: false,
+          studentCourseClassMenu: false,
+          studentCourseClassCourseMenu: false,
+          studentCourseClassCourseScoreMenu: false,
+          studentCourseClassCourseScoreReplyMenu: false,
+          studentCourseClassCourseScoreReplyReplyMenu: false,
+          studentCourseClassCourseScoreReplyReplyReplyMenu: false,
+          studentCourseClassCourseScoreReplyReplyReplyReplyMenu: false,
+          studentCourseClassCourseScoreReplyReplyReplyReplyReplyMenu: false,
+          studentCourseClassCourseScoreReplyReplyReplyReplyReplyReplyMenu: false,
+          studentCourseClassCourseScoreReplyReplyReplyReplyReplyReplyReplyMenu: false,
+          studentCourseClassCourseScoreReplyReplyReplyReplyReplyReplyReplyReplyMenu: false,
+          studentCourseClassCourseScoreReplyReplyReplyReplyReplyReplyReplyReplyReplyMenu: false,
           //personal: false
         }
       }
     },
 
     computed: {
-        logGroup:function(){
-            return this.menuFlags.logMenu || this.menuFlags.stuMenu || this.menuFlags.techerMenu || this.menuFlags.courseMenu
-        },
-        noticeGroup: function () {
+      logGroup: function () {
+        return this.menuFlags.logMenu || this.menuFlags.stuMenu || this.menuFlags.techerMenu || this.menuFlags
+          .courseMenu
+      },
+      noticeGroup: function () {
         return this.menuFlags.noticeMenu || this.menuFlags.noticeReplyMenu || this.menuFlags.noticemanageMenu
       },
       helpGroup: function () {
@@ -153,7 +187,8 @@
         return this.menuFlags.linkMenu || this.menuFlags.linkListMenu
       },
       evaluationGroup: function () {
-        return this.menuFlags.selfevaluationMenu || this.menuFlags.teacherevaluationMenu || this.menuFlags.evaluationMenu
+        return this.menuFlags.selfevaluationMenu || this.menuFlags.teacherevaluationMenu || this.menuFlags
+          .evaluationMenu
       },
       userGroup: function () {
         return this.menuFlags.userMenu
@@ -164,6 +199,9 @@
       Personal: function () {
         return this.menuFlags.gpaMenu || this.menuFlags.kdMenu || this.menuFlags.formMenu || this.menuFlags
           .adminformMenu || this.menuFlags.warnMenu
+      },
+      teacherGroup: function () {
+        return this.menuFlags.teacherMenu || this.menuFlags.teacherClassMenu || this.menuFlags.teacherCourseMenu
       }
     },
     async created() {
@@ -203,7 +241,7 @@
         this.menuFlags.gpaMenu = true
         this.menuFlags.formMenu = true
         this.menuFlags.noticeMenu = true
-        this.menuFlags.noticemanageMenu=true
+        this.menuFlags.noticemanageMenu = true
         this.menuFlags.helpMenu = true
         this.menuFlags.helpArticleMenu = true
         this.menuFlags.logMenu = true
@@ -227,7 +265,9 @@
         this.menuFlags.goodMenu = true
         this.menuFlags.kdMenu = true
         this.menuFlags.gpaMenu = true
-        this.menuFlags.formMenu = false
+        this.menuFlags.teacherClassMenu = true
+        this.menuFlags.teacherCourseMenu = true
+        this.menuFlags.teacherMenu = true
       } else if (this.role == 2) {
         console.log("Please")
         //学生权限
