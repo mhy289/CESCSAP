@@ -88,7 +88,7 @@ public class CourseServiceImpl implements CourseService {
             sc.setStudentName(studentMapper.getStudentById(studentId).getName());
             sc.setTeacherId(course.getTeacherId());
             sc.setTeacherName(course.getTeacherName());
-            sc.setEvaluateStatus(0);
+            sc.setEvaluateStatus(-1);
             //查重
             Integer count = scMapper.countByStudentAndCourse(studentId, courseId);
             if (count == 0) {

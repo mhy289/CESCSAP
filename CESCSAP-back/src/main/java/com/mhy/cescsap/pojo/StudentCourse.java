@@ -24,7 +24,15 @@ public class StudentCourse {
     private Long teacherId;
     //教师姓名
     private String teacherName;
-    //学生课程成绩
+    //平时成绩
+    private Double usualScore;
+    //考试成绩
+    private Double examScore;
+    //平时成绩占比
+    private Double usualRate;
+    //考试成绩占比
+    private Double examRate;
+    //学生课程最终成绩
     private Double score;
     //绩点
     private Double gpa;
@@ -34,7 +42,7 @@ public class StudentCourse {
     private Student student;
 
     private Course course;
-
+    // 评价状态 0 未评价 1 已评价 -1未批改
     private  Integer evaluateStatus;
 
     public void setGpa() {

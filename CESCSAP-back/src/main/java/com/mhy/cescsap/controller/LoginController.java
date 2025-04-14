@@ -32,7 +32,7 @@ public class LoginController {
 
     //登录
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
+    public Result login(@RequestBody User user, HttpServletRequest request) {
         log.debug("user is {}", user);
         Result result = new Result();
         User addDb = userService.login(user);

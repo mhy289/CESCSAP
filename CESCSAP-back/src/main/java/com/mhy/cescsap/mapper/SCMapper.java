@@ -53,10 +53,13 @@ public interface SCMapper {
             "  AND sc.evaluate_status = 0")
     List<PendingEvalDTO> getPendingEvals(Long studentId);
 
+    // 标记已评价
     @Update("UPDATE studentcourse " +
             "SET evaluate_status = 1 " +
             "WHERE student_id = #{studentId} " +
             "  AND course_id = #{courseId} " +
             "  AND teacher_id = #{teacherId}")
     Integer markEvaluated(Long studentId,Long courseId,Long teacherId);
+
+
 }

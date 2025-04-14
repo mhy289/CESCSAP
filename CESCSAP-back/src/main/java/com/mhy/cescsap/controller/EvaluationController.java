@@ -87,7 +87,7 @@ public class EvaluationController {
 
 
     //评价教师
-    @PostMapping("/eval")
+    @PostMapping("/eval_old")
     public Result evaluateTeacher_old(@RequestBody Double[] scores, @RequestBody EvaluationCriterion evaluationCriterion, @RequestBody String name){
         for(Double s : scores){
             Integer i = evaluationService.updateEvaluationByTeacher(evaluationCriterion, s);
@@ -134,4 +134,16 @@ public class EvaluationController {
         return new Result(allCheck);
     }
 
+    //学生提交评价
+    @PostMapping("/eval")
+    public Result evaluate(@RequestBody Evaluation evaluation){
+        if(evaluation.getEvaluationDetails()==null || evaluation.getTeacherId()==null|| evaluation.getCourseId()==null){
+            throw new BusinessException(ExceptionType.EVAL_ERROR,"评价信息错误");
+        }
+        Integer i = evaluationService.saveEvaluation(evaluation);
+        if(i==0){
+            throw new BusinessException(ExceptionType.INTERNAL_ERROR,"保存失败");
+        }
+        return new Result(i,"success");
+    }
 }

@@ -71,7 +71,7 @@
       async fetchQAs() {
         this.loading = true
         try {
-          const res = await this.$http.get('/qas/page/'+this.pageNum+'/size/'+this.pageSize)
+          const res = await this.$http.get('/qas/page/' + this.pageNum + '/size/' + this.pageSize)
           if (res.code === 200) {
             this.total = res.data.total
             this.qaList = res.data.list
@@ -99,10 +99,10 @@
       },
 
       async submitQA() {
-        const apiUrl = this.dialogType === 'add' ? '/qas' : `/qas/${this.currentQA.qaId}`
+        const apiUrl = this.dialogType === 'add' ? '/qa' : `/qa`
         const method = this.dialogType === 'add' ? 'post' : 'put'
 
-        const res = await this.$http.post('/qa',this.currentQA)
+        const res = await this.$http[method](apiUrl, this.currentQA)
         if (res.code === 200) {
           this.$message.success('操作成功')
           this.dialogVisible = false
@@ -111,11 +111,21 @@
       },
 
       async deleteQA(id) {
-        const res = await this.$http.delete(`/qas/${id}`)
-        if (res.code === 200) {
-          this.$message.success('删除成功')
-          this.fetchQAs()
+        try {
+          const res = await this.$http.delete(`/qa/${id}`)
+          if (res.code === 200) {
+            this.$message.success('删除成功')
+            this.fetchQAs()
+          } else {
+            this.$message.error('删除失败')
+          }
+        }catch(e) {
+            this.$message.error('删除失败?',e)
+        }finally{
+            //查询
+            this.fetchQAs()
         }
+
       },
 
       handleSizeChange(size) {

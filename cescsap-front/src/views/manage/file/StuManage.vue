@@ -235,6 +235,8 @@
           } catch (error) {
             console.error('删除学生失败:', error)
             this.$message.error('删除失败')
+          }finally {
+            //
           }
         }).catch(() => {
           // 取消删除操作

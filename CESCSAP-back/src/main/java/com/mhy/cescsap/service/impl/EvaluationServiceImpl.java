@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -32,6 +33,9 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Autowired
     EvaluationDetailMapper evaluationDetailMapper;
+
+    @Autowired
+    SCMapper scMapper;
 
     @Override
     public List<EvaluationCriterion> getEvaluationsByTeacherId_old(Long teacherId) {
@@ -83,8 +87,14 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     public Integer saveEvaluation(Evaluation evaluation) {
+        evaluation.setEvaluationTime(new Date());
+        //evaluation.setEvaluateStatus(1);
+        log.debug("---------------------------");
+        log.debug("evaluation:{}",evaluation);
         Integer i = evaluationMapper.insertEvaluation(evaluation);
-
+        //设置该学生课程评价完成
+        //scService.updateCommentStatus(evaluation.getStudentId(), evaluation.getCourseId());
+        Integer j = scMapper.markEvaluated(evaluation.getStudentId(),evaluation.getCourseId(),evaluation.getTeacherId());
         if(evaluation.getEvaluationDetails()!=null) {
             for (EvaluationDetail evaluationDetail : evaluation.getEvaluationDetails()) {
                 evaluationDetail.setEvaluationId(evaluation.getEvaluationId());
