@@ -1,9 +1,7 @@
 package com.mhy.cescsap.service;
 
-import com.mhy.cescsap.pojo.PageItem;
-import com.mhy.cescsap.pojo.Student;
-import com.mhy.cescsap.pojo.Teacher;
-import com.mhy.cescsap.pojo.TeacherEvaluationsDTO;
+import com.mhy.cescsap.pojo.*;
+import com.mhy.cescsap.pojo.Class;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,4 +37,18 @@ public interface TeacherService {
 
 
     PageItem<Teacher> queryPage(Integer current, Integer size);
+
+    //查看教师自己班级的学生
+    List<Student> getStudentsByTeacherId(Long teacherId);
+
+    //查看教师自己班级
+    List<Class> getClassesByTeacherId(Long teacherId);
+
+    List<StudentCourse> getStudentsByClass(Long teacherId, Long classId);
+
+    //查看教师自己课程的学生
+    List<StudentCourse> getStudentsByCourse(Long teacherId, Long courseId);
+
+    //计算绩点录入成绩
+    Integer saveScores(StudentCourse sc);
 }

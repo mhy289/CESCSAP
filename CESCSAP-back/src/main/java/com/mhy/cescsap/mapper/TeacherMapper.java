@@ -1,5 +1,6 @@
 package com.mhy.cescsap.mapper;
 
+import com.mhy.cescsap.pojo.StudentCourse;
 import com.mhy.cescsap.pojo.Teacher;
 import org.apache.ibatis.annotations.*;
 
@@ -32,4 +33,6 @@ public interface TeacherMapper {
 
     @Select("SELECT COUNT(1) FROM teacher WHERE account = #{account}")
     Boolean existsByAccount(Long account);
+
+    //Integer updateScores(StudentCourse );
 }

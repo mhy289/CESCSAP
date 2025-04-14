@@ -15,7 +15,7 @@ public class StudentCourse {
     //学生id
     private Long studentId;
     //学生姓名
-    private String studentName;
+    private String name;
     //课程id
     private Long courseId;
     //课程名称
@@ -24,6 +24,10 @@ public class StudentCourse {
     private Long teacherId;
     //教师姓名
     private String teacherName;
+    //班级id
+    private Long classId;
+    //班级名称
+    private String className;
     //平时成绩
     private Double usualScore;
     //考试成绩
@@ -44,12 +48,4 @@ public class StudentCourse {
     private Course course;
     // 评价状态 0 未评价 1 已评价 -1未批改
     private  Integer evaluateStatus;
-
-    public void setGpa() {
-        if(this.score<60){
-            this.gpa = 0.0;
-        } else{
-            this.gpa = (this.score - 50) / 10;
-        }
-    }
 }

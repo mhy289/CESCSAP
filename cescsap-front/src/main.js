@@ -6,6 +6,8 @@ import LoginView from './views/LoginView.vue'
 // 引入 element-ui
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+//import ElementPlus from 'element-plus'
+//import { ElLoading } from 'element-plus' // 新增导入
 
 // 引入全局样式
 import '@/assets/css/style.css'
@@ -15,6 +17,7 @@ import axios from 'axios'
 
 Vue.use(ElementUI)
 Vue.prototype.$http = axios
+//app.use(ElementPlus) // 确保包含 ElLoading
 
 // —— 1. 前端异常上报相关 ——
 // 基础路径
@@ -87,7 +90,10 @@ axios.interceptors.response.use(resp => {
     localStorage.removeItem('token')
     localStorage.removeItem("name")
     localStorage.removeItem("role")
-    router.push("/login")
+    //router.push("/login")
+    if (router.currentRoute.value.path !== '/login') { // 关键判断
+        router.push('/login');
+      }
   }
   return data
 }, err => {

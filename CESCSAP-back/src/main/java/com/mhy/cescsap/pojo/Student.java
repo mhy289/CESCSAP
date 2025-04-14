@@ -25,6 +25,8 @@ public class Student extends User{
     private String major;
     //班级id
     private Long classId;
+    //班级名字
+    private String className;
     //联系方式
     private String contact;
     //绩点

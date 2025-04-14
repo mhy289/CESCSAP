@@ -12,7 +12,7 @@ public interface SCMapper {
     @Select("select * from studentcourse where sc_id = #{scId}")
     List<StudentCourse> getStudents(Long scId);
     // 添加学生选课
-    @Insert("insert into studentcourse(student_id, student_name,course_id,course_name,teacher_id,teacher_name,evaluate_status) values (#{studentId},#{studentName},#{courseId},#{courseName},#{teacherId},#{teacherName},#{evaluateStatus})")
+    @Insert("insert into studentcourse(student_id, student_name,course_id,course_name,teacher_id,teacher_name,class_id,class_name,evaluate_status) values (#{studentId},#{studentName},#{courseId},#{courseName},#{teacherId},#{teacherName},#{classId},#{className},#{evaluateStatus})")
     Integer addStudentCourse(StudentCourse studentCourse);
 
     // 查询符合条件的学生选课
@@ -39,7 +39,7 @@ public interface SCMapper {
     List<StudentCourse> getAllSC();
 
     //更新所有数据
-    @Update("update studentcourse set student_name = #{studentName}, course_name = #{courseName}, teacher_id = #{teacherId},teacher_name = #{teacherName} where sc_id = #{scId}")
+    @Update("update studentcourse set student_name = #{studentName}, course_name = #{courseName}, teacher_id = #{teacherId},teacher_name = #{teacherName},class_id = #{classId},class_name = #{className} where sc_id = #{scId}")
     Integer updateSC(StudentCourse sc);
 
     @Select("SELECT sc.course_id AS courseId, " +
@@ -60,6 +60,39 @@ public interface SCMapper {
             "  AND course_id = #{courseId} " +
             "  AND teacher_id = #{teacherId}")
     Integer markEvaluated(Long studentId,Long courseId,Long teacherId);
+
+    // 查询某班级所有学生（StudentCourse 可左关联 Student 表）
+    @Select("SELECT " +
+            "sc.sc_id, " +
+            "sc.student_id AS sc_student_id, " +  // 使用别名避免字段冲突
+            "sc.teacher_id, " +
+            "sc.usual_score, " +
+            "sc.exam_score, " +
+            "sc.score, " +
+            "sc.gpa, " +
+            "s.student_id, " +
+            "s.name, " +
+            "s.class_name " +
+            "FROM studentcourse sc " +
+            "JOIN student s ON sc.student_id = s.student_id " +
+            "WHERE sc.teacher_id = #{teacherId} AND s.class_id = #{classId}")
+    List<StudentCourse> selectStudentsByClass(Long teacherId, Long classId);
+
+    //查询该教师所有课程下的选课学生
+    @Select("SELECT sc.*, s.* "
+            + "FROM studentcourse sc "
+            + "JOIN student s ON sc.student_id = s.student_id "
+            + "WHERE sc.teacher_id = #{teacherId} AND sc.course_id = #{courseId}")
+    @Results(/* 同上 */)
+    List<StudentCourse> selectStudentsByCourse(@Param("teacherId") Long teacherId,
+                                               @Param("courseId") Long courseId);
+
+    //更新成绩
+    @Update("UPDATE studentcourse "
+            + "SET usual_score = #{usualScore}, exam_score = #{examScore}, "
+            + "    score = #{score}, gpa = #{gpa}, exam_date = #{examDate} "
+            + "WHERE sc_id = #{scId}")
+    Integer updateScores(StudentCourse sc);
 
 
 }

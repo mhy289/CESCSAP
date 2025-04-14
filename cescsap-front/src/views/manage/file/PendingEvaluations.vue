@@ -152,7 +152,7 @@
             teacherId: this.evalForm.teacherId,
             comment: this.evalForm.comment,
             evaluationTime: dayjs().toISOString(),
-            details: this.evalForm.evaluationDetails.map((d) => ({
+            evaluationDetails: this.evalForm.evaluationDetails.map((d) => ({
               dimensionId: d.dimensionId,
               score: d.score
             }))

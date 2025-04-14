@@ -85,7 +85,7 @@ public class CourseServiceImpl implements CourseService {
             sc.setStudentId(studentId);
             Course course = courseMapper.getCourseById(courseId);
             sc.setCourseName(course.getCourseName());
-            sc.setStudentName(studentMapper.getStudentById(studentId).getName());
+            sc.setName(studentMapper.getStudentById(studentId).getName());
             sc.setTeacherId(course.getTeacherId());
             sc.setTeacherName(course.getTeacherName());
             sc.setEvaluateStatus(-1);

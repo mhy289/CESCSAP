@@ -138,6 +138,7 @@ public class EvaluationController {
     @PostMapping("/eval")
     public Result evaluate(@RequestBody Evaluation evaluation){
         if(evaluation.getEvaluationDetails()==null || evaluation.getTeacherId()==null|| evaluation.getCourseId()==null){
+            log.debug("evaluation : {}" ,evaluation);
             throw new BusinessException(ExceptionType.EVAL_ERROR,"评价信息错误");
         }
         Integer i = evaluationService.saveEvaluation(evaluation);

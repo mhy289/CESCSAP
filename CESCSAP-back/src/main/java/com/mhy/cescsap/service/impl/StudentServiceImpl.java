@@ -66,6 +66,7 @@ public class StudentServiceImpl implements StudentService {
         student.setRole(2L);
         student.setEvaluateStatus(0);
         student.setBirthDate(new Date());
+        student.setClassName(classMapper.getClassByClassId(classId).getClassName());
         log.debug("stu is {}",student);
         return studentMapper.addStudent(student);
     }

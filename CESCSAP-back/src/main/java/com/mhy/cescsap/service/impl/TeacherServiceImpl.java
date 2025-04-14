@@ -6,12 +6,14 @@ import com.mhy.cescsap.mapper.*;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.*;
+import com.mhy.cescsap.pojo.Class;
 import com.mhy.cescsap.service.TeacherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.mhy.cescsap.utils.AccountGeneratorUtils.generateAccount;
@@ -19,6 +21,10 @@ import static com.mhy.cescsap.utils.AccountGeneratorUtils.generateAccount;
 @Service
 @Slf4j
 public class TeacherServiceImpl implements TeacherService {
+
+    //设置分数权重作为常量,
+    public static final Double USUAL_SCORE_RATE = 0.5;
+    public static final Double EXAM_SCORE_RATE = 0.5;
 
     @Autowired
     TeacherMapper teacherMapper;
@@ -37,6 +43,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     EvaluationDetailMapper evaluationDetailMapper;
+
+    @Autowired
+    ClassMapper classMapper;
 
     @Override
     public List<Teacher> getTeachers() {
@@ -152,5 +161,62 @@ public class TeacherServiceImpl implements TeacherService {
         List<Teacher> teachers = teacherMapper.selectAllTeachers();
         Page<Teacher> pages = (Page<Teacher>) teachers;
         return new PageItem<>(pages.getTotal(), teachers);
+    }
+
+    @Override
+    public List<Student> getStudentsByTeacherId(Long teacherId) {
+        return classMapper.selectStudentsByTeacher(teacherId);
+    }
+
+    @Override
+    public List<Class> getClassesByTeacherId(Long teacherId) {
+        return classMapper.selectClassesByTeacher(teacherId);
+    }
+
+    @Override
+    public List<StudentCourse> getStudentsByClass(Long teacherId, Long classId) {
+        List<StudentCourse> studentCourses = scMapper.selectStudentsByClass(teacherId, classId);
+        if(studentCourses == null || studentCourses.isEmpty()){
+            throw new BusinessException(ExceptionType.STU_ERR,"学生错误");
+        }
+        return studentCourses;
+    }
+
+    @Override
+    public List<StudentCourse> getStudentsByCourse(Long teacherId, Long courseId) {
+        return scMapper.selectStudentsByCourse(teacherId, courseId);
+    }
+
+    @Override
+    public Integer saveScores(StudentCourse sc) {
+        // 计算总分和绩点
+        // 计算总分（按比例）
+        double usual = sc.getUsualScore() == null ? 0 : sc.getUsualScore();
+        double exam  = sc.getExamScore()  == null ? 0 : sc.getExamScore();
+        double usualRate = sc.getUsualRate() == null ? USUAL_SCORE_RATE : sc.getUsualRate();
+        double examRate  = sc.getExamRate()  == null ? EXAM_SCORE_RATE : sc.getExamRate();
+        double total = usual * usualRate + exam * examRate;
+        //全部保存
+        sc.setUsualScore(usual);
+        sc.setExamScore(exam);
+        sc.setUsualRate(usualRate);
+        sc.setExamRate(examRate);
+        sc.setScore(total);
+
+        // 计算 5 分制绩点（线性映射）
+        sc.setGpa(calcGpa5(total));
+
+        // 设置考试日期
+        sc.setExamDate(new Date());
+
+        return scMapper.updateScores(sc);
+    }
+
+    private Double calcGpa5(double totalScore) {
+        // 确保在 [0,100] 范围内
+        double s = Math.max(0, Math.min(100, totalScore));
+        // 映射并保留两位小数
+        double gpa = s / 100.0 * 5.0;
+        return Math.round(gpa * 100) / 100.0;
     }
 }

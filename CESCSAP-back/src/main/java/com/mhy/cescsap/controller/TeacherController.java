@@ -90,4 +90,30 @@ public class TeacherController {
     public Result getTeachersByPage(@PathVariable Integer current, @PathVariable Integer size){
         return new Result(teacherService.queryPage(current,size));
     }
+
+    // 获取教师所带班级
+    @GetMapping("/teacher/classes/{id}")
+    public Result getClassesByTeacherId(@PathVariable Long id){
+        return new Result(teacherService.getClassesByTeacherId(id));
+    }
+
+    // 获取教师所带学生
+    @GetMapping("/teacher/{id}/students")
+    public Result getStudentsByTeacherId(@PathVariable Long id){
+        return new Result(teacherService.getStudentsByTeacherId(id));
+    }
+
+    // 获取教师所带学生2
+    @GetMapping("/teacher/{teacherId}/classes/{classId}/students")
+    public Result getStudentsByTeacherId2(@PathVariable Long teacherId,@PathVariable Long classId){
+        return new Result(teacherService.getStudentsByClass(teacherId,classId));
+    }
+
+    // 获取教师自己课程的学生
+    @GetMapping("teacher/{teacherId}/courses/{courseId}/students")
+    public Result getStudentsByCourse(@PathVariable Long teacherId,@PathVariable Long courseId) {
+        //Long tid = AuthService.currentTeacherId();
+        return new Result(teacherService.getStudentsByCourse(teacherId, courseId));
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.mhy.cescsap.mapper;
 
 import com.mhy.cescsap.pojo.Class;
+import com.mhy.cescsap.pojo.Student;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -26,4 +27,21 @@ public interface ClassMapper {
     //检查班级是否存在
     @Select("select COUNT(*) from class where major = #{major}")
     Integer checkMajor(String major);
+
+    //. 查询该教师所带班级
+    @Select("SELECT class_id AS classId, class_name AS className, major, teacher_id AS teacherId "
+            + "FROM class "
+            + "WHERE teacher_id = #{teacherId}")
+    List<Class> selectClassesByTeacher(Long teacherId);
+
+    //查询该教师所带班级学生
+    @Select("SELECT s.* "
+            + "FROM class c "
+            + "JOIN student s ON c.class_id = s.class_id "
+            + "WHERE c.teacher_id = #{teacherId}")
+    List<Student> selectStudentsByTeacher(Long teacherId);
+
+    //查询该教师所带班级学生
+    @Select("select * from class where class_name = #{className}")
+    Class getClassByName(String className);
 }

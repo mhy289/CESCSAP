@@ -97,7 +97,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         Integer j = scMapper.markEvaluated(evaluation.getStudentId(),evaluation.getCourseId(),evaluation.getTeacherId());
         if(evaluation.getEvaluationDetails()!=null) {
             for (EvaluationDetail evaluationDetail : evaluation.getEvaluationDetails()) {
-                evaluationDetail.setEvaluationId(evaluation.getEvaluationId());
+                evaluationDetail.setEvaluationId(Long.valueOf(i));
                 Integer i1 = evaluationDetailMapper.insertEvaluationDetail(evaluationDetail);
                 if (i1 == null || i1 <= 0) {
                     throw new BusinessException(ExceptionType.EVAL_DTL_ERR, "评价细节提交错误");

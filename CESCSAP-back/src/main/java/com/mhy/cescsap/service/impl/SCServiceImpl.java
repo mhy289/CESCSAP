@@ -2,13 +2,11 @@ package com.mhy.cescsap.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.mhy.cescsap.mapper.CourseMapper;
-import com.mhy.cescsap.mapper.SCMapper;
-import com.mhy.cescsap.mapper.StudentMapper;
-import com.mhy.cescsap.mapper.TeacherMapper;
+import com.mhy.cescsap.mapper.*;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.*;
+import com.mhy.cescsap.pojo.Class;
 import com.mhy.cescsap.service.SCService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,9 @@ public class SCServiceImpl implements SCService {
 
     @Autowired
     TeacherMapper teacherMapper;
+
+    @Autowired
+    ClassMapper classMapper;
 
 
     @Override
@@ -199,9 +200,9 @@ public class SCServiceImpl implements SCService {
         int sum=0;
         //验证是否有空，有就补充
         for(StudentCourse sc : studentCourseList){
-            if(sc.getStudentName()==null){
+            if(sc.getName()==null){
                 Student student = studentMapper.getStudentById(sc.getStudentId());
-                sc.setStudentName(student.getName());
+                sc.setName(student.getName());
                 sum++;
             }
             if(sc.getCourseName()==null){
@@ -213,6 +214,14 @@ public class SCServiceImpl implements SCService {
                 Course course = courseMapper.getCourseById(sc.getCourseId());
                 sc.setTeacherName(course.getTeacherName());
                 sc.setTeacherId(course.getTeacherId());
+                sum++;
+            }
+            if(sc.getClassId()==null){
+                Student student = studentMapper.getStudentById(sc.getStudentId());
+                Long classId = student.getClassId();
+                Class clazz = classMapper.getClassByClassId(classId);
+                sc.setClassName(clazz.getClassName());
+                sc.setClassId(clazz.getClassId());
                 sum++;
             }
             //更新至数据库
