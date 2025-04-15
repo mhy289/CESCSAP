@@ -19,7 +19,7 @@
         </el-header>
 
         <!-- 点击按钮 -->
-        <el-button type="primary" @click="handleClick">Button</el-button>
+        <el-button v-if="role==0" type="primary" @click="handleClick">Button</el-button>
         <!--首页展示，读取ip地址-->
         
 
@@ -68,7 +68,7 @@
         sideWidth: 250,
         collapseIcon: "el-icon-s-fold",
         collapseTitle: "收缩",
-
+        role: localStorage.getItem('role')
       };
     },
     //组件

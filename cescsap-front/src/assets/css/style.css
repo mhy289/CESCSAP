@@ -6,3 +6,30 @@ h2,
     margin: 0;
     padding: 0;
 }
+
+/* 针对所有 el-dialog 内部可滚动区域 */
+.el-dialog__body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* WebKit 内核浏览器滚动条 */
+.el-dialog__body::-webkit-scrollbar {
+    width: 12px;
+    background-color: #f1f1f1;
+}
+
+.el-dialog__body::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 6px;
+}
+
+.el-dialog__body::-webkit-scrollbar-thumb:hover {
+    background-color: #a8a8a8;
+}
+
+/* Firefox 滚动条 */
+.el-dialog__body {
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 #f1f1f1;
+}

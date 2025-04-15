@@ -11,6 +11,7 @@ public interface SCMapper {
     // 查看学生选课
     @Select("select * from studentcourse where sc_id = #{scId}")
     List<StudentCourse> getStudents(Long scId);
+
     // 添加学生选课
     @Insert("insert into studentcourse(student_id, student_name,course_id,course_name,teacher_id,teacher_name,class_id,class_name,evaluate_status) values (#{studentId},#{studentName},#{courseId},#{courseName},#{teacherId},#{teacherName},#{classId},#{className},#{evaluateStatus})")
     Integer addStudentCourse(StudentCourse studentCourse);
@@ -59,7 +60,7 @@ public interface SCMapper {
             "WHERE student_id = #{studentId} " +
             "  AND course_id = #{courseId} " +
             "  AND teacher_id = #{teacherId}")
-    Integer markEvaluated(Long studentId,Long courseId,Long teacherId);
+    Integer markEvaluated(Long studentId, Long courseId, Long teacherId);
 
     // 查询某班级所有学生（StudentCourse 可左关联 Student 表）
     @Select("SELECT " +
@@ -71,6 +72,10 @@ public interface SCMapper {
             "sc.score, " +
             "sc.gpa, " +
             "s.student_id, " +
+            "s.gender," +
+            "s.birth_date,"+
+            "s.contact,"+
+            "s.gpa,"+
             "s.name, " +
             "s.class_name " +
             "FROM studentcourse sc " +

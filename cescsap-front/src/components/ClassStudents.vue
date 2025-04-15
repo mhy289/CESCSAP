@@ -1,72 +1,46 @@
 <template>
   <div>
-    <h3>班级：{{ classInfo.className }}（{{ classInfo.major }}）</h3>
     <el-table :data="students" stripe>
-      <el-table-column prop="name" label="姓名" />
-      <el-table-column prop="usualScore" label="平时分" />
-      <el-table-column prop="examScore" label="考试分" />
-      <el-table-column prop="score" label="总分" />
-      <el-table-column prop="gpa" label="绩点" />
-      <el-table-column label="操作">
+      <el-table-column prop="studentId" label="学号" width="100" />
+      <el-table-column prop="name" label="姓名" width="150" />
+      <el-table-column prop="gender" label="性别" width="80" />
+      <el-table-column prop="birthDate" label="出生日期" width="120">
         <template slot-scope="{ row }">
-          <el-button size="mini" type="primary" @click="openScoreDialog(row)"
-            v-if="row.usualScore == null || row.examScore == null">
-            评分
-          </el-button>
-          <el-button size="mini" type="primary" @click="msg(row)"
-            v-if="row.usualScore != null && row.examScore != null">
-            已评分
+          {{ formatDate(row.birthDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="major" label="专业" width="150" />
+      <el-table-column prop="contact" label="联系方式" width="150" />
+      <el-table-column prop="gpa" label="绩点" width="80" />
+      <el-table-column label="操作" width="120">
+        <template slot-scope="{ row }">
+          <el-button size="mini" type="info" @click="viewScoreDetail(row.studentId)">
+            成绩详情
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-
-    <!-- 评分弹窗 -->
-    <el-dialog title="录入成绩" :visible.sync="scoreDialogVisible" :modal-append-to-body="false"
-      :close-on-click-modal="false" @closed="handleDialogClosed">
-      <el-form :model="scoreForm" label-width="100px">
-        <el-form-item label="姓名">{{ scoreForm.name }}</el-form-item>
-        <el-form-item label="平时分">
-          <el-input-number v-model="scoreForm.usualScore" :min="0" :max="100" />
-        </el-form-item>
-        <el-form-item label="考试分">
-          <el-input-number v-model="scoreForm.examScore" :min="0" :max="100" />
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="scoreDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="saveScores">保存</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
+  import dayjs from 'dayjs'
+
   export default {
     name: 'ClassStudents',
     props: {
-      classInfo: {
-        type: Object,
-        required: true,
-        default: () => ({
-          classId: null,
-          className: '',
-          major: ''
-        })
+      classId: {
+        type: Number,
+        required: true
       }
     },
     data() {
       return {
-        students: [],
-        scoreDialogVisible: false,
-        scoreForm: {}
+        students: []
       }
     },
-    /* async mounted() {
-      this.loadStudents()
-    }, */
     watch: {
-      'classInfo.classId': {
+      classId: {
         immediate: true,
         handler(newId) {
           if (newId) this.loadStudents()
@@ -78,47 +52,27 @@
         const teacherId = Number(localStorage.getItem('id'))
         try {
           const res = await this.$http.get(
-            `/teacher/${teacherId}/classes/${this.classInfo.classId}/students`
+            `/teacher/${teacherId}/classes/${this.classId}/students`
           )
           if (res.code === 200) {
-            console.log(res.data)
             this.students = res.data
+            console.log(res.data)
           } else {
             this.$message.error('获取学生列表失败：' + res.msg)
           }
         } catch (e) {
-          /* 错误处理 */
           console.error('获取学生列表异常', e)
           this.$message.error('获取学生列表异常')
         }
       },
-      msg(row) {
-        this.$message.info('已评分')
+      formatDate(date) {
+        return date ? dayjs(date).format('YYYY-MM-DD') : ''
       },
-      openScoreDialog(row) {
-        this.scoreForm = {
-          ...row
-        }
-        this.scoreDialogVisible = true
-      },
-      async saveScores() {
-        //this.saveLoading = true // 添加加载状态
-        // 计算并更新 score & gpa 由后端完成
-        const res = await this.$http.post('/teacher/students/score', this.scoreForm)
-        if (res.code === 200) {
-          this.$message.success('保存成功')
-          this.scoreDialogVisible = false
-          this.loadStudents() // 直接调用子组件方法刷新
-          // 刷新列表
-          /* const teacherId = Number(localStorage.getItem('id'))
-          const classId = this.classInfo.classId
-          const r = await this.$http.get(
-            `/teacher/${teacherId}/classes/${classId}/students`
-          )
-          this.students = r.data */
-        } else {
-          this.$message.error('保存失败：' + res.msg)
-        }
+      viewScoreDetail(studentId) {
+        // 跳转到成绩详情页面
+        // this.$router.push({ name: 'StudentScoreDetail', params: { studentId } })
+        //敬请期待
+        this.$message.info('敬请期待')
       }
     }
   }
@@ -126,12 +80,4 @@
 </script>
 
 <style scoped>
-  .dialog-footer {
-    text-align: right;
-  }
-  /* .el-dialog__wrapper {
-  transition: none !important;
-  animation: none !important;
-} */
-
 </style>

@@ -47,6 +47,9 @@ public class TeacherServiceImpl implements TeacherService {
     @Autowired
     ClassMapper classMapper;
 
+    @Autowired
+    StudentMapper studentMapper;
+
     @Override
     public List<Teacher> getTeachers() {
         return teacherMapper.selectAllTeachers();
@@ -174,12 +177,17 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public List<StudentCourse> getStudentsByClass(Long teacherId, Long classId) {
+    public List<Student> getStudentsByClass(Long teacherId, Long classId) {
         List<StudentCourse> studentCourses = scMapper.selectStudentsByClass(teacherId, classId);
         if(studentCourses == null || studentCourses.isEmpty()){
             throw new BusinessException(ExceptionType.STU_ERR,"学生错误");
         }
-        return studentCourses;
+        List<Student> students = new ArrayList<Student>();
+        for(StudentCourse sc : studentCourses){
+            Student student = studentMapper.getStudentById(sc.getStudentId());
+            students.add(student);
+        }
+        return students;
     }
 
     @Override

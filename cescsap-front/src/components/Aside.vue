@@ -71,7 +71,7 @@
         <template slot="title">教师界面</template>
         <!-- <el-menu-item index="/teacher" v-if="menuFlags.teacherMenu">教师主页</el-menu-item> -->
         <el-menu-item index="/TeacherClasses" v-if="menuFlags.teacherClassMenu">我的班级</el-menu-item>
-        <el-menu-item index="/teacherClassCourse" v-if="menuFlags.teacherCourseMenu">我的课程</el-menu-item>
+        <el-menu-item index="/TeacherCourses" v-if="menuFlags.teacherCourseMenu">我的课程</el-menu-item>
       </el-submenu>
 
       <!-- 学园论坛 -->

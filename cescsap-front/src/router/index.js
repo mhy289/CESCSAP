@@ -44,10 +44,10 @@ const routes = [{
       name: 'help',
       component: () => import('../views/manage/file/Help.vue'),
     }, {
-        path:'/Helpmange',
-        name: 'helpmange',
-        component: () => import('../views/manage/file/Helpmange.vue'),
-    },{
+      path: '/Helpmange',
+      name: 'helpmange',
+      component: () => import('../views/manage/file/Helpmange.vue'),
+    }, {
       path: '/Link',
       name: 'link',
       component: () => import('../views/manage/file/Link.vue'),
@@ -60,10 +60,10 @@ const routes = [{
       name: 'loglist',
       component: () => import('../views/manage/file/LogList.vue'),
     }, {
-        path:'QaList',
-        name: 'qaList',
-        component: () => import('../views/manage/file/QaList.vue'),
-    },{
+      path: 'QaList',
+      name: 'qaList',
+      component: () => import('../views/manage/file/QaList.vue'),
+    }, {
       path: '/Forum_old',
       name: 'forum',
       component: () => import('../views/manage/file/Forum.vue'),
@@ -104,52 +104,57 @@ const routes = [{
       path: 'AdminForm',
       name: 'adminform',
       component: () => import('../views/manage/form/AdminForm.vue'),
-    },{
-        path:'/StuManage',
-        name:'stuManage',
-        component: () => import('../views/manage/file/StuManage.vue'),
-    },{
-        path:'/TeacherManage',
-        name:'teacherManage',
-        component: () => import('../views/manage/file/Teachermanage.vue'),
-    },{
-        path:'/ClassManage',
-        name:'classManage',
-        component: () => import('../views/manage/file/Classmanage.vue'),
-    },{
-        path:'/CourseManage',
-        name:'courseManage',
-        component: () => import('../views/manage/file/Coursemanage.vue'),
-    },{
-        path:'/forum',
-        name:'partitionlist',
-        component: () => import('../views/manage/file/PartitionList.vue'),
-    },{
-        path: '/forum/partition/:partitionId',
-        name: 'PostList',
-        component: () => import('../views/manage/file/PostList.vue'),
-        props: true
-      },{
-        path: '/forum/post/:postId',
-        name: 'ReplyList',
-        component: () => import('../views/manage/file/ReplyList.vue'),
-        props: true
-      },{
-        path:'/PendingEvaluations',
-        name:'pendingEvaluations',
-        component: () => import('../views/manage/file/PendingEvaluations.vue'),
-    },{
-        path:'/TeacherClasses',
-        name:'teacherClasses',
-        component: () => import('../views/manage/file/TeacherClasses.vue'),
-    },{
-        path:'/TeacherCourses',
-        name:'teacherCourses',
-        component: () => import('../views/manage/file/TeacherCourses.vue'),
-    },{
-        path:'/TeacherStudents',
-        name:'teacherStudents',
-        component: () => import('../views/manage/file/TeacherStudents.vue'),
+    }, {
+      path: '/StuManage',
+      name: 'stuManage',
+      component: () => import('../views/manage/file/StuManage.vue'),
+    }, {
+      path: '/TeacherManage',
+      name: 'teacherManage',
+      component: () => import('../views/manage/file/Teachermanage.vue'),
+    }, {
+      path: '/ClassManage',
+      name: 'classManage',
+      component: () => import('../views/manage/file/Classmanage.vue'),
+    }, {
+      path: '/CourseManage',
+      name: 'courseManage',
+      component: () => import('../views/manage/file/Coursemanage.vue'),
+    }, {
+      path: '/forum',
+      name: 'partitionlist',
+      component: () => import('../views/manage/file/PartitionList.vue'),
+    }, {
+      path: '/forum/partition/:partitionId',
+      name: 'PostList',
+      component: () => import('../views/manage/file/PostList.vue'),
+      props: true
+    }, {
+      path: '/forum/post/:postId',
+      name: 'ReplyList',
+      component: () => import('../views/manage/file/ReplyList.vue'),
+      props: true
+    }, {
+      path: '/PendingEvaluations',
+      name: 'pendingEvaluations',
+      component: () => import('../views/manage/file/PendingEvaluations.vue'),
+    }, {
+      path: '/TeacherClasses',
+      name: 'teacherClasses',
+      component: () => import('../views/manage/file/TeacherClasses.vue'),
+    }, {
+      path: '/TeacherCourses',
+      name: 'teacherCourses',
+      component: () => import('../views/manage/file/TeacherCourses.vue'),
+    }, {
+      path: '/TeacherStudents',
+      name: 'teacherStudents',
+      component: () => import('../views/manage/file/TeacherStudents.vue'),
+    }, {
+      path: '/teacher/student/:studentId/score',
+      name: 'StudentScoreDetail',
+      component: () => import('@/views/manage/file/StudentScoreDetail.vue'),
+      props: true
     }]
   },
   {
@@ -157,10 +162,10 @@ const routes = [{
     name: 'login',
     component: () => import('../views/LoginView.vue')
     // route level code-splitting
-  },{
-    path:'/Person',
-    name:'person',
-    component:() => import('../views/Person.vue')
+  }, {
+    path: '/Person',
+    name: 'person',
+    component: () => import('../views/Person.vue')
   },
   {
     path: '/about',

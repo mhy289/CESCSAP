@@ -79,9 +79,9 @@
     </el-dialog>
 
     <!-- 课程详情弹窗：管理该课程的学生 -->
-    <el-dialog title="课程详情 - 学生管理" :visible.sync="courseDetailDialogVisible" width="80%">
+    <el-dialog title="课程详情 - 学生管理" :visible.sync="courseDetailDialogVisible" width="80%" >{{ currentCourse.courseName }}
       <el-tabs v-model="activeTab">
-        <el-tab-pane label="已选学生" name="enrolled">
+        <el-tab-pane label="已选学生"  name="enrolled">
           <div style="margin-bottom: 10px;">
             <el-button type="danger" size="mini" @click="batchDeleteEnrolled">批量删除</el-button>
           </div>

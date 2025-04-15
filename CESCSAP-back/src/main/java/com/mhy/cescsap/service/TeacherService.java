@@ -44,7 +44,7 @@ public interface TeacherService {
     //查看教师自己班级
     List<Class> getClassesByTeacherId(Long teacherId);
 
-    List<StudentCourse> getStudentsByClass(Long teacherId, Long classId);
+    List<Student> getStudentsByClass(Long teacherId, Long classId);
 
     //查看教师自己课程的学生
     List<StudentCourse> getStudentsByCourse(Long teacherId, Long courseId);
