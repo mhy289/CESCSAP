@@ -212,6 +212,11 @@ public class TeacherServiceImpl implements TeacherService {
         return scMapper.updateScores(sc);
     }
 
+    @Override
+    public List<Course> getCoursesByTeacherId(Long id) {
+        return courseMapper.getCoursesByTeacherId(id);
+    }
+
     private Double calcGpa5(double totalScore) {
         // 确保在 [0,100] 范围内
         double s = Math.max(0, Math.min(100, totalScore));

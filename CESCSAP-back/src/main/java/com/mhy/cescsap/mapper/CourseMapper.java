@@ -27,4 +27,7 @@ public interface CourseMapper {
 
     @Select("select * from course where course_id = #{courseId}")
     List<Course> selectByCondition(Course course);
+
+    @Select("select * from course where teacher_id = #{id}")
+    List<Course> getCoursesByTeacherId(Long id);
 }

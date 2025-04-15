@@ -3,10 +3,7 @@ package com.mhy.cescsap.controller;
 import com.mhy.cescsap.mapper.CourseMapper;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
-import com.mhy.cescsap.pojo.Evaluation;
-import com.mhy.cescsap.pojo.Result;
-import com.mhy.cescsap.pojo.Teacher;
-import com.mhy.cescsap.pojo.TeacherEvaluationStats;
+import com.mhy.cescsap.pojo.*;
 import com.mhy.cescsap.service.EvaluationService;
 import com.mhy.cescsap.service.TeacherEvaluationStatsService;
 import com.mhy.cescsap.service.TeacherService;
@@ -97,6 +94,12 @@ public class TeacherController {
         return new Result(teacherService.getClassesByTeacherId(id));
     }
 
+    // 获取教师所带课程
+    @GetMapping("/teacher/courses/{id}")
+    public Result getCoursesByTeacherId(@PathVariable Long id){
+        return new Result(teacherService.getCoursesByTeacherId(id));
+    }
+
     // 获取教师所带学生
     @GetMapping("/teacher/{id}/students")
     public Result getStudentsByTeacherId(@PathVariable Long id){
@@ -110,10 +113,16 @@ public class TeacherController {
     }
 
     // 获取教师自己课程的学生
-    @GetMapping("teacher/{teacherId}/courses/{courseId}/students")
+    @GetMapping("/teacher/{teacherId}/courses/{courseId}/students")
     public Result getStudentsByCourse(@PathVariable Long teacherId,@PathVariable Long courseId) {
         //Long tid = AuthService.currentTeacherId();
         return new Result(teacherService.getStudentsByCourse(teacherId, courseId));
+    }
+
+    //对选课的学生进行成绩保存
+    @PostMapping("/teacher/students/score")
+    public Result saveScores(@RequestBody StudentCourse sc) {
+        return new Result(teacherService.saveScores(sc),"成绩保存成功");
     }
 
 }

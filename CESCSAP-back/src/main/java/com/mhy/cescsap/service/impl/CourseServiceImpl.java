@@ -92,6 +92,13 @@ public class CourseServiceImpl implements CourseService {
             //查重
             Integer count = scMapper.countByStudentAndCourse(studentId, courseId);
             if (count == 0) {
+                //检查重复课程
+                List<StudentCourse> scs = scMapper.getStudentsByCourse(courseId);
+                for (StudentCourse scc : scs) {
+                    if (scc.getStudentId().equals(studentId)) {
+                        throw new BusinessException(ExceptionType.STUDENT_COURSE_REPEAT, "学生已选该课程");
+                    }
+                }
                 Integer i = scMapper.addStudentCourse(sc);
             }
         }
@@ -109,12 +116,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Student> getStudentsByCourse(Long courseId) {
-        return initStudent(courseId);
+        return initStudent(courseId,1);
     }
 
     @Override
     public List<Student> getNoStudentsByCourse(Long courseId) {
-        List<Student> students = initStudent(courseId);
+        List<Student> students = initStudent(courseId,0);
         List<Student> studentList = studentMapper.getStudents();
         studentList.removeAll(students);
         return studentList;
@@ -145,8 +152,17 @@ public class CourseServiceImpl implements CourseService {
         return scMapper.deleteStudentsByCourse(sc);
     }
 
-    private List<Student> initStudent(Long courseId) {
-        List<StudentCourse> scs = scMapper.getStudentsByCourse(courseId);
+    private List<Student> initStudent(Long courseId,Integer flag) {
+        List<StudentCourse> scs = new ArrayList<>();
+        if(flag==1){
+            List<StudentCourse> scss = scMapper.getStudentsByCourse(courseId);
+            scs.addAll(scss);
+        }else {
+            Course course = courseMapper.getCourseById(courseId);
+            String courseName = course.getCourseName();
+            List<StudentCourse> scss = scMapper.getStudentsByCourseName(courseName);
+            scs.addAll(scss);
+        }
         List<Student> students =new ArrayList<>();
         for(StudentCourse sc : scs){
             Long studentId = sc.getStudentId();

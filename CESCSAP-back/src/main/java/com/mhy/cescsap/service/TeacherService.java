@@ -51,4 +51,6 @@ public interface TeacherService {
 
     //计算绩点录入成绩
     Integer saveScores(StudentCourse sc);
+
+    List<Course> getCoursesByTeacherId(Long id);
 }
