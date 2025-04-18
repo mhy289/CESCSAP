@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -185,6 +187,10 @@ public class TeacherServiceImpl implements TeacherService {
         List<Student> students = new ArrayList<Student>();
         for(StudentCourse sc : studentCourses){
             Student student = studentMapper.getStudentById(sc.getStudentId());
+            //查重，防止重复
+            if(students.contains(student)){
+                continue;
+            }
             students.add(student);
         }
         return students;
@@ -216,8 +222,29 @@ public class TeacherServiceImpl implements TeacherService {
 
         // 设置考试日期
         sc.setExamDate(new Date());
-
+        Long studentId = sc.getStudentId();
+        Integer i = updateStudentOverallGPA(studentId,sc.getGpa());
+        if(i== null|| i<=0){
+            throw new BusinessException(ExceptionType.STU_ERR,"学生绩点更新失败");
+        }
         return scMapper.updateScores(sc);
+    }
+
+
+     //更新学生总绩点
+    private Integer updateStudentOverallGPA(Long studentId,Double gpa) {
+        // 获取所有有效课程绩点
+        List<Double> validGPAs = scMapper.selectValidGPAs(studentId);
+
+        if (validGPAs.isEmpty()) {
+            return studentMapper.updateGPA(studentId, gpa);
+        }
+
+        // 计算加权平均（假设所有课程学分相同）
+        double total = validGPAs.stream().mapToDouble(Double::doubleValue).sum();
+        double avgGPA = total / validGPAs.size();
+
+        return studentMapper.updateGPA(studentId, avgGPA);
     }
 
     @Override

@@ -83,11 +83,14 @@ public class CourseServiceImpl implements CourseService {
             StudentCourse sc = new StudentCourse();
             sc.setCourseId(courseId);
             sc.setStudentId(studentId);
+            Student student = studentMapper.getStudentById(studentId);
             Course course = courseMapper.getCourseById(courseId);
             sc.setCourseName(course.getCourseName());
-            sc.setName(studentMapper.getStudentById(studentId).getName());
+            sc.setName(student.getName());
             sc.setTeacherId(course.getTeacherId());
             sc.setTeacherName(course.getTeacherName());
+            sc.setClassId(student.getClassId());
+            sc.setClassName(student.getClassName());
             sc.setEvaluateStatus(-1);
             //查重
             Integer count = scMapper.countByStudentAndCourse(studentId, courseId);

@@ -40,4 +40,9 @@ public class ClassServiceImpl implements ClassService {
     public Integer deleteClass(Long id) {
         return classMapper.deleteClass(id);
     }
+
+    @Override
+    public List<Class> getAllClasses() {
+        return classMapper.getAllClasses();
+    }
 }

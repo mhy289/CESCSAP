@@ -23,6 +23,8 @@
         <!--首页展示，读取ip地址-->
         
 
+        
+
         <el-main :class="{bk: $route.path=='/manage/home'}">
           <router-view @refresh="getUser" />
         </el-main>

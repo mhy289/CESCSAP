@@ -13,7 +13,7 @@ public interface SCMapper {
     List<StudentCourse> getStudents(Long scId);
 
     // 添加学生选课
-    @Insert("insert into studentcourse(student_id, student_name,course_id,course_name,teacher_id,teacher_name,class_id,class_name,evaluate_status) values (#{studentId},#{studentName},#{courseId},#{courseName},#{teacherId},#{teacherName},#{classId},#{className},#{evaluateStatus})")
+    @Insert("insert into studentcourse(student_id, student_name,course_id,course_name,teacher_id,teacher_name,class_id,class_name,evaluate_status) values (#{studentId},#{name},#{courseId},#{courseName},#{teacherId},#{teacherName},#{classId},#{className},#{evaluateStatus})")
     Integer addStudentCourse(StudentCourse studentCourse);
 
     // 查询符合条件的学生选课
@@ -103,4 +103,8 @@ public interface SCMapper {
 
     @Select("select * from studentcourse where course_name = #{courseName}")
     List<StudentCourse> getStudentsByCourseName(String courseName);
+
+    //查询所有有效成绩
+    @Select("select gpa from studentcourse where student_id = #{studentId} and gpa is not null")
+    List<Double> selectValidGPAs(Long studentId);
 }

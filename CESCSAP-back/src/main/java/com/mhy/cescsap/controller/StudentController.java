@@ -123,4 +123,10 @@ public class StudentController {
             throw new BusinessException(ExceptionType.GPA_ERR,"计算失败");
         }
     }
+
+    //查询学生所有课程成绩
+    @GetMapping("/student/{studentId}/scores")
+    public Result getAllSCByStudentId(@PathVariable Long studentId){
+        return new Result(scService.getAllSCByStudentId(studentId));
+    }
 }

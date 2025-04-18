@@ -4,6 +4,7 @@ import com.mhy.cescsap.mapper.CourseMapper;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.*;
+import com.mhy.cescsap.service.ClassService;
 import com.mhy.cescsap.service.EvaluationService;
 import com.mhy.cescsap.service.TeacherEvaluationStatsService;
 import com.mhy.cescsap.service.TeacherService;
@@ -26,7 +27,8 @@ public class TeacherController {
     TeacherEvaluationStatsService teacherEvaluationStatsService;
 
     @Autowired
-    CourseMapper courseMapper;
+    //CourseMapper courseMapper;
+    ClassService classService;
 
     // 教师相关操作
     // 获取单个教师
@@ -86,6 +88,12 @@ public class TeacherController {
     @GetMapping("/teachers/page/{current}/size/{size}")
     public Result getTeachersByPage(@PathVariable Integer current, @PathVariable Integer size){
         return new Result(teacherService.queryPage(current,size));
+    }
+
+    //获取所有班级
+    @GetMapping("/teacher/classes")
+    public Result getAllClasses(){
+        return new Result(classService.getAllClasses());
     }
 
     // 获取教师所带班级

@@ -70,9 +70,9 @@
       },
       viewScoreDetail(studentId) {
         // 跳转到成绩详情页面
-        // this.$router.push({ name: 'StudentScoreDetail', params: { studentId } })
+        this.$router.push({ name: 'StudentScoreDetail', params: { studentId } })
         //敬请期待
-        this.$message.info('敬请期待')
+        //this.$message.info('敬请期待')
       }
     }
   }

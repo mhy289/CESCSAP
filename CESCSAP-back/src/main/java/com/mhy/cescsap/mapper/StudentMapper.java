@@ -59,6 +59,10 @@ public interface StudentMapper {
     @Update("update student set account = #{account} where student_id = #{studentId}")
     Integer addStudentForAccount(Student student);
 
+    //更新学生GPA
+    @Update("update student set gpa = #{gpa} where student_id = #{studentId}")
+    Integer updateGPA(Long studentId, Double gpa);
+
     //检测学生专业
 
 }

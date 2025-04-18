@@ -19,4 +19,6 @@ public interface ClassService {
 
     //删除班级
     Integer deleteClass(Long id);
+
+    List<Class> getAllClasses();
 }
