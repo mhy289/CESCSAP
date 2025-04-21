@@ -13,6 +13,8 @@ import java.util.List;
 public class Teacher extends User{
     //教师id
     private Long teacherId;
+    //工号
+    private String teacherNumber;
 //    //姓名
 //    private String name;
 //    //密码
@@ -25,7 +27,8 @@ public class Teacher extends User{
     private Date birthDate;
     //联系方式
     private String contact;
-
+    //入职日期
+    private Date hireDate;
     private List<Course> courses;
     private List<TeacherEvaluationStats> teacherEvaluationStats;
     //登陆状态

@@ -13,14 +13,18 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student extends User{
-    //学号
+    //学生id
     private Long studentId;
+    //学号
+    private String studentNumber;
 //    //名字
 //    private String name;
 //    //密码
 //    private String password;
     //性别
     private String gender;
+    //所属院系
+    private String department;
     //出生日期
     private Date birthDate;
     //专业
@@ -33,6 +37,8 @@ public class Student extends User{
     private String contact;
     //绩点
     private Double gpa;
+    //入学日期
+    private Date enrollDate;
     //评价状态
     private Integer evaluateStatus;
     //登陆状态
