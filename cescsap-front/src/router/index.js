@@ -19,143 +19,160 @@ const routes = [{
       requireAuth: true
     },
     children: [{
-      path: 'home',
-      name: 'home',
-      component: () => import('../views/manage/Home.vue'),
-      meta: {
-        title: '首页',
-        path: '首页',
-        requireAuth: true
-      }
-    }, {
-      path: '/Notice',
-      name: 'notice',
-      component: () => import('../views/manage/file/Notice.vue'),
-    }, {
-      path: '/Notice/:noticeId',
-      name: 'noticedetial',
-      component: () => import('../views/manage/file/NoticeList.vue'),
-    }, {
-      path: '/Noticemanage',
-      name: 'Noticemanage',
-      component: () => import('../views/manage/file/NoticeManage.vue'),
-    }, {
-      path: '/Help',
-      name: 'help',
-      component: () => import('../views/manage/file/Help.vue'),
-    }, {
-      path: '/Helpmange',
-      name: 'helpmange',
-      component: () => import('../views/manage/file/Helpmange.vue'),
-    }, {
-      path: '/Link',
-      name: 'link',
-      component: () => import('../views/manage/file/Link.vue'),
-    }, {
-      path: '/LinkList',
-      name: 'linklist',
-      component: () => import('../views/manage/file/LinkList.vue'),
-    }, {
-      path: '/LogList',
-      name: 'loglist',
-      component: () => import('../views/manage/file/LogList.vue'),
-    }, {
-      path: 'QaList',
-      name: 'qaList',
-      component: () => import('../views/manage/file/QaList.vue'),
-    }, {
-      path: '/Forum_old',
-      name: 'forum',
-      component: () => import('../views/manage/file/Forum.vue'),
-    }, {
-      path: '/section/:id',
-      name: 'SectionPosts',
-      component: () => import('../views/manage/file/SectionPosts.vue'),
-    }, {
-      path: '/ForumReply',
-      name: 'forumReply',
-      component: () => import('../views/manage/file/ForumReply.vue'),
-    }, {
-      path: '/Evaluation',
-      name: 'evaluation',
-      component: () => import('../views/manage/file/Evaluation.vue'),
-    }, {
-      path: '/TeacherEvaluation',
-      name: 'teacherEvaluation',
-      component: () => import('../views/manage/file/Teacherevaluation.vue'),
-    }, {
-      path: '/Gpa',
-      name: 'gpa',
-      component: () => import('../views/manage/file/Gpa.vue'),
+        path: 'home',
+        name: 'home',
+        component: () => import('../views/manage/Home.vue'),
+        meta: {
+          title: '首页',
+          path: '首页',
+          requireAuth: true
+        }
+      }, {
+        path: '/Notice',
+        name: 'notice',
+        component: () => import('../views/manage/file/Notice.vue'),
+      }, {
+        path: '/Notice/:noticeId',
+        name: 'noticedetial',
+        component: () => import('../views/manage/file/NoticeList.vue'),
+      }, {
+        path: '/Noticemanage',
+        name: 'Noticemanage',
+        component: () => import('../views/manage/file/NoticeManage.vue'),
+      }, {
+        path: '/Help',
+        name: 'help',
+        component: () => import('../views/manage/file/Help.vue'),
+      }, {
+        path: '/Helpmange',
+        name: 'helpmange',
+        component: () => import('../views/manage/file/Helpmange.vue'),
+      }, {
+        path: '/Link',
+        name: 'link',
+        component: () => import('../views/manage/file/Link.vue'),
+      }, {
+        path: '/LinkList',
+        name: 'linklist',
+        component: () => import('../views/manage/file/LinkList.vue'),
+      }, {
+        path: '/LogList',
+        name: 'loglist',
+        component: () => import('../views/manage/file/LogList.vue'),
+      }, {
+        path: 'QaList',
+        name: 'qaList',
+        component: () => import('../views/manage/file/QaList.vue'),
+      }, {
+        path: '/Forum_old',
+        name: 'forum',
+        component: () => import('../views/manage/file/Forum.vue'),
+      }, {
+        path: '/section/:id',
+        name: 'SectionPosts',
+        component: () => import('../views/manage/file/SectionPosts.vue'),
+      }, {
+        path: '/ForumReply',
+        name: 'forumReply',
+        component: () => import('../views/manage/file/ForumReply.vue'),
+      }, {
+        path: '/Evaluation',
+        name: 'evaluation',
+        component: () => import('../views/manage/file/Evaluation.vue'),
+      }, {
+        path: '/TeacherEvaluation',
+        name: 'teacherEvaluation',
+        component: () => import('../views/manage/file/Teacherevaluation.vue'),
+      }, {
+        path: '/Gpa',
+        name: 'gpa',
+        component: () => import('../views/manage/file/Gpa.vue'),
 
-    }, {
-      path: '/Warn',
-      name: 'warn',
-      component: () => import('../views/manage/file/Warn.vue'),
-    }, {
-      path: '/Kd',
-      name: 'kd',
-      component: () => import('../views/manage/file/Kd.vue'),
-    }, {
-      path: '/Form',
-      name: 'form',
-      component: () => import('../views/manage/form/Form.vue'),
-    }, {
-      path: 'AdminForm',
-      name: 'adminform',
-      component: () => import('../views/manage/form/AdminForm.vue'),
-    }, {
-      path: '/StuManage',
-      name: 'stuManage',
-      component: () => import('../views/manage/file/StuManage.vue'),
-    }, {
-      path: '/TeacherManage',
-      name: 'teacherManage',
-      component: () => import('../views/manage/file/Teachermanage.vue'),
-    }, {
-      path: '/ClassManage',
-      name: 'classManage',
-      component: () => import('../views/manage/file/Classmanage.vue'),
-    }, {
-      path: '/CourseManage',
-      name: 'courseManage',
-      component: () => import('../views/manage/file/Coursemanage.vue'),
-    }, {
-      path: '/forum',
-      name: 'partitionlist',
-      component: () => import('../views/manage/file/PartitionList.vue'),
-    }, {
-      path: '/forum/partition/:partitionId',
-      name: 'PostList',
-      component: () => import('../views/manage/file/PostList.vue'),
-      props: true
-    }, {
-      path: '/forum/post/:postId',
-      name: 'ReplyList',
-      component: () => import('../views/manage/file/ReplyList.vue'),
-      props: true
-    }, {
-      path: '/PendingEvaluations',
-      name: 'pendingEvaluations',
-      component: () => import('../views/manage/file/PendingEvaluations.vue'),
-    }, {
-      path: '/TeacherClasses',
-      name: 'teacherClasses',
-      component: () => import('../views/manage/file/TeacherClasses.vue'),
-    }, {
-      path: '/TeacherCourses',
-      name: 'teacherCourses',
-      component: () => import('../views/manage/file/TeacherCourses.vue'),
-    }, {
-      path: '/TeacherStudents',
-      name: 'teacherStudents',
-      component: () => import('../views/manage/file/TeacherStudents.vue'),
-    }, {
-      path: '/teacher/student/:studentId/score',
-      name: 'StudentScoreDetail',
-      component: () => import('@/views/manage/file/StudentScoreDetail.vue'),
-      props: true
-    }]
+      }, {
+        path: '/Warn',
+        name: 'warn',
+        component: () => import('../views/manage/file/Warn.vue'),
+      }, {
+        path: '/Kd',
+        name: 'kd',
+        component: () => import('../views/manage/file/Kd.vue'),
+      }, {
+        path: '/Form',
+        name: 'form',
+        component: () => import('../views/manage/form/Form.vue'),
+      }, {
+        path: 'AdminForm',
+        name: 'adminform',
+        component: () => import('../views/manage/form/AdminForm.vue'),
+      }, {
+        path: '/StuManage',
+        name: 'stuManage',
+        component: () => import('../views/manage/file/StuManage.vue'),
+      }, {
+        path: '/TeacherManage',
+        name: 'teacherManage',
+        component: () => import('../views/manage/file/Teachermanage.vue'),
+      }, {
+        path: '/ClassManage',
+        name: 'classManage',
+        component: () => import('../views/manage/file/Classmanage.vue'),
+      }, {
+        path: '/CourseManage',
+        name: 'courseManage',
+        component: () => import('../views/manage/file/Coursemanage.vue'),
+      }, {
+        path: '/forum',
+        name: 'partitionlist',
+        component: () => import('../views/manage/file/PartitionList.vue'),
+      }, {
+        path: '/forum/partition/:partitionId',
+        name: 'PostList',
+        component: () => import('../views/manage/file/PostList.vue'),
+        props: true
+      }, {
+        path: '/forum/post/:postId',
+        name: 'ReplyList',
+        component: () => import('../views/manage/file/ReplyList.vue'),
+        props: true
+      }, {
+        path: '/PendingEvaluations',
+        name: 'pendingEvaluations',
+        component: () => import('../views/manage/file/PendingEvaluations.vue'),
+      }, {
+        path: '/TeacherClasses',
+        name: 'teacherClasses',
+        component: () => import('../views/manage/file/TeacherClasses.vue'),
+      }, {
+        path: '/TeacherCourses',
+        name: 'teacherCourses',
+        component: () => import('../views/manage/file/TeacherCourses.vue'),
+      }, {
+        path: '/TeacherStudents',
+        name: 'teacherStudents',
+        component: () => import('../views/manage/file/TeacherStudents.vue'),
+      }, {
+        path: '/teacher/student/:studentId/score',
+        name: 'StudentScoreDetail',
+        component: () => import('@/views/manage/file/StudentScoreDetail.vue'),
+        props: true
+      }, {
+        path: '/evalmanage',
+        name: 'evalmanage',
+        component: () => import('../views/manage/file/Evalmanage.vue'),
+      }, {
+        path: 'warnmanage',
+        name: 'warnmanage',
+        component: () => import('../views/manage/file/Warnmanage.vue'),
+      }, {
+        path: '/evaluations',
+        name: 'EvaluationManagement',
+        component: () => import('../views/manage/file/Evaluations.vue'),
+      },{
+        path: '/evaluation-dimensions',
+        name: 'EvaluationDimensionManagement',
+        component:  () => import('../views/manage/file/EvaluationDimensionManagement.vue'),
+      }
+    ]
   },
   {
     path: '/login',

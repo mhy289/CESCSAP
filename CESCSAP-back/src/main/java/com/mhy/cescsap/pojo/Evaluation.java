@@ -13,12 +13,16 @@ import java.util.List;
 public class Evaluation {
     private Long evaluationId;
     private Long studentId;
+    private String studentName;
     private Long courseId;
+    private String courseName;
     private Long teacherId;
+    private String teacherName;
     private String comment;
     private Date evaluationTime;
     private Student student;
     private Course course;
     private Teacher teacher;
+    private Double evaluationScore;
     private List<EvaluationDetail> evaluationDetails;
 }

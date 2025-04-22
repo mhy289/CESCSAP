@@ -18,4 +18,10 @@ public interface EvaluationMapper {
 
     @Select("select * from evaluationdimension")
     List<EvaluationDimension> getEvaluationDimensions();
+
+    @Select("select * from evaluation")
+    List<Evaluation> getAllEvaluation();
+
+    @Select("select * from evaluation where evaluation_id = #{evaluationId}")
+    Evaluation getEvaluationById(Long evaluationId);
 }

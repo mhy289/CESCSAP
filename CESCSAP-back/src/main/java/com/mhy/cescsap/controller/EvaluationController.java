@@ -147,4 +147,57 @@ public class EvaluationController {
         }
         return new Result(i,"success");
     }
+
+    //评价维度分页查询
+    @GetMapping("/eval/dimensions/page/{pageNum}/size/{pageSize}")
+    public Result getDimensionsPage(@PathVariable Integer pageNum, @PathVariable Integer pageSize){
+        PageItem<EvaluationDimension> pageItem = evaluationDimensionService.queryPage(pageNum, pageSize);
+        return new Result(pageItem);
+    }
+
+    //评价分页查询
+    @GetMapping("/evaluations/page/{pageNum}/size/{pageSize}")
+    public Result getEvalPage(@PathVariable Integer pageNum, @PathVariable Integer pageSize){
+        PageItem<Evaluation> pageItem = evaluationService.queryPage(pageNum, pageSize);
+        return new Result(pageItem);
+    }
+
+    //删除评价维度
+    @DeleteMapping("/eval/dimensions/{id}")
+    public Result deleteDimension(@PathVariable Long id) {
+        Integer i = evaluationDimensionService.deleteEvaluationDimension(id);
+        if (i == 0) {
+            throw new BusinessException(ExceptionType.EVAL_DIMENSION_NOT_EXIST, "评价维度不存在");
+        }
+        return new Result(i, "success");
+    }
+
+    //新增评价维度
+    @PostMapping("/eval/dimensions")
+    public Result addDimension(@RequestBody EvaluationDimension evaluationDimension) {
+        Integer i = evaluationDimensionService.getEvaluationDimension(evaluationDimension);
+        if (i == 0) {
+            throw new BusinessException(ExceptionType.EVAL_DIMENSION_EXIST, "评价维度已存在");
+        }
+        return new Result(i, "success");
+    }
+
+    //修改评价维度
+    @PutMapping("/eval/dimensions/{dimensionId}")
+    public Result updateDimension(@RequestBody EvaluationDimension evaluationDimension , @PathVariable Long dimensionId) {
+        EvaluationDimension evaluationDimension1 = evaluationDimensionService.getEvaluationDimensionByDimensionId(dimensionId);
+        if (evaluationDimension1== null || evaluationDimension1.getDimensionId()== null) {
+            throw new BusinessException(ExceptionType.EVAL_DIMENSION_NOT_EXIST, "评价维度不存在");
+        }
+        Integer i = evaluationDimensionService.updateEvaluationDimension(evaluationDimension);
+        return new Result(i, "success");
+    }
+
+    //查看对应评价的详细信息
+    @GetMapping("/eval/{evaluationId}")
+    public Result getEvaluationDetail(@PathVariable Long evaluationId){
+        //Evaluation evaluation = evaluationService.getEvaluationById(evaluationId);
+        List<EvaluationDetail> evaluationDetails = evaluationService.getEvaluationDetail(evaluationId);
+        return new Result(evaluationDetails);
+    }
 }

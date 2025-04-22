@@ -1,8 +1,6 @@
 package com.mhy.cescsap.service;
 
-import com.mhy.cescsap.pojo.Evaluation;
-import com.mhy.cescsap.pojo.EvaluationCriterion;
-import com.mhy.cescsap.pojo.EvaluationDimension;
+import com.mhy.cescsap.pojo.*;
 
 import java.util.List;
 
@@ -16,4 +14,10 @@ public interface EvaluationService {
     Integer saveEvaluation(Evaluation evaluation);
 
     List<EvaluationDimension> getEvaluationDimensions();
+
+    PageItem<Evaluation> queryPage(Integer pageNum, Integer pageSize);
+
+    Evaluation getEvaluationById(Long evaluationId);
+
+    List<EvaluationDetail> getEvaluationDetail(Long evaluationId);
 }

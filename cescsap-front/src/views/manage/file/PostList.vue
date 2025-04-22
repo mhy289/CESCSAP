@@ -171,8 +171,8 @@
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    /* 最多显示2行 */
+    /*-webkit-line-clamp: 2;
+    最多显示2行 */
   }
 
   .admin-ops {
@@ -207,7 +207,6 @@
 
     .title {
       font-size: 1rem;
-      -webkit-line-clamp: 1;
       /* 移动端单行显示 */
     }
   }

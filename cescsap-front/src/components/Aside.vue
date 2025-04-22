@@ -42,6 +42,8 @@
         <el-menu-item index="/teachermanage" v-if="menuFlags.techerMenu">教师管理</el-menu-item>
         <el-menu-item index="/coursemanage" v-if="menuFlags.courseMenu">课程管理</el-menu-item>
         <el-menu-item index="/classmanage" v-if="menuFlags.classMenu">班级管理</el-menu-item>
+        <el-menu-item index="/evaluations" v-if="menuFlags.evalMenu">评价管理</el-menu-item>
+        <el-menu-item index="/warnmanage" v-if="menuFlags.warnMenu">警告管理</el-menu-item>
       </el-submenu>
 
       <!-- 通知与公告 -->
@@ -79,7 +81,7 @@
       <el-submenu v-if="forumGroup" index="forum">
         <template slot="title">学园论坛</template>
         <el-menu-item index="/forum" v-if="menuFlags.forumMenu">论坛</el-menu-item>
-        <el-menu-item index="/forumReply" v-if="menuFlags.forumReplyMenu">讨论区</el-menu-item>
+        <!-- <el-menu-item index="/forumReply" v-if="menuFlags.forumReplyMenu">讨论区</el-menu-item> -->
       </el-submenu>
 
       <!-- 综合评价功能 -->
@@ -176,7 +178,7 @@
     computed: {
       logGroup: function () {
         return this.menuFlags.logMenu || this.menuFlags.stuMenu || this.menuFlags.techerMenu || this.menuFlags
-          .courseMenu || this.menuFlags.classMenu
+          .courseMenu || this.menuFlags.classMenu || this.menuFlags.evalMenu || this.menuFlags.warnMenu
       },
       noticeGroup: function () {
         return this.menuFlags.noticeMenu || this.menuFlags.noticeReplyMenu || this.menuFlags.noticemanageMenu
@@ -254,7 +256,8 @@
         this.menuFlags.forumMenu = true
         this.menuFlags.forumReplyMenu = true
         this.menuFlags.classMenu = true
-   
+        this.menuFlags.evalMenu = true
+        this.menuFlags.warnMenu = true
       } else if (this.role == 1) {
         console.log("Please2")
         //教师权限

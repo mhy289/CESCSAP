@@ -1,5 +1,7 @@
 package com.mhy.cescsap.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.mhy.cescsap.mapper.*;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
@@ -36,6 +38,12 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Autowired
     SCMapper scMapper;
+
+    @Autowired
+    StudentMapper studentMapper;
+
+    @Autowired
+    EvaluationDimensionMapper evaluationDimensionMapper;
 
     @Override
     public List<EvaluationCriterion> getEvaluationsByTeacherId_old(Long teacherId) {
@@ -115,5 +123,33 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new BusinessException(ExceptionType.EVAL_DIM_ERR, "获取评价维度错误");
         }
         return evaluationDimensions;
+    }
+
+    @Override
+    public PageItem<Evaluation> queryPage(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Evaluation> evaluations = evaluationMapper.getAllEvaluation();
+        for(Evaluation evaluation : evaluations){
+            evaluation.setStudentName(studentMapper.getStudentById(evaluation.getStudentId()).getName());
+            evaluation.setTeacherName(teacherMapper.selectTeacherById(evaluation.getTeacherId()).getName());
+            evaluation.setCourseName(courseMapper.getCourseById(evaluation.getCourseId()).getCourseName());
+        }
+        Page<Evaluation> page = (Page<Evaluation>) evaluations;
+        return new PageItem<>(page.getTotal(), evaluations);
+    }
+
+    @Override
+    public Evaluation getEvaluationById(Long evaluationId) {
+        return evaluationMapper.getEvaluationById(evaluationId);
+
+    }
+
+    @Override
+    public List<EvaluationDetail> getEvaluationDetail(Long evaluationId) {
+        List<EvaluationDetail> evaluationDetails = evaluationDetailMapper.getEvaluationDetails(evaluationId);
+        for(EvaluationDetail evaluationDetail : evaluationDetails){
+            evaluationDetail.setDimensionName(evaluationDimensionMapper.getEvaluationDimensionByDimensionId(evaluationDetail.getDimensionId()).getDimensionName());
+        }
+        return evaluationDetails;
     }
 }
