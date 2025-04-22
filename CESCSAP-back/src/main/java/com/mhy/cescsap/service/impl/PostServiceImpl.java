@@ -39,4 +39,9 @@ public class PostServiceImpl implements PostService {
     public Integer incrementReplyCount(Long postId) {
         return postMapper.incrementReplyCount(postId);
     }
+
+    @Override
+    public Integer deletePost(Long postId) {
+        return postMapper.deletePost(postId);
+    }
 }

@@ -9,6 +9,7 @@ import com.mhy.cescsap.service.PostService;
 import com.mhy.cescsap.service.ReplyService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -98,5 +99,19 @@ public class ForumController {
         // 增加回复数
         Integer s = postService.incrementReplyCount(postId);
         return new Result(r);
+    }
+
+    //删除帖子
+    @DeleteMapping("/post/{postId}")
+    public Result deletePost(@PathVariable Long postId) {
+        Integer i = postService.deletePost(postId);
+        return new Result(i);
+    }
+
+    //删除分区
+    @DeleteMapping("/partitions/{pid}")
+    public Result deletePartition(@PathVariable Long pid) {
+        Integer i = partitionService.deletePartition(pid);
+        return new Result(i);
     }
 }

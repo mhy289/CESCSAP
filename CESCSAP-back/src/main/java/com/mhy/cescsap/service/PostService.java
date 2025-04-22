@@ -19,4 +19,7 @@ public interface PostService {
 
     //增加回复量
     Integer incrementReplyCount(Long postId);
+
+    //删除帖子
+    Integer deletePost(Long postId);
 }

@@ -25,10 +25,10 @@
       <template slot="title">
         <i class="el-icon-menu"></i><span slot="title">系统管理</span></template>
 
-      <el-submenu v-show="userGroup" index="user">
+      <!-- <el-submenu v-show="userGroup" index="user">
         <template slot="title">账户相关</template>
         <el-menu-item index="/manage/User" v-if="menuFlags.userMenu">用户管理</el-menu-item>
-      </el-submenu>
+      </el-submenu> -->
 
       <!-- 日志管理-->
       <el-submenu v-if="logGroup" index="log">
@@ -94,14 +94,14 @@
       </el-submenu>
 
       <!-- 个人信息 -->
-      <el-submenu v-if="Personal" index="person">
+      <!-- <el-submenu v-if="Personal" index="person">
         <template slot="title">个人信息</template>
         <el-menu-item index="/gpa" v-if="menuFlags.gpaMenu">成绩</el-menu-item>
         <el-menu-item index="/kd" v-if="menuFlags.kdMenu">所属</el-menu-item>
         <el-menu-item index="/form" v-if="menuFlags.formMenu">修改信息</el-menu-item>
         <el-menu-item index="/warn" v-if="menuFlags.warnMenu">预警信息</el-menu-item>
         <el-menu-item index="/adminform" v-if="menuFlags.adminformMenu">修改管理员信息</el-menu-item>
-      </el-submenu>
+      </el-submenu> -->
 
     </el-submenu>
   </el-menu>
