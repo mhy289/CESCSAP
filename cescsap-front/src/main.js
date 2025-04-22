@@ -91,8 +91,12 @@ axios.interceptors.response.use(resp => {
     localStorage.removeItem("name")
     localStorage.removeItem("role")
     //router.push("/login")
-    if (router.currentRoute.value.path !== '/login') { // 关键判断
-        router.push('/login');
+    let isLoggingOut = false; // 全局标记
+    if (router.currentRoute && router.currentRoute.path !== '/login') { // 关键判断
+        isLoggingOut = true;
+        router.push('/login').finally(() => {
+            isLoggingOut = false;
+        });
       }
   }
   return data

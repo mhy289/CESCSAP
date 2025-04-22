@@ -14,10 +14,13 @@ public class Warning {
     private Long warningId;
     //学生id
     private Long studentId;
+    private String studentName;
     //课程id
     private Long courseId;
+    private String courseName;
     //分布教师Id
     private Long teacherId;
+    private String teacherName;
     //预警内容
     private String warningContent;
     //发送日期

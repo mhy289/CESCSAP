@@ -2,6 +2,7 @@ package com.mhy.cescsap.controller;
 
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
+import com.mhy.cescsap.pojo.PageItem;
 import com.mhy.cescsap.pojo.Result;
 import com.mhy.cescsap.pojo.Warning;
 import com.mhy.cescsap.service.WarningService;
@@ -62,6 +63,13 @@ public class WarningController {
     @GetMapping("/student/warnings/{studentId}")
     public Result getWarningsForStudent(@PathVariable Long studentId) {
         List<Warning> warnings = warningService.getWarningsForStudent(studentId);
+        return new Result(warnings, "查询成功", 200);
+    }
+
+    //分页查询预警
+    @GetMapping("/warnings/page/{pageNum}/size/{pageSize}")
+    public Result getWarnings(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+        PageItem<Warning> warnings = warningService.getWarnings(pageNum, pageSize);
         return new Result(warnings, "查询成功", 200);
     }
 

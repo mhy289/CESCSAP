@@ -21,4 +21,7 @@ public interface WarningMapper {
 
     @Select("select * from warning where teacher_id = #{teacherId}")
     List<Warning> selectWarningsForTeacher(Long teacherId);
+
+    @Select("select * from warning")
+    List<Warning> selectAllWarnings();
 }

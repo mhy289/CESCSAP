@@ -160,7 +160,7 @@ const routes = [{
         name: 'evalmanage',
         component: () => import('../views/manage/file/Evalmanage.vue'),
       }, {
-        path: 'warnmanage',
+        path: '/warnmanage',
         name: 'warnmanage',
         component: () => import('../views/manage/file/Warnmanage.vue'),
       }, {

@@ -43,7 +43,7 @@
         <el-menu-item index="/coursemanage" v-if="menuFlags.courseMenu">课程管理</el-menu-item>
         <el-menu-item index="/classmanage" v-if="menuFlags.classMenu">班级管理</el-menu-item>
         <el-menu-item index="/evaluations" v-if="menuFlags.evalMenu">评价管理</el-menu-item>
-        <el-menu-item index="/warnmanage" v-if="menuFlags.warnMenu">警告管理</el-menu-item>
+        <el-menu-item index="/warnmanage" v-if="menuFlags.warnMenu">警告管理</el-menu-item> 
       </el-submenu>
 
       <!-- 通知与公告 -->
