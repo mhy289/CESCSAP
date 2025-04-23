@@ -1,6 +1,7 @@
 package com.mhy.cescsap.mapper;
 
 import com.mhy.cescsap.pojo.Warning;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -10,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface WarningMapper {
 
-    @Update("update warning set student_id = #{studentId},course_id = #{courseId},teacher_id = #{teacherId},warning_content = #{warningContent},send_date = #{sendDate} where warning_id = #{warningId}")
+    @Update("update warning set warning_content = #{warningContent},send_date = #{sendDate} where warning_id = #{warningId}")
     Integer updateWarningByTeacher(Warning warning);
 
     @Update("update warning set student_response = #{studentResponse} where warning_id = #{warningId}")
@@ -24,4 +25,7 @@ public interface WarningMapper {
 
     @Select("select * from warning")
     List<Warning> selectAllWarnings();
+
+    @Insert("insert into warning(student_id,course_id,teacher_id) values(#{studentId},#{courseId},#{teacherId})")
+    Integer insertWarning(Warning warning);
 }

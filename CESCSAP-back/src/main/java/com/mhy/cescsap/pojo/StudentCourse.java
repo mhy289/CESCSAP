@@ -42,7 +42,8 @@ public class StudentCourse {
     private Double gpa;
     // 考试日期
     private Date examDate;
-
+    //学期
+    private String term;
     private Student student;
 
     private Course course;

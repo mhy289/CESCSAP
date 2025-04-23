@@ -4,6 +4,7 @@ import HomeView from '../views/manage/Manage.vue'
 import {
   Message
 } from 'element-ui';
+//import { component } from 'vue/types/umd';
 
 Vue.use(VueRouter)
 
@@ -171,6 +172,18 @@ const routes = [{
         path: '/evaluation-dimensions',
         name: 'EvaluationDimensionManagement',
         component:  () => import('../views/manage/file/EvaluationDimensionManagement.vue'),
+      },{
+        path: '/teacherWarning',
+        name: 'TeacherWarning',
+        component: () => import('../views/manage/file/TeacherWarning.vue')
+      },{
+        path:'/courseWarning',
+        name:'CourseWarning',
+        component: () => import('../views/manage/file/StudentWarning.vue')
+      },{
+        path:'/studentScore',
+        name:'StudentScore',
+        component: () => import('../views/manage/file/StudentScore.vue')
       }
     ]
   },

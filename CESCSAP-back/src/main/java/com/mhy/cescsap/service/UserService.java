@@ -2,7 +2,9 @@ package com.mhy.cescsap.service;
 
 
 import com.mhy.cescsap.pojo.User;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public interface UserService {
 
     //登录

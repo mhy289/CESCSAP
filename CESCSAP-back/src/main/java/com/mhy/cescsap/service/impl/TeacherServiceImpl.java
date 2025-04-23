@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.mhy.cescsap.utils.AcademicTermUtils.classifyAcademicTerm;
 import static com.mhy.cescsap.utils.AccountGeneratorUtils.generateAccount;
 
 @Service
@@ -51,6 +52,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     StudentMapper studentMapper;
+
+    @Autowired
+    WarningMapper warningMapper;
 
     @Override
     public List<Teacher> getTeachers() {
@@ -216,12 +220,23 @@ public class TeacherServiceImpl implements TeacherService {
         sc.setUsualRate(usualRate);
         sc.setExamRate(examRate);
         sc.setScore(total);
+        if(total<60){
+            Warning warning = new Warning();
+            warning.setTeacherId(sc.getTeacherId());
+            warning.setStudentId(sc.getStudentId());
+            warning.setCourseId(sc.getCourseId());
+            //低于60分,新建预警信息
+            Integer i = warningMapper.insertWarning(warning);
+        }
 
         // 计算 5 分制绩点（线性映射）
         sc.setGpa(calcGpa5(total));
 
         // 设置考试日期
         sc.setExamDate(new Date());
+        //通过工具类获取学期
+        sc.setTerm(classifyAcademicTerm(sc.getExamDate().toString()));
+        sc.setEvaluateStatus(0);
         Long studentId = sc.getStudentId();
         Integer i = updateStudentOverallGPA(studentId,sc.getGpa());
         if(i== null|| i<=0){

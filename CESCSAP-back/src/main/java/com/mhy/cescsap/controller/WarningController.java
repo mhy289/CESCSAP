@@ -1,5 +1,6 @@
 package com.mhy.cescsap.controller;
 
+import com.github.pagehelper.Page;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.PageItem;
@@ -59,10 +60,25 @@ public class WarningController {
             List<Warning> warnings = warningService.getWarningsForTeacher(teacherId);
             return new Result( warnings, "查询成功",200);
     }
+
+    @GetMapping("/teacher/warnings/{teacherId}/page/{pageNum}/size/{pageSize}")
+    public Result getWarningsForTeacherByPage(@PathVariable Long teacherId, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+        PageItem<Warning> warnings = warningService.getWarningsForTeacherByPage(teacherId, pageNum, pageSize);
+        log.debug("warnings:{}",warnings);
+        System.out.println(warnings);
+        return new Result( warnings, "查询成功",200);
+    }
+
     //学生查询待处理的预警
     @GetMapping("/student/warnings/{studentId}")
     public Result getWarningsForStudent(@PathVariable Long studentId) {
         List<Warning> warnings = warningService.getWarningsForStudent(studentId);
+        return new Result(warnings, "查询成功", 200);
+    }
+
+    @GetMapping("/student/warnings/{studentId}/page/{pageNum}/size/{pageSize}")
+    public Result getWarningsForStudentByPage(@PathVariable Long studentId, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+        PageItem<Warning> warnings = warningService.getWarningsForStudentByPage(studentId, pageNum, pageSize);
         return new Result(warnings, "查询成功", 200);
     }
 

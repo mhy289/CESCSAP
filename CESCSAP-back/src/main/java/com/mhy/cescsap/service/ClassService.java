@@ -1,9 +1,11 @@
 package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.Class;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface ClassService {
     //查询单个班级
     Class getClass(Long id);

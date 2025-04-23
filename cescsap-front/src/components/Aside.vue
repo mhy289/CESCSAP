@@ -43,7 +43,7 @@
         <el-menu-item index="/coursemanage" v-if="menuFlags.courseMenu">课程管理</el-menu-item>
         <el-menu-item index="/classmanage" v-if="menuFlags.classMenu">班级管理</el-menu-item>
         <el-menu-item index="/evaluations" v-if="menuFlags.evalMenu">评价管理</el-menu-item>
-        <el-menu-item index="/warnmanage" v-if="menuFlags.warnMenu">警告管理</el-menu-item> 
+        <el-menu-item index="/warnmanage" v-if="menuFlags.warnMenu">警告管理</el-menu-item>
       </el-submenu>
 
       <!-- 通知与公告 -->
@@ -75,6 +75,8 @@
         <!-- <el-menu-item index="/teacher" v-if="menuFlags.teacherMenu">教师主页</el-menu-item> -->
         <el-menu-item index="/TeacherClasses" v-if="menuFlags.teacherClassMenu">我的班级</el-menu-item>
         <el-menu-item index="/TeacherCourses" v-if="menuFlags.teacherCourseMenu">我的课程</el-menu-item>
+        <el-menu-item index="/TeacherWarning" v-if="menuFlags.teacherWarningMenu">课程预警</el-menu-item>
+        <el-menu-item index="/TeacherEvaluations" v-if="menuFlags.teacherEvaluationMenu">我的评价</el-menu-item>
       </el-submenu>
 
       <!-- 学园论坛 -->
@@ -84,15 +86,17 @@
         <!-- <el-menu-item index="/forumReply" v-if="menuFlags.forumReplyMenu">讨论区</el-menu-item> -->
       </el-submenu>
 
-      <!-- 综合评价功能 -->
+      <!-- 课程功能 -->
       <el-submenu v-if="evaluationGroup" index="evaluation">
-        <template slot="title">综合评价</template>
+        <template slot="title">课程综合</template>
         <!-- 自评 -->
         <el-menu-item index="/selfevaluation" v-if="menuFlags.selfevaluationMenu">自评</el-menu-item>
         <!-- 教师评价 -->
         <el-menu-item index="/PendingEvaluations" v-if="menuFlags.teacherevaluationMenu">教师评价</el-menu-item>
         <!--查看全部评价 -->
         <el-menu-item index="/evaluation" v-if="menuFlags.evaluationMenu">查看全部</el-menu-item>
+        <el-menu-item index="/studentScore" v-if="menuFlags.studentScoreMenu">我的成绩</el-menu-item>
+        <el-menu-item index="/courseWarning" v-if="menuFlags.courseWarningMenu">课程预警</el-menu-item>
       </el-submenu>
 
       <!-- 个人信息 -->
@@ -275,24 +279,28 @@
         this.menuFlags.teacherCourseMenu = true
         this.menuFlags.teacherMenu = true
         this.menuFlags.forumMenu = true
-   
+        this.menuFlags.teacherWarningMenu = true
+        this.menuFlags.teacherEvaluationMenu = true
       } else if (this.role == 2) {
         console.log("Please")
         //学生权限
         this.menuFlags.kdMenu = true
         this.menuFlags.gpaMenu = true
         this.menuFlags.formMenu = true
-        this.menuFlags.warnMenu = true
+        //this.menuFlags.warnMenu = true
         this.menuFlags.forumMenu = true
         this.menuFlags.forumReplyMenu = true
-        this.menuFlags.selfevaluationMenu = true
+        //this.menuFlags.selfevaluationMenu = true
         this.menuFlags.teacherevaluationMenu = true
-        this.menuFlags.evaluationMenu = true
-        this.menuFlags.helpMenuMenu = true
-        this.menuFlags.helpArticleMenu = true
-        this.menuFlags.linkMenu = true
+        //this.menuFlags.evaluationMenu = true
+        this.menuFlags.helpMenu = true
+        //this.menuFlags.helpArticleMenu = true
+        // this.menuFlags.linkMenu = true
         this.menuFlags.linkListMenu = true
         this.menuFlags.noticeMenu = true
+        this.menuFlags.studentScoreMenu = true
+        this.menuFlags.courseWarningMenu = true
+
       } else {
         console.log("Noooooooooooooooooooooooooooooooooooooo")
       }

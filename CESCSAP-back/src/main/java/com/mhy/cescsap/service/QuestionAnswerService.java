@@ -3,9 +3,11 @@ package com.mhy.cescsap.service;
 import com.mhy.cescsap.pojo.Notice;
 import com.mhy.cescsap.pojo.PageItem;
 import com.mhy.cescsap.pojo.QuestionAnswer;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface QuestionAnswerService {
     //查看一条问答
     QuestionAnswer viewQuestionAnswer(Long qaId);

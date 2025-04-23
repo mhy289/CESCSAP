@@ -1,9 +1,11 @@
 package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.URL;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface URLService {
     //查看所有友情链接
     List<URL> getURLs();

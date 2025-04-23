@@ -7,6 +7,7 @@ import com.mhy.cescsap.pojo.Course;
 import com.mhy.cescsap.pojo.Result;
 import com.mhy.cescsap.pojo.Student;
 import com.mhy.cescsap.service.CourseService;
+import com.mhy.cescsap.service.SCService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,9 @@ public class CourseController {
 
     @Autowired
     CourseService courseService;
+
+    @Autowired
+    SCService scService;
     // 课程相关操作
     // 获取单个课程
     @GetMapping("/course/{id}")
@@ -88,5 +92,16 @@ public class CourseController {
     @DeleteMapping("/course/{courseId}/student/{studentId}")
     public Result deleteStudentByc(@PathVariable Long courseId,@PathVariable Long studentId){
         return new Result(courseService.deleteStudentByc(courseId,studentId));
+    }
+
+    //验证课程完整性
+    @GetMapping("/courses/check")
+    public Result checkCourse(){
+        Integer allCheck = scService.getAllCheck();
+        log.debug("allCheck :{} " ,allCheck);
+        if(allCheck==0){
+            throw new BusinessException(ExceptionType.COURSE_NOT_COMPLETE,"课程未完成");
+        }
+        return new Result(allCheck);
     }
 }

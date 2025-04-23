@@ -1,9 +1,11 @@
 package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface SCService {
     //查询学生选课
     List<StudentCourse> getSC(Long scId);
@@ -32,4 +34,6 @@ public interface SCService {
     Integer getAllCheck();
 
     List<PendingEvalDTO> getPendingEvaluationsWithNames(Long studentId);
+
+    PageItem<StudentCourse> getAllSCByStudentId2(Long studentId, String term, Integer pageNum, Integer pageSize);
 }

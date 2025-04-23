@@ -25,37 +25,37 @@ public class StudentController {
 
     //查询所有学生
     @GetMapping("/students")
-    public Result getAllStudents(){
+    public Result getAllStudents() {
         return new Result(studentService.getStudents());
     }
 
     //查询一个学生
     @GetMapping("/student/{id}")
-    public Result getOneStudent(@PathVariable Long id){
+    public Result getOneStudent(@PathVariable Long id) {
         return new Result(studentService.getStudentById(id));
     }
 
     //增加一个学生
     @PostMapping("/student")
-    public Result addStudent(@RequestBody Student student){
+    public Result addStudent(@RequestBody Student student) {
         return new Result(studentService.addStudent(student));
     }
 
     // 删除一个学生
     @DeleteMapping("/student/{id}")
-    public Result deleteStudent(@PathVariable Long id){
+    public Result deleteStudent(@PathVariable Long id) {
         return new Result(studentService.deleteStudent(id));
     }
 
     // 更新一个学生
     @PutMapping("/student")
-    public Result updateStudent(@RequestBody Student student){
+    public Result updateStudent(@RequestBody Student student) {
         return new Result(studentService.updateStudent(student));
     }
 
     // 查看个人成绩
     @GetMapping("/studentGrade/{id}")
-    public Result getStudentGrade(@PathVariable Long id){
+    public Result getStudentGrade(@PathVariable Long id) {
         return new Result(scService.getSC(id));
     }
 
@@ -69,64 +69,71 @@ public class StudentController {
     // 条件分页查询
     @PostMapping("/students/current/{current}/size/{size}")
     public Result getConditionPage(@PathVariable Integer current, @PathVariable Integer size, @RequestBody Student student) {
-        if(student.getName() == null){
-            throw new BusinessException(ExceptionType.STUDENT_ID_NOT_FOUND,"没有对象");
+        if (student.getName() == null) {
+            throw new BusinessException(ExceptionType.STUDENT_ID_NOT_FOUND, "没有对象");
         }
         Student student2 = studentService.getStudentByName(student.getName());
-        log.debug("AAAAAAAAAAAAAAAAAAAAAAStudent is {}",student2);
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAStudent is {}", student2);
         return new Result(scService.queryConditionPage(student2, current, size), "查询成功", 200);
     }
 
     //学生添加课程
     @PostMapping("/student/addCourse")
-    public Result addStudentCourse(@RequestBody StudentCourse sc){
+    public Result addStudentCourse(@RequestBody StudentCourse sc) {
         return new Result(scService.addSC(sc));
     }
 
     //按条件筛选课程
     @PostMapping("/student/queryCourse")
-    public Result queryStudentCourse(@RequestBody Student student){
+    public Result queryStudentCourse(@RequestBody Student student) {
         return new Result(scService.queryStudentCourse(student));
     }
 
     // 获取筛选选项
     @PostMapping("/courses/filter-options")
-    public Result getFilterOptions(@RequestBody Student student){
+    public Result getFilterOptions(@RequestBody Student student) {
         return new Result(studentService.getFilterOptions(student));
     }
 
     //刷新绩点
     @PostMapping("/student/refreshGPA")
-    public Result refreshGPA(@RequestBody Student student){
+    public Result refreshGPA(@RequestBody Student student) {
         return new Result(scService.refreshGPA(student));
     }
 
     //修改评价状态
     @PutMapping("/student/updateCommentStatus")
-    public Result updateCommentStatus(){
+    public Result updateCommentStatus() {
         return new Result(studentService.updateCommentStatus());
     }
 
     //所有学生专业合法化检测
     @GetMapping("/student/major")
-    public Result updateMajorStatus(){
+    public Result updateMajorStatus() {
         return new Result(studentService.updateMajor());
     }
 
     //计算所有学生的平均绩点
     @GetMapping("/students/averageGPA")
-    public Result averageGPA(){
+    public Result averageGPA() {
         Integer allSC = scService.getAllSC();
-        if(allSC>0){
+        if (allSC > 0) {
             return new Result(allSC);
-        }else{
-            throw new BusinessException(ExceptionType.GPA_ERR,"计算失败");
+        } else {
+            throw new BusinessException(ExceptionType.GPA_ERR, "计算失败");
         }
     }
 
     //查询学生所有课程成绩
     @GetMapping("/student/{studentId}/scores")
-    public Result getAllSCByStudentId(@PathVariable Long studentId){
+    public Result getAllSCByStudentId(@PathVariable Long studentId) {
         return new Result(scService.getAllSCByStudentId(studentId));
+    }
+
+    @GetMapping("/student/{studentId}/scoress")
+    public Result getAllSCByStudentId2(@PathVariable Long studentId, @RequestParam(required = false) String term,  // 学期过滤（可选）
+                                       @RequestParam(defaultValue = "1") Integer pageNum,  // 当前页（1-based）
+                                       @RequestParam(defaultValue = "10") Integer pageSize) {
+        return new Result(scService.getAllSCByStudentId2(studentId, term, pageNum, pageSize));
     }
 }

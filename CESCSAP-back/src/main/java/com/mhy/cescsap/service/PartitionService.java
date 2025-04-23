@@ -1,9 +1,11 @@
 package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.Partition;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface PartitionService {
     //查看全部分区
     List<Partition> getAllPartitions();

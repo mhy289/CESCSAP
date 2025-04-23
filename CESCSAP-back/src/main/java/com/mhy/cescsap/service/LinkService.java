@@ -2,9 +2,11 @@ package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.Link;
 import com.mhy.cescsap.pojo.PageItem;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface LinkService {
     //查询所有链接
     List<Link> getLinks();

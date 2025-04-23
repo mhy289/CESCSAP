@@ -3,10 +3,11 @@ package com.mhy.cescsap.service;
 import com.mhy.cescsap.pojo.*;
 import com.mhy.cescsap.pojo.Class;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
+@Transactional
 public interface TeacherService {
     //查询所有教师
     List<Teacher> getTeachers();

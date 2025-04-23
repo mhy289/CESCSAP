@@ -123,17 +123,6 @@ public class EvaluationController {
         return new Result(dims);
     }
 
-    //验证课程完整性
-    @GetMapping("/courses/check")
-    public Result checkCourse(){
-        Integer allCheck = scService.getAllCheck();
-        log.debug("allCheck :{} " ,allCheck);
-        if(allCheck==0){
-            throw new BusinessException(ExceptionType.COURSE_NOT_COMPLETE,"课程未完成");
-        }
-        return new Result(allCheck);
-    }
-
     //学生提交评价
     @PostMapping("/eval")
     public Result evaluate(@RequestBody Evaluation evaluation){

@@ -6,10 +6,11 @@ import com.mhy.cescsap.pojo.Notice;
 import com.mhy.cescsap.pojo.PageItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
+@Transactional
 public interface LogService {
     //记录操作日志
     //查询一条日志

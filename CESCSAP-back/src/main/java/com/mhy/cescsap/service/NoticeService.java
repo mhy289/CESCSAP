@@ -2,9 +2,11 @@ package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.Notice;
 import com.mhy.cescsap.pojo.PageItem;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface NoticeService {
     //查询公告
     Notice getNotice(Long id);

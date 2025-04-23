@@ -4,9 +4,11 @@ import com.mhy.cescsap.pojo.Course;
 import com.mhy.cescsap.pojo.PageItem;
 import com.mhy.cescsap.pojo.Student;
 import com.mhy.cescsap.pojo.StudentCourse;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface CourseService {
     //查询所有课程
     List<Course> getCourseList();

@@ -40,7 +40,7 @@ public interface SCMapper {
     List<StudentCourse> getAllSC();
 
     //更新所有数据
-    @Update("update studentcourse set student_name = #{name}, course_name = #{courseName}, teacher_id = #{teacherId},teacher_name = #{teacherName},class_id = #{classId},class_name = #{className} where sc_id = #{scId}")
+    @Update("update studentcourse set student_name = #{name}, course_name = #{courseName}, teacher_id = #{teacherId},teacher_name = #{teacherName},class_id = #{classId},class_name = #{className},term = #{term} where sc_id = #{scId}")
     Integer updateSC(StudentCourse sc);
 
     @Select("SELECT sc.course_id AS courseId, " +
@@ -73,9 +73,9 @@ public interface SCMapper {
             "sc.gpa, " +
             "s.student_id, " +
             "s.gender," +
-            "s.birth_date,"+
-            "s.contact,"+
-            "s.gpa,"+
+            "s.birth_date," +
+            "s.contact," +
+            "s.gpa," +
             "s.name, " +
             "s.class_name " +
             "FROM studentcourse sc " +
@@ -96,8 +96,8 @@ public interface SCMapper {
     @Update("UPDATE studentcourse "
             + "SET usual_score = #{usualScore}, exam_score = #{examScore}, "
             + "    usual_rate = #{usualRate}, exam_rate = #{examRate}, "
-            + "    score = #{score}, gpa = #{gpa}, exam_date = #{examDate} "
-            + "WHERE sc_id = #{scId}")
+            + "    score = #{score}, gpa = #{gpa}, exam_date = #{examDate},term = #{term} "
+            + "WHERE  sc_id = #{scId}")
     Integer updateScores(StudentCourse sc);
 
 
@@ -107,4 +107,8 @@ public interface SCMapper {
     //查询所有有效成绩
     @Select("select gpa from studentcourse where student_id = #{studentId} and gpa is not null")
     List<Double> selectValidGPAs(Long studentId);
+
+    //查询所有该学期成绩
+    @Select("select * from studentcourse where student_id = #{studentId} and term = #{term}")
+    List<StudentCourse> getStudentsByStudentId(Long studentId, String term);
 }

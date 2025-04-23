@@ -2,9 +2,11 @@ package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.EvaluationDimension;
 import com.mhy.cescsap.pojo.PageItem;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface EvaluationDimensionService {
     //新增评价维度
     Integer getEvaluationDimension(EvaluationDimension evaluationDimension);

@@ -1,9 +1,11 @@
 package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.Post;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface PostService {
     //查看分区下所有帖子
     List<Post> findPostByPartitionId(Long partitionId);

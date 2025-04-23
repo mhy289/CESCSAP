@@ -1,9 +1,11 @@
 package com.mhy.cescsap.service;
 
 import com.mhy.cescsap.pojo.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface EvaluationService {
     List<EvaluationCriterion> getEvaluationsByTeacherId_old(Long teacherId);
 

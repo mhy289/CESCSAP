@@ -15,4 +15,8 @@ public interface WarningService {
     List<Warning> getWarningsForTeacher(Long teacherId);
 
     PageItem<Warning> getWarnings(Integer pageNum, Integer pageSize);
+
+    PageItem<Warning> getWarningsForTeacherByPage(Long teacherId, Integer pageNum, Integer pageSize);
+
+    PageItem<Warning> getWarningsForStudentByPage(Long studentId, Integer pageNum, Integer pageSize);
 }

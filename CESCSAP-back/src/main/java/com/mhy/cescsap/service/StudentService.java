@@ -3,9 +3,11 @@ package com.mhy.cescsap.service;
 import com.mhy.cescsap.pojo.PageItem;
 import com.mhy.cescsap.pojo.Student;
 import com.mhy.cescsap.pojo.TeacherCourse;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface StudentService {
     //查询学生
     List<Student> getStudents();

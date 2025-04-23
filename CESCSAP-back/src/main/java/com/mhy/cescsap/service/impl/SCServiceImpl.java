@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mhy.cescsap.utils.AcademicTermUtils.classifyAcademicTerm;
+
 @Service
 @Slf4j
 public class SCServiceImpl implements SCService {
@@ -224,8 +226,14 @@ public class SCServiceImpl implements SCService {
                 sc.setClassId(clazz.getClassId());
                 sum++;
             }
+            if(sc.getTerm()==null && sc.getExamDate()!=null){
+                sc.setTerm(classifyAcademicTerm(sc.getExamDate().toString()));
+            }
             //更新至数据库
-            scMapper.updateSC(sc);
+            Integer i = scMapper.updateSC(sc);
+            if(i==null){
+                throw new BusinessException(ExceptionType.EVALUATE_ERR,"评价主记录保存失败");
+            }
         }
         return sum;
     }
@@ -233,5 +241,13 @@ public class SCServiceImpl implements SCService {
     @Override
     public List<PendingEvalDTO> getPendingEvaluationsWithNames(Long studentId) {
         return scMapper.getPendingEvals(studentId);
+    }
+
+    @Override
+    public PageItem<StudentCourse> getAllSCByStudentId2(Long studentId, String term, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<StudentCourse> studentCourses = scMapper.getStudentsByStudentId(studentId, term);
+        long total = ((Page<StudentCourse>) studentCourses).getTotal();
+        return new PageItem<>(total, studentCourses);
     }
 }

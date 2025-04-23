@@ -2,7 +2,9 @@ package com.mhy.cescsap.service;
 
 
 import com.mhy.cescsap.pojo.Comment;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public interface CommentService {
     //添加评价
     Integer addComment(Integer studentId, Integer courseId, String content);
