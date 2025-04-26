@@ -28,67 +28,143 @@ public class UserServiceImpl implements UserService {
     AdminMapper adminMapper;
 
     @Override
-    public User login(User user) {
-        //Long teacherId = teacher.getTeacherId();
-        //根据身份标识判断用户类型
-        if(user.getRole()==0){
-            //User转Admin
-            Admin admin = new Admin();
-            admin.setName(user.getName());
-            admin.setPassword(user.getPassword());
-            //查询admin
-            String name = admin.getName();
-            //根据adminId查询admin
-            Admin admin1 = adminMapper.selectAdminByName(name);
-            log.info("Admin is {}",admin1);
-            if (admin1!=null && admin1.getPassword().equals(admin.getPassword())) {
-                admin1.setId(admin1.getAdminId());
-                log.info("User is {}",admin1);
-                return admin1;
-            } else {
-                return null;
-            }
-        }else if(user.getRole()==1){
-            //User转Teacher
-            Teacher teacher = new Teacher();
-            teacher.setName(user.getName());
-            teacher.setPassword(user.getPassword());
-            //查询教师
-            //Long teacherId = teacher.getTeacherId();
-            String name = teacher.getName();
-            Teacher teacher1 = teacherMapper.selectTeacherByName(name);
+    public User login(User user,String loginType) {
+        Long role = user.getRole();
+        String password = user.getPassword();
 
-            log.info("Teacher is {}",teacher1);
-            if (teacher1!=null && teacher1.getPassword().equals(teacher.getPassword())) {
-                teacher1.setId(teacher1.getTeacherId());
-                log.info("User is {}",teacher1);
-                return teacher1;
-            } else {
-                return null;
+        // 根据角色选择登录字段和查询方式
+        return switch (role.intValue()) {
+            case 0 -> // 管理员
+                    handleAdminLogin(user, loginType, password);
+            case 1 -> // 教师
+                    handleTeacherLogin(user, loginType, password);
+            case 2 -> // 学生
+                    handleStudentLogin(user, loginType, password);
+            default -> {
+                log.warn("登录失败，角色: {}", role);
+                yield null;
             }
-        }else if(user.getRole()==2){
-            //User转学生
-            //Long studentId = student.getStudentId();
-            Student student = new Student();
-            student.setName(user.getName());
-            student.setPassword(user.getPassword());
-            //查询学生
-            //Long studentId = student.getStudentId();
-            String name = student.getName();
-            Student student1 = studentMapper.selectStudentByName(name);
+        };
+    }
 
-            log.info("Student is {}",student1);
-            if (student1!=null && student1.getPassword().equals(student.getPassword())) {
-                student1.setId(student1.getStudentId());
-                log.info("User is {}",student1);
-                return student1;
-            } else {
-                return null;
-            }
-        }else {
-            return null;
+    private User loginAdminByAccount(User user, String password) {
+        Long account = user.getAccount();
+        Admin admin = adminMapper.selectAdminByAccount(account);
+        if (admin != null && admin.getPassword().equals(password)) {
+            admin.setId(admin.getAdminId());
+            log.info("管理员账户登录成功: {}", admin);
+            return admin;
         }
-        //return null;
+        log.warn("管理员账户登录失败，账户: {}", account);
+        return null;
+    }
+
+    private User loginAdminByName(User user, String password) {
+        String name = user.getName();
+        Admin admin = adminMapper.selectAdminByName(name);
+        if (admin != null && admin.getPassword().equals(password)) {
+            admin.setId(admin.getAdminId());
+            log.info("管理员用户名登录成功: {}", admin);
+            return admin;
+        }
+        log.warn("管理员用户名登录失败，用户名: {}", name);
+        return null;
+    }
+
+    private User handleAdminLogin(User user, String loginType, String password) {
+        return switch (loginType) {
+            case "account" -> loginAdminByAccount(user, password);
+            case "name" -> loginAdminByName(user, password);
+            default -> {
+                log.warn("管理员不支持该登录类型: {}", loginType);
+                yield null;
+            }
+        };
+    }
+
+    private User handleTeacherLogin(User user, String loginType, String password) {
+        return switch (loginType) {
+            case "account" -> loginTeacherByAccount(user, password);
+            case "number" -> loginTeacherByNumber(user, password);
+            case "name" -> loginTeacherByName(user, password);
+            default -> {
+                log.warn("教师不支持该登录类型: {}", loginType);
+                yield null;
+            }
+        };
+    }
+
+    private User loginTeacherByAccount(User user, String password) {
+        Long account = user.getAccount();
+        Teacher teacher = teacherMapper.selectTeacherByAccount(account);
+        if (teacher != null && teacher.getPassword().equals(password)) {
+            teacher.setId(teacher.getTeacherId());
+            log.info("教师账户登录成功: {}", teacher);
+            return teacher;
+        }
+        log.warn("教师账户登录失败，账户: {}", account);
+        return null;
+    }
+
+    private User loginTeacherByNumber(User user, String password) {
+        String number = user.getNumber();
+        Teacher teacher = teacherMapper.selectTeacherByNumber(number);
+        if (teacher != null && teacher.getPassword().equals(password)) {
+            teacher.setId(teacher.getTeacherId());
+            log.info("教师工号登录成功: {}", teacher);
+            return teacher;
+        }
+        log.warn("教师工号登录失败，工号: {}", number);
+        return null;
+    }
+
+    private User loginTeacherByName(User user, String password) {
+        String name = user.getName();
+        Teacher teacher = teacherMapper.selectTeacherByName(name);
+        if (teacher != null && teacher.getPassword().equals(password)) {
+            teacher.setId(teacher.getTeacherId());
+            log.info("教师用户名登录成功: {}", teacher);
+            return teacher;
+        }
+        log.warn("教师用户名登录失败，用户名: {}", name);
+        return null;
+    }
+
+    private User handleStudentLogin(User user, String loginType, String password) {
+        return switch (loginType) {
+            case "number" -> loginStudentByNumber(user, password);
+            case "name" -> loginStudentByName(user, password);
+            default -> {
+                log.warn("学生不支持该登录类型: {}", loginType);
+                yield null;
+            }
+        };
+    }
+
+    private User loginStudentByNumber(User user, String password) {
+        String number = user.getNumber();
+        Student student = studentMapper.selectStudentByNumber(number);
+        if (student != null && student.getPassword().equals(password)) {
+            student.setId(student.getStudentId());
+            log.info("学生学号登录成功: {}", student);
+            return student;
+        }
+        log.warn("学生学号登录失败，学号: {}", number);
+        log.warn("学生学号登录失败: {}", student);
+        return null;
+    }
+
+    private User loginStudentByName(User user, String password) {
+        String name = user.getName();
+        Student student = studentMapper.selectStudentByName(name);
+        if (student != null && student.getPassword().equals(password)) {
+            student.setId(student.getStudentId());
+            log.info("学生用户名登录成功: {}", student);
+            return student;
+        }
+        log.warn("学生用户名登录失败，用户名: {}", name);
+        log.warn("学生学号登录失败: {}", student);
+        return null;
     }
 
     @Override

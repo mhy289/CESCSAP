@@ -7,7 +7,7 @@
       <el-form-item>
         <el-radio-group v-model="loginType">
           <el-radio label="name">用户名登录</el-radio>
-          <el-radio label="studentId">学号登录</el-radio>
+          <el-radio label="number" v-if="ruleForm.role!=0">学号登录</el-radio>
           <el-radio label="account">账号登录</el-radio>
         </el-radio-group>
       </el-form-item>
@@ -25,8 +25,8 @@
           </template>
         </el-input>
       </el-form-item>
-      <el-form-item v-if="loginType === 'studentId'" label="学号" prop="studentId">
-        <el-input v-model="ruleForm.studentId" autocomplete="off" class="circled-input" placeholder="请输入学号">
+      <el-form-item v-if="loginType === 'number'" label="学号" prop="number">
+        <el-input v-model="ruleForm.number" autocomplete="off" class="circled-input" placeholder="请输入学号">
           <template #prefix>
             <i class="el-icon-user"></i>
           </template>
@@ -71,7 +71,7 @@
         loginType: 'name',
         ruleForm: {
           name: '',
-          studentId: '',
+          number: '',
           password: '',
           role: ''
         },
@@ -90,9 +90,9 @@
               trigger: 'blur'
             }
           ],
-          studentId: [{
+          number: [{
               required: function () {
-                return this.loginType === 'studentId';
+                return this.loginType === 'number';
               }.bind(this),
               message: '请输入学号',
               trigger: 'blur'
@@ -104,7 +104,7 @@
               trigger: 'blur'
             }
           ],
-          studentId: [{
+          number: [{
               required: function () {
                 return this.loginType === 'account';
               }.bind(this),
@@ -153,8 +153,8 @@
           };
           if (this.loginType === 'name') {
             requestData.name = this.ruleForm.name;
-          } else if (this.loginType === 'studentId') {
-            requestData.studentId = this.ruleForm.studentId;
+          } else if (this.loginType === 'number') {
+            requestData.number = this.ruleForm.number;
           } else {
             requestData.account = this.ruleForm.account;
             // 未实现
@@ -165,6 +165,7 @@
             return;
           }
           const res = await this.$http.post("/login", requestData, {
+            params: { loginType: this.loginType }, // 作为查询参数
             timeout: 5000
           });
 
@@ -189,9 +190,9 @@
         localStorage.setItem('role', this.ruleForm.role);
         if (this.loginType === 'name') {
           localStorage.setItem('name', this.ruleForm.name);
-        } else if (this.loginType === 'studentId') {
-          localStorage.setItem('studentId', this.ruleForm.studentId);
-          let res = await this.$http.get("/username/" + this.ruleForm.studentId);
+        } else if (this.loginType === 'number') {
+          localStorage.setItem('number', this.ruleForm.number);
+          let res = await this.$http.get("/username/" + this.ruleForm.number);
           localStorage.setItem('name', res.data);
         } else {
           localStorage.setItem('account', this.ruleForm.account);

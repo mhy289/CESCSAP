@@ -14,6 +14,7 @@ public class User {
     private Long account;
     private String name;
     private String password;
+    private String number;
     //身份标识
     //管理员0 教师1 学生2
     private Long role;

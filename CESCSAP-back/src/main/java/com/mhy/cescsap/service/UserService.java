@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserService {
 
     //登录
-    User login(User user);
+    User login(User user,String loginType);
 
     //检查身份
     Integer checkAdmin(Integer integer);

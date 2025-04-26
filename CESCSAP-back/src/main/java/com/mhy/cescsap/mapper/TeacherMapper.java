@@ -40,5 +40,11 @@ public interface TeacherMapper {
     @Update("update teacher set department = #{department},department_id = #{departmentId} where teacher_id = #{teacherId}")
     Integer updateTeacherDepartment(Teacher teacher);
 
+    @Select("select * from teacher where account = #{account}")
+    Teacher selectTeacherByAccount(Long account);
+
+    @Select("select * from teacher where teacher_number = #{number}")
+    Teacher selectTeacherByNumber(String number);
+
     //Integer updateScores(StudentCourse );
 }

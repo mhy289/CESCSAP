@@ -73,6 +73,9 @@ public interface StudentMapper {
     @Select("SELECT COUNT(*) > 0 FROM student WHERE name = #{name}")
     boolean existsByName(String name);
 
+    @Select("SELECT * FROM student WHERE student_number = #{number}")
+    Student selectStudentByNumber(String number);
+
     //检测学生专业
 
 }

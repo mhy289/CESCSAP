@@ -32,10 +32,10 @@ public class LoginController {
 
     //登录
     @PostMapping("/login")
-    public Result login(@RequestBody User user, HttpServletRequest request) {
+    public Result login(@RequestBody User user, @RequestParam String loginType, HttpServletRequest request) {
         log.debug("user is {}", user);
         Result result = new Result();
-        User addDb = userService.login(user);
+        User addDb = userService.login(user,loginType);
         log.debug("user0");
         if (addDb == null) {
             log.debug("user1");
@@ -90,7 +90,7 @@ public class LoginController {
     }
 
     //通过账号获取用户名
-    @GetMapping("/username/{account}")
+    @GetMapping("/name/{account}")
     public Result getUserNameByAccount(@RequestParam String account) {
         if(account==null){
             throw new BusinessException(ExceptionType.USER_NOT_FOUND,"用户未传入");

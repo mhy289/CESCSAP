@@ -15,4 +15,7 @@ public interface AdminMapper {
     @Insert("insert into admin(name, password, contact, login_status, role) values(#{name}, #{password}, #{contact}, #{loginStatus}, #{role})")
     Integer createAdmin(Admin admin);
 
+    // 根据账号查询管理员
+    @Select("select * from admin where account = #{account}")
+    Admin selectAdminByAccount(Long account);
 }
