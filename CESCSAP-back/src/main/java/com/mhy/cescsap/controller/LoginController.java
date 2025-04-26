@@ -75,4 +75,29 @@ public class LoginController {
         log.debug("user is {}",user1);
         return new Result(user1);
     }
+
+    //通过id获取用户名
+    @GetMapping("/username/{id}")
+    public Result getUserName(@RequestParam Long id) {
+        if(id==null){
+            throw new BusinessException(ExceptionType.USER_NOT_FOUND,"用户未传入");
+        }
+        User user=new User();
+        user.setId(id);
+        User user1 = userService.getUser(user);
+        log.debug("user is {}",user1);
+        return new Result(user1.getName());
+    }
+
+    //通过账号获取用户名
+    @GetMapping("/username/{account}")
+    public Result getUserNameByAccount(@RequestParam String account) {
+        if(account==null){
+            throw new BusinessException(ExceptionType.USER_NOT_FOUND,"用户未传入");
+        }
+        User user=new User();
+        User user1 = userService.getUser(user);
+        log.debug("user is {}",user1);
+        return new Result(user1.getName());
+    }
 }

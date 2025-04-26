@@ -184,6 +184,10 @@ const routes = [{
         path:'/studentScore',
         name:'StudentScore',
         component: () => import('../views/manage/file/StudentScore.vue')
+      },{
+        path:'/majordepart',
+        name:'majordepart',
+        component: () => import('../views/manage/file/Majordepart.vue')
       }
     ]
   },

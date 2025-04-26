@@ -4,6 +4,13 @@
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
       class="demo-ruleForm bordered-form readable-text">
       <h1 class="system-title">高校综合评价系统</h1>
+      <el-form-item>
+        <el-radio-group v-model="loginType">
+          <el-radio label="name">用户名登录</el-radio>
+          <el-radio label="studentId">学号登录</el-radio>
+          <el-radio label="account">账号登录</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="登录身份" prop="role">
         <el-select v-model="ruleForm.role" placeholder="请选择登录身份" class="full-width-select">
           <el-option label="学生" value="2"></el-option>
@@ -11,15 +18,27 @@
           <el-option label="管理员" value="0"></el-option>
         </el-select>
       </el-form-item>
-
-      <el-form-item label="用户名" prop="name">
+      <el-form-item v-if="loginType === 'name'" label="用户名" prop="name">
         <el-input v-model="ruleForm.name" autocomplete="off" class="circled-input" placeholder="请输入用户名">
           <template #prefix>
             <i class="el-icon-user"></i>
           </template>
         </el-input>
       </el-form-item>
-
+      <el-form-item v-if="loginType === 'studentId'" label="学号" prop="studentId">
+        <el-input v-model="ruleForm.studentId" autocomplete="off" class="circled-input" placeholder="请输入学号">
+          <template #prefix>
+            <i class="el-icon-user"></i>
+          </template>
+        </el-input>
+      </el-form-item>
+      <el-form-item v-if="loginType === 'account'" label="账号" prop="account">
+        <el-input v-model="ruleForm.account" autocomplete="off" class="circled-input" placeholder="请输入账号">
+          <template #prefix>
+            <i class="el-icon-user"></i>
+          </template>
+        </el-input>
+      </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input type="password" v-model="ruleForm.password" autocomplete="off" class="circled-input"
           placeholder="请输入密码" show-password>
@@ -28,7 +47,6 @@
           </template>
         </el-input>
       </el-form-item>
-
       <el-form-item>
         <el-button type="primary" :loading="loading" @click="submitForm" class="submit-btn">
           登录
@@ -50,15 +68,47 @@
     data() {
       return {
         loading: false,
+        loginType: 'name',
         ruleForm: {
           name: '',
+          studentId: '',
           password: '',
           role: ''
         },
         rules: {
           name: [{
-              required: true,
+              required: function () {
+                return this.loginType === 'name';
+              }.bind(this),
               message: '请输入用户名',
+              trigger: 'blur'
+            },
+            {
+              min: 1,
+              max: 20,
+              message: '长度在1到20个字符',
+              trigger: 'blur'
+            }
+          ],
+          studentId: [{
+              required: function () {
+                return this.loginType === 'studentId';
+              }.bind(this),
+              message: '请输入学号',
+              trigger: 'blur'
+            },
+            {
+              min: 1,
+              max: 20,
+              message: '长度在1到20个字符',
+              trigger: 'blur'
+            }
+          ],
+          studentId: [{
+              required: function () {
+                return this.loginType === 'account';
+              }.bind(this),
+              message: '请输入账号',
               trigger: 'blur'
             },
             {
@@ -96,7 +146,24 @@
           this.loading = true;
 
           // 发送请求（设置5秒超时）
-          const res = await this.$http.post("/login", this.ruleForm, {
+          let requestData = {
+            role: this.ruleForm.role,
+            password: this.ruleForm.password
+          };
+          if (this.loginType === 'name') {
+            requestData.name = this.ruleForm.name;
+          } else if (this.loginType === 'studentId') {
+            requestData.studentId = this.ruleForm.studentId;
+          } else {
+            requestData.account = this.ruleForm.account;
+            // 未实现
+            this.$message.error('暂未实现');
+            //提醒
+            this.$message.error('暂未实现');
+            
+            return;
+          }
+          const res = await this.$http.post("/login", requestData, {
             timeout: 5000
           });
 
@@ -112,19 +179,27 @@
         }
       },
 
-      handleLoginSuccess(res) {
+      async handleLoginSuccess(res) {
         const token = res.data;
         const user = jwtDecode(token);
 
         // 存储用户信息
         localStorage.setItem('token', token);
         localStorage.setItem('role', this.ruleForm.role);
-        localStorage.setItem('name', this.ruleForm.name);
+        if (this.loginType === 'name') {
+          localStorage.setItem('name', this.ruleForm.name);
+        } else if (this.loginType === 'studentId') {
+          localStorage.setItem('studentId', this.ruleForm.studentId);
+          let res = await this.$http.get("/username/" + this.ruleForm.studentId);
+          localStorage.setItem('name', res.data);
+        } else {
+          localStorage.setItem('account', this.ruleForm.account);
+        }
         localStorage.setItem('id', user.aud);
 
         // 跳转路由
         const redirectPath = this.getRedirectPath();
-        this.$router.push('/');
+        this.$router.push(redirectPath);
 
         this.$message.success('登录成功');
       },
@@ -132,11 +207,11 @@
       getRedirectPath() {
         switch (this.ruleForm.role) {
           case '0':
-            return '/admin/dashboard';
+            return '/';
           case '1':
-            return '/teacher/home';
+            return '/';
           case '2':
-            return '/student/profile';
+            return '/';
           default:
             return '/';
         }

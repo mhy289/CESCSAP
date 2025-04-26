@@ -70,6 +70,9 @@ public interface StudentMapper {
     @Update("update student set department_id = #{departmentId},department = #{department} where student_id = #{studentId}")
     Integer updateStudentDepartment(Student student);
 
+    @Select("SELECT COUNT(*) > 0 FROM student WHERE name = #{name}")
+    boolean existsByName(String name);
+
     //检测学生专业
 
 }

@@ -173,7 +173,10 @@ public class SCServiceImpl implements SCService {
                     if (validCourses == 0) {
                         student.setGpa(0.0);
                     } else {
-                        student.setGpa(totalGpa / validCourses);
+                        double VGpa = totalGpa / validCourses;
+                        //保留两位小数
+                        VGpa = (double) Math.round(VGpa * 100) / 100;
+                        student.setGpa(VGpa);
                     }
                 }
 

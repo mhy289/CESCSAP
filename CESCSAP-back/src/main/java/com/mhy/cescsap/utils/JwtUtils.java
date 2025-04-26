@@ -46,7 +46,7 @@ public class JwtUtils {
             return true;
         } catch (Exception e) {
             //效验失败
-            //这里抛出的异常是我自定义的一个异常，你也可以写成别的
+            //这里抛出的异常是自定义的一个异常
             return false;
         }
     }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static com.mhy.cescsap.utils.AccountGeneratorUtils.generateAccount;
+import static com.mhy.cescsap.utils.NameGeneratorUtils.getRandomName;
 
 @Service
 @Slf4j
@@ -51,6 +52,15 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Integer addStudent(Student student) {
+        if(student.getName() == null || student.getName().isEmpty()) {
+            //throw new BusinessException(ExceptionType.NAME_NOT_FOUND, "姓名不能为空");
+            String name = getRandomName();
+            //查重
+            while (studentMapper.existsByName(name)) {
+                name = getRandomName();
+            }
+            student.setName(name);
+        }
         List<Student> students = studentMapper.getStudents();
         Long classId = student.getClassId();
         Map<String, Long> map = new HashMap<>();
@@ -82,6 +92,7 @@ public class StudentServiceImpl implements StudentService {
         student.setRole(2L);
         student.setEvaluateStatus(0);
         student.setBirthDate(new Date());
+        student.setGpa(0.0);
         student.setClassName(classMapper.getClassByClassId(classId).getClassName());
         log.debug("stu is {}", student);
         return studentMapper.addStudent(student);
@@ -94,6 +105,15 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Integer updateStudent(Student student) {
+        if(student.getName() == null || student.getName().isEmpty()) {
+            //throw new BusinessException(ExceptionType.NAME_NOT_FOUND, "姓名不能为空");
+            String name = getRandomName();
+            //查重
+            while (studentMapper.existsByName(name)) {
+                name = getRandomName();
+            }
+            student.setName(name);
+        }
         return studentMapper.updateStudent(student);
     }
 

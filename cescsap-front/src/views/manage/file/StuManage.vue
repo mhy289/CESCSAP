@@ -2,11 +2,12 @@
     <div class="student-container">
       <!-- 学生表格 -->
       <el-table :data="studentList" style="width: 100%" border stripe v-loading="loading">
-        <el-table-column prop="studentId" label="学号" width="50">
+        <el-table-column prop="studentId" label="ID" width="50">
           <template slot-scope="{ row }">
             {{ row.studentId }}
           </template>
         </el-table-column>
+        <el-table-column prop="studentNumber" label="学号" width="100" />
         <el-table-column prop="account" label="账号" width="100" />
         <el-table-column prop="name" label="姓名" width="100" />
         <el-table-column prop="password" label="密码" width="100" />
@@ -18,8 +19,8 @@
         <el-table-column prop="classId" label="班级" width="75" />
         <el-table-column prop="contact" label="联系方式" width="100" />
         <el-table-column prop="gpa" label="绩点" width="50" />
-        <el-table-column prop="major" label="专业" width="150" />
-        <el-table-column prop="gender" label="性别" width="100" />
+        <el-table-column prop="major" label="专业" width="80" />
+        <el-table-column prop="gender" label="性别" width="50" />
         <el-table-column label="操作" width="180">
           <template slot-scope="{ row }">
             <!-- 修改为打开编辑弹窗 -->
@@ -197,7 +198,7 @@
       // 提交编辑学生操作
       async submitEditStudent() {
         // 可在此处添加表单校验
-        if (!this.editStudent.name || !this.editStudent.major || !this.editStudent.gender) {
+        if ( !this.editStudent.major || !this.editStudent.gender) {
           this.$message.error('请填写完整的学生信息')
           return
         }

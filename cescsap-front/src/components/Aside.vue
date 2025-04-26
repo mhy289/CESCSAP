@@ -44,6 +44,7 @@
         <el-menu-item index="/classmanage" v-if="menuFlags.classMenu">班级管理</el-menu-item>
         <el-menu-item index="/evaluations" v-if="menuFlags.evalMenu">评价管理</el-menu-item>
         <el-menu-item index="/warnmanage" v-if="menuFlags.warnMenu">警告管理</el-menu-item>
+        <el-menu-item index="/majordepart" v-if="menuFlags.mdMenu">所属管理</el-menu-item>
       </el-submenu>
 
       <!-- 通知与公告 -->
@@ -262,6 +263,8 @@
         this.menuFlags.classMenu = true
         this.menuFlags.evalMenu = true
         this.menuFlags.warnMenu = true
+        this.menuFlags.mdMenu = true
+   
       } else if (this.role == 1) {
         console.log("Please2")
         //教师权限
