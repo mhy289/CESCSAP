@@ -20,6 +20,7 @@ import java.util.List;
 
 import static com.mhy.cescsap.utils.AcademicTermUtils.classifyAcademicTerm;
 import static com.mhy.cescsap.utils.AccountGeneratorUtils.generateAccount;
+import static com.mhy.cescsap.utils.SchoolNumberGeneratorUtils.generateTeacherNumber;
 
 @Service
 @Slf4j
@@ -55,6 +56,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     WarningMapper warningMapper;
+    @Autowired
+    DepartmentMapper departmentMapper;
 
     @Override
     public List<Teacher> getTeachers() {
@@ -69,6 +72,12 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Integer addTeacher(Teacher teacher) {
         log.debug("Teacher is {}", teacher);
+        String department = teacher.getDepartment();
+        Department d = departmentMapper.getDepartmentByName(department);
+        if(d == null || d.getDepartmentId()== null){
+            throw new BusinessException(ExceptionType.DEP_ERR,"部门错误");
+        }
+        teacher.setDepartmentId(d.getDepartmentId());
         long account;
         do {
             account =generateAccount();
@@ -265,6 +274,45 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<Course> getCoursesByTeacherId(Long id) {
         return courseMapper.getCoursesByTeacherId(id);
+    }
+
+    @Override
+    public Teacher getTeacherByName(String name) {
+        return teacherMapper.selectTeacherByName(name);
+    }
+
+    @Override
+    public Integer addTeacherNumber(Teacher teacher) {
+        String s = generateTeacherNumber(teacher);
+        //teacher.setTeacherNumber(s);
+        return teacherMapper.updateTeacherNumber(s,teacher.getTeacherId());
+    }
+
+    @Override
+    public Integer check() {
+        List<Teacher> teachers = teacherMapper.selectAllTeachers();
+        for(Teacher teacher : teachers){
+            if(teacher.getDepartmentId()==null){
+                Department departmentByName = departmentMapper.getDepartmentByName(teacher.getDepartment());
+                teacher.setDepartmentId(departmentByName.getDepartmentId());
+                Integer i = teacherMapper.updateTeacherDepartment(teacher);
+                if(i == null || i<=0){
+                    throw new BusinessException(ExceptionType.TEACHER_ERR,"教师更新失败");
+                }
+            }
+            if(teacher.getTeacherNumber() == null){
+                String s = generateTeacherNumber(teacher);
+                if(s== null){
+                    throw new BusinessException(ExceptionType.TEACHER_ERR,"教师工号生成失败");
+                }
+                teacher.setTeacherNumber(s);
+                Integer i = teacherMapper.updateTeacherNumber(s, teacher.getTeacherId());
+                if(i == null || i<=0){
+                    return 0;
+                }
+            }
+        }
+        return 1;
     }
 
     private Double calcGpa5(double totalScore) {

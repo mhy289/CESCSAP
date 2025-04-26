@@ -21,6 +21,7 @@ public class Teacher extends User{
 //    private String password;
     //性别
     private String gender;
+    private Long departmentId;
     //所属院系
     private String department;
     //出生日期

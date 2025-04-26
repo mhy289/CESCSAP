@@ -49,7 +49,15 @@ public class TeacherController {
         if(teacher.getName() == null){
             throw new BusinessException(ExceptionType.TEACHER_NAME_NULL,"教师名称不能为空");
         }
-        return new Result(teacherService.addTeacher(teacher));
+        Integer i = teacherService.addTeacher(teacher);
+        if(i>0){
+            teacher.setTeacherId(teacherService.getTeacherByName(teacher.getName()).getTeacherId());
+            Integer j = teacherService.addTeacherNumber(teacher);
+            return new Result(j);
+        }else {
+            throw new BusinessException(ExceptionType.TEACHER_ID_NOT_FOUND,"添加失败");
+        }
+
     }
 
     // 删除一个教师

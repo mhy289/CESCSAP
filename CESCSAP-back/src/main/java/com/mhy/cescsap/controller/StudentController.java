@@ -1,6 +1,7 @@
 package com.mhy.cescsap.controller;
 
 import com.mhy.cescsap.advice.ProjectExceptionAdvice;
+import com.mhy.cescsap.mapper.StudentMapper;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.Result;
@@ -38,7 +39,16 @@ public class StudentController {
     //增加一个学生
     @PostMapping("/student")
     public Result addStudent(@RequestBody Student student) {
-        return new Result(studentService.addStudent(student));
+        Integer i = studentService.addStudent(student);
+        if (i > 0) {
+            //为学生添加学号
+            student.setStudentId(studentService.getStudentByName(student.getName()).getStudentId());
+            Integer j = studentService.addStudentNumber(student);
+            return new Result(j);
+        } else {
+            throw new BusinessException(ExceptionType.STUDENT_ID_NOT_FOUND, "添加失败");
+        }
+
     }
 
     // 删除一个学生

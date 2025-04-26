@@ -2,22 +2,18 @@ package com.mhy.cescsap.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.mhy.cescsap.mapper.ClassMapper;
-import com.mhy.cescsap.mapper.CourseMapper;
-import com.mhy.cescsap.mapper.SCMapper;
-import com.mhy.cescsap.mapper.StudentMapper;
+import com.mhy.cescsap.mapper.*;
 import com.mhy.cescsap.myexception.BusinessException;
 import com.mhy.cescsap.myexception.ExceptionType;
 import com.mhy.cescsap.pojo.*;
 import com.mhy.cescsap.pojo.Class;
 import com.mhy.cescsap.service.StudentService;
+import com.mhy.cescsap.utils.SchoolNumberGeneratorUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.mhy.cescsap.utils.AccountGeneratorUtils.generateAccount;
 
@@ -37,6 +33,12 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     ClassMapper classMapper;
 
+    @Autowired
+    MajorMapper majorMapper;
+
+    @Autowired
+    DepartmentMapper departmentMapper;
+
     @Override
     public List<Student> getStudents() {
         return studentMapper.getStudents();
@@ -49,16 +51,30 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Integer addStudent(Student student) {
+        List<Student> students = studentMapper.getStudents();
         Long classId = student.getClassId();
-        if(classId==null) {
-            throw new BusinessException(ExceptionType.CLASS_NOT_FOUND,"班级不能为空");
+        Map<String, Long> map = new HashMap<>();
+        String major = student.getMajor();
+        Major m = majorMapper.getMajor(major);
+        if (m == null || m.getMajorId() == null) {
+            throw new BusinessException(ExceptionType.MAJOR_NOT_FOUND, "专业不存在");
         }
-        if(classMapper.getClassByClassId(classId)==null){
-            throw new BusinessException(ExceptionType.CLASS_NOT_FOUND,"班级不存在");
+        Long departmentId = m.getDepartmentId();
+        Department department = departmentMapper.getDepartmentById(departmentId);
+        if (department == null || department.getDepartmentId() == null) {
+            throw new BusinessException(ExceptionType.DEPARTMENT_NOT_FOUND, "学院不存在");
+        }
+        student.setDepartmentId(departmentId);
+        student.setDepartment(department.getDepartmentName());
+        if (classId == null) {
+            throw new BusinessException(ExceptionType.CLASS_NOT_FOUND, "班级不能为空");
+        }
+        if (classMapper.getClassByClassId(classId) == null) {
+            throw new BusinessException(ExceptionType.CLASS_NOT_FOUND, "班级不存在");
         }
         long account;
         do {
-            account =generateAccount();
+            account = generateAccount();
         } while (studentMapper.existsByAccount(account)); // 查重
         student.setAccount(account);
         student.setPassword("123456");
@@ -67,7 +83,7 @@ public class StudentServiceImpl implements StudentService {
         student.setEvaluateStatus(0);
         student.setBirthDate(new Date());
         student.setClassName(classMapper.getClassByClassId(classId).getClassName());
-        log.debug("stu is {}",student);
+        log.debug("stu is {}", student);
         return studentMapper.addStudent(student);
     }
 
@@ -109,11 +125,11 @@ public class StudentServiceImpl implements StudentService {
         Student student1 = studentMapper.selectStudentByName(name);
         Long studentId = student1.getStudentId();
         List<StudentCourse> studentCourses = scMapper.selectByCondition2(studentId);
-        List<TeacherCourse> tclist=new ArrayList<>();
-        for(StudentCourse sc : studentCourses){
+        List<TeacherCourse> tclist = new ArrayList<>();
+        for (StudentCourse sc : studentCourses) {
             Long courseId = sc.getCourseId();
             Course course = courseMapper.getCourseById(courseId);
-            TeacherCourse tc=new TeacherCourse(course.getTeacherName(),course.getCourseName());
+            TeacherCourse tc = new TeacherCourse(course.getTeacherName(), course.getCourseName());
             tclist.add(tc);
         }
         return tclist;
@@ -137,12 +153,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Integer updateMajor() {
         List<Student> students = studentMapper.getStudents();
-        int sum=0;
-        for(Student student : students){
-            if(student.getAccount()==null){
+        int sum = 0;
+        for (Student student : students) {
+            if (student.getAccount() == null) {
                 long account;
                 do {
-                    account =generateAccount();
+                    account = generateAccount();
                 } while (studentMapper.existsByAccount(account)); // 查重
                 student.setAccount(account);
                 Integer i = studentMapper.addStudentForAccount(student);
@@ -151,7 +167,7 @@ public class StudentServiceImpl implements StudentService {
             Long classId = student.getClassId();
             Integer i = classMapper.checkMajor(major);
             student.setPassword("123456");
-            if(i == null || i<=0){
+            if (i == null || i <= 0) {
                 Class clazz = classMapper.getClassByClassId(classId);
                 student.setMajor(clazz.getMajor());
                 Integer i1 = studentMapper.updateStudent(student);
@@ -159,5 +175,39 @@ public class StudentServiceImpl implements StudentService {
             }
         }
         return sum;
+    }
+
+    @Override
+    public Integer addStudentNumber(Student student) {
+        String s = SchoolNumberGeneratorUtils.generateStudentNumber(student, classMapper.getClassByClassId(student.getClassId()));
+        return studentMapper.updateStudentNumber(s, student.getStudentId());
+    }
+
+    @Override
+    public Integer check() {
+        List<Student> students = studentMapper.getStudents();
+        for (Student student : students) {
+            if (student.getDepartment() == null || student.getDepartmentId() == null) {
+                String major = student.getMajor();
+                Major m = majorMapper.getMajor(major);
+                Long departmentId = m.getDepartmentId();
+                Department d = departmentMapper.getDepartmentById(departmentId);
+                student.setDepartment(d.getDepartmentName());
+                student.setDepartmentId(departmentId);
+                Integer i = studentMapper.updateStudentDepartment(student);
+                if (i == null || i <= 0) {
+                    return 0;
+                }
+            }
+            if (student.getStudentNumber() == null) {
+                String s = SchoolNumberGeneratorUtils.generateStudentNumber(student, classMapper.getClassByClassId(student.getClassId()));
+                student.setStudentNumber(s);
+                Integer i = studentMapper.updateStudentNumber(s, student.getStudentId());
+                if (i == null || i <= 0) {
+                    return 0;
+                }
+            }
+        }
+        return 1;
     }
 }

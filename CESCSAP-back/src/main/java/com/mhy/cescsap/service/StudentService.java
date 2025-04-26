@@ -42,4 +42,8 @@ public interface StudentService {
     PageItem<Student> getAllPage(Integer current, Integer size);
 
     Integer updateMajor();
+
+    Integer addStudentNumber(Student student);
+
+    Integer check();
 }

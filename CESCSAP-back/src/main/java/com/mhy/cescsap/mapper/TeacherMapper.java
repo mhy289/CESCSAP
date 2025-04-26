@@ -34,5 +34,11 @@ public interface TeacherMapper {
     @Select("SELECT COUNT(1) FROM teacher WHERE account = #{account}")
     Boolean existsByAccount(Long account);
 
+    @Update("update teacher set teacher_number = #{teacherNumber} where teacher_id = #{teacherId}")
+    Integer updateTeacherNumber(String teacherNumber, Long teacherId);
+
+    @Update("update teacher set department = #{department},department_id = #{departmentId} where teacher_id = #{teacherId}")
+    Integer updateTeacherDepartment(Teacher teacher);
+
     //Integer updateScores(StudentCourse );
 }

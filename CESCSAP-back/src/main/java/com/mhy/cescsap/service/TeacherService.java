@@ -54,4 +54,10 @@ public interface TeacherService {
     Integer saveScores(StudentCourse sc);
 
     List<Course> getCoursesByTeacherId(Long id);
+
+    Teacher getTeacherByName(String name);
+
+    Integer addTeacherNumber(Teacher teacher);
+
+    Integer check();
 }

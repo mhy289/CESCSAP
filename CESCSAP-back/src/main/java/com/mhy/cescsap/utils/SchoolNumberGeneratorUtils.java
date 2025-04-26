@@ -1,28 +1,29 @@
 package com.mhy.cescsap.utils;
 
+import com.mhy.cescsap.mapper.StudentMapper;
+import com.mhy.cescsap.mapper.TeacherMapper;
 import com.mhy.cescsap.pojo.Class;
 import com.mhy.cescsap.pojo.Student;
 import com.mhy.cescsap.pojo.Teacher;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
+@Component
+@Slf4j
 public class SchoolNumberGeneratorUtils {
 
-    //private static final DateTimeFormatter YEAR_FORMAT = DateTimeFormatter.ofPattern("yyyy");
-
     private static final SimpleDateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy");
-    private static final int MAX_SEQUENCE = 99;
     private static final int MAX_CLASS_CODE = 99;
 
-    // 学生计数器：key=入校时间+院系+班级，value=序号计数器
-    private static final ConcurrentHashMap<String, AtomicInteger> STUDENT_COUNTER = new ConcurrentHashMap<>();
-    // 教师计数器：key=入校时间+院系，value=序号计数器（班级固定00）
-    private static final ConcurrentHashMap<String, AtomicInteger> TEACHER_COUNTER = new ConcurrentHashMap<>();
+    @Autowired
+    private StudentMapper studentMapper;
+
+    @Autowired
+    private TeacherMapper teacherMapper;
 
     /**
      * 基于Student和Class对象生成学号（对象化版本）
@@ -37,13 +38,13 @@ public class SchoolNumberGeneratorUtils {
 
         // 提取各部分字段
         String yearPart = getYearPart(student.getEnrollDate());
-        String departmentCode = getDepartmentCode(student.getDepartment());
+        String departmentCode = getDepartmentCode(student.getDepartmentId());
         String classCode = getClassCode(clazz.getClassId());
-
-        // 生成唯一学号
-        String key = yearPart + departmentCode + classCode;
-        AtomicInteger counter = STUDENT_COUNTER.computeIfAbsent(key, k -> new AtomicInteger(0));
-        int sequence = counter.incrementAndGet();
+        Long studentId = student.getStudentId();
+        if (studentId == null) {
+            throw new IllegalArgumentException("未找到该学生的 ID");
+        }
+        int sequence = (int) (studentId % 2000);
 
         return String.format("%s%s%s%02d", yearPart, departmentCode, classCode, sequence);
     }
@@ -54,13 +55,14 @@ public class SchoolNumberGeneratorUtils {
             throw new NullPointerException("学生或班级信息不可为空");
         }
         if (student.getEnrollDate() == null) {
-            throw new IllegalArgumentException("入学日期不可为空");
+            student.setEnrollDate(new Date());
         }
         if (student.getDepartment() == null || student.getDepartment().length() != 2) {
-            throw new IllegalArgumentException("院系代码必须为2位数字：" + student.getDepartment());
+            //throw new IllegalArgumentException("院系代码必须为 2 位数字：" + student.getDepartment());
+            log.debug("院系代码必须为 2 位数字：" + student.getDepartment());
         }
         if (clazz.getClassId() == null || clazz.getClassId() < 0 || clazz.getClassId() > 99) {
-            throw new IllegalArgumentException("班级ID必须为0-99的整数：" + clazz.getClassId());
+            throw new IllegalArgumentException("班级 ID 必须为 0 - 99 的整数：" + clazz.getClassId());
         }
     }
 
@@ -68,35 +70,37 @@ public class SchoolNumberGeneratorUtils {
         return YEAR_FORMAT.format(date);
     }
 
-    private static String getDepartmentCode(String department) {
-        // 假设院系代码直接使用Student的department字段（需确保2位数字）
-        if (!department.matches("\\d{2}")) {
-            throw new IllegalArgumentException("院系代码格式错误：" + department);
-        }
-        return department;
+    private static String getDepartmentCode(Long departmentId)  {
+        // 假设院系代码直接使用 Student 的 department 字段（需确保 2 位数字）
+        return String.format("%02d", departmentId % 100);
     }
 
     private static String getClassCode(Long classId) {
-        // 班级代码使用classId后两位（自动补零）
+        // 班级代码使用 classId 后两位（自动补零）
         return String.format("%02d", classId % 100);
     }
 
     /**
-     * 生成教师工号（10位：YYYYDD00SS）
+     * 生成教师工号（10 位：YYYYDD00SS）
      * @param teacher 教师实体
      * @return 生成的工号
      * @throws IllegalArgumentException 参数格式错误
      */
     public static String generateTeacherNumber(Teacher teacher) {
         Date hireDate = teacher.getHireDate();
-        String departmentCode = getDepartmentCode(teacher.getDepartment());
+        if (hireDate == null) {
+            hireDate = new Date();
+        }
+        String departmentCode = getDepartmentCode(teacher.getDepartmentId());
         validateCode("院系代码", departmentCode, 2);
         String yearPart = YEAR_FORMAT.format(hireDate);
-        String key = yearPart + departmentCode;
 
-        AtomicInteger counter = TEACHER_COUNTER.computeIfAbsent(key, k -> new AtomicInteger(0));
-        int sequence = counter.incrementAndGet();
-        if (sequence > MAX_SEQUENCE) throw new IllegalStateException("教师序号已达上限：" + MAX_SEQUENCE);
+        // 从数据库中获取教师 ID 并对 2000 取模
+        Long teacherId = teacher.getTeacherId();
+        if (teacherId == null) {
+            throw new IllegalArgumentException("未找到该教师的 ID");
+        }
+        int sequence = (int) (teacherId % 2000);
 
         return String.format("%s%s00%02d",
                 yearPart,
@@ -107,27 +111,6 @@ public class SchoolNumberGeneratorUtils {
     private static void validateCode(String type, String code, int length) {
         if (code == null || code.length() != length || !code.matches("\\d+")) {
             throw new IllegalArgumentException(type + "必须为" + length + "位纯数字：" + code);
-        }
-    }
-
-    // 测试示例
-    public static void main(String[] args) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-            // 构造测试数据
-            Student student = new Student();
-            student.setEnrollDate(sdf.parse("2025-09-01"));
-            student.setDepartment("03"); // 计算机学院
-
-            Class clazz = new Class();
-            clazz.setClassId(1L); // 班级ID 123 -> 班级代码 "23"
-
-            // 生成学号（2025级03院系23班第1位学生）
-            String studentNo = generateStudentNumber(student, clazz); // 2025032301
-            System.out.println("优化后学号：" + studentNo);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

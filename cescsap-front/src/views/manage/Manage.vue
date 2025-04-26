@@ -21,9 +21,9 @@
         <!-- 点击按钮 -->
         <el-button v-if="role==0" type="primary" @click="handleClick">Button</el-button>
         <!--首页展示，读取ip地址-->
-        
 
-        
+
+
 
         <el-main :class="{bk: $route.path=='/manage/home'}">
           <router-view @refresh="getUser" />
@@ -109,10 +109,21 @@
           });
         }
       },
-      handleClick() {
+      async handleClick() {
         // 点击事件
         //console.log(res);
         console.log(localStorage.getItem('role'));
+        let res = await this.$http.get('/admin/check')
+        if (res.code == 200) {
+          alert('成功')
+        } else if (res.code == 202) {
+          alert('赢一半')
+        } else if (res.code == 201) {
+          alert('输')
+        } else {
+          alert('失败')
+        }
+
         this.$updateActivity();
       }
     },
