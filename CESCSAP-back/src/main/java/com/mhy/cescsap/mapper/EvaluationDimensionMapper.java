@@ -1,6 +1,7 @@
 package com.mhy.cescsap.mapper;
 
 import com.mhy.cescsap.pojo.EvaluationDimension;
+import com.mhy.cescsap.pojo.TeacherStatsDTO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -26,5 +27,20 @@ public interface EvaluationDimensionMapper {
     //根据id获取评价维度
     @Select("select * from evaluationdimension where dimension_id = #{dimensionId}")
     EvaluationDimension getEvaluationDimensionByDimensionId(Long dimensionId);
+
+
+    @Select("""
+        SELECT t.dimension_id       AS dimensionId,
+               dim.dimension_name   AS dimensionName,
+               AVG(t.score)         AS avgScore
+        FROM evaluationdetail t
+        INNER JOIN evaluation e
+          ON t.evaluation_id = e.evaluation_id
+        INNER JOIN evaluationdimension dim
+          ON t.dimension_id = dim.dimension_id
+        WHERE e.teacher_id = #{teacherId}
+        GROUP BY t.dimension_id, dim.dimension_name
+    """)
+    List<TeacherStatsDTO.DimensionAvg> selectAvgByDimensions(Long teacherId);
 
 }

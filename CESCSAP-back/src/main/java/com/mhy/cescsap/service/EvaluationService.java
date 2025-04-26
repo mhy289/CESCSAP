@@ -22,4 +22,12 @@ public interface EvaluationService {
     Evaluation getEvaluationById(Long evaluationId);
 
     List<EvaluationDetail> getEvaluationDetail(Long evaluationId);
+
+
+    TeacherStatsDTO calculateTeacherStats(Long teacherId);
+
+
+    PageItem<Evaluation> listByTeacher(Long teacherId, int pageNum, int pageSize);
+
+    List<EvaluationDetail> getDetails(Long evaluationId);
 }

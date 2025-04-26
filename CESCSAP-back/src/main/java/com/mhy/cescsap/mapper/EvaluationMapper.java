@@ -24,4 +24,11 @@ public interface EvaluationMapper {
 
     @Select("select * from evaluation where evaluation_id = #{evaluationId}")
     Evaluation getEvaluationById(Long evaluationId);
+
+    @Select("""
+        SELECT AVG(t.evaluation_score) 
+        FROM evaluation t
+        WHERE t.teacher_id = #{teacherId}
+    """)
+    Double selectOverallAvgByTeacher(Long teacherId);
 }

@@ -152,6 +152,10 @@ const routes = [{
         name: 'teacherStudents',
         component: () => import('../views/manage/file/TeacherStudents.vue'),
       }, {
+        path: '/TeacherEvaluations',
+        name: 'TeacherEvaluations',
+        component: ()=> import('../views/manage/file/TeacherEvaluations.vue')
+      },{
         path: '/teacher/student/:studentId/score',
         name: 'StudentScoreDetail',
         component: () => import('@/views/manage/file/StudentScoreDetail.vue'),

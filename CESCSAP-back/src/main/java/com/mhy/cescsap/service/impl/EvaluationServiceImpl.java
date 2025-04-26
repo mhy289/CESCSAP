@@ -129,13 +129,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     public PageItem<Evaluation> queryPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Evaluation> evaluations = evaluationMapper.getAllEvaluation();
-        for(Evaluation evaluation : evaluations){
-            evaluation.setStudentName(studentMapper.getStudentById(evaluation.getStudentId()).getName());
-            evaluation.setTeacherName(teacherMapper.selectTeacherById(evaluation.getTeacherId()).getName());
-            evaluation.setCourseName(courseMapper.getCourseById(evaluation.getCourseId()).getCourseName());
-        }
-        Page<Evaluation> page = (Page<Evaluation>) evaluations;
-        return new PageItem<>(page.getTotal(), evaluations);
+        return getEvaluationPageItem(evaluations);
     }
 
     @Override
@@ -146,6 +140,41 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     public List<EvaluationDetail> getEvaluationDetail(Long evaluationId) {
+        List<EvaluationDetail> evaluationDetails = evaluationDetailMapper.getEvaluationDetails(evaluationId);
+        for(EvaluationDetail evaluationDetail : evaluationDetails){
+            evaluationDetail.setDimensionName(evaluationDimensionMapper.getEvaluationDimensionByDimensionId(evaluationDetail.getDimensionId()).getDimensionName());
+        }
+        return evaluationDetails;
+    }
+
+    @Override
+    public TeacherStatsDTO calculateTeacherStats(Long teacherId) {
+        // overall average
+        Double overall = evaluationMapper.selectOverallAvgByTeacher(teacherId);
+        // 按维度查询平均
+        List<TeacherStatsDTO.DimensionAvg> dims = evaluationDimensionMapper.selectAvgByDimensions(teacherId);
+        return new TeacherStatsDTO(overall, dims);
+    }
+
+    @Override
+    public PageItem<Evaluation> listByTeacher(Long teacherId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Evaluation> list = evaluationMapper.getEvaluations(teacherId);
+        return getEvaluationPageItem(list);
+    }
+
+    private PageItem<Evaluation> getEvaluationPageItem(List<Evaluation> list) {
+        for(Evaluation evaluation : list){
+            evaluation.setStudentName(studentMapper.getStudentById(evaluation.getStudentId()).getName());
+            evaluation.setTeacherName(teacherMapper.selectTeacherById(evaluation.getTeacherId()).getName());
+            evaluation.setCourseName(courseMapper.getCourseById(evaluation.getCourseId()).getCourseName());
+        }
+        Page<Evaluation> page = (Page<Evaluation>) list;
+        return new PageItem<>(page.getTotal(), list);
+    }
+
+    @Override
+    public List<EvaluationDetail> getDetails(Long evaluationId) {
         List<EvaluationDetail> evaluationDetails = evaluationDetailMapper.getEvaluationDetails(evaluationId);
         for(EvaluationDetail evaluationDetail : evaluationDetails){
             evaluationDetail.setDimensionName(evaluationDimensionMapper.getEvaluationDimensionByDimensionId(evaluationDetail.getDimensionId()).getDimensionName());

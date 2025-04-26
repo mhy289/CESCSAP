@@ -16,5 +16,6 @@ public interface EvaluationDetailMapper {
     @Insert("insert into evaluationdetail(evaluation_id, dimension_id, score) VALUES (#{evaluationId},#{dimensionId},#{score})")
     Integer insertEvaluationDetail(EvaluationDetail evaluationDetail);
 
+
     //List<EvaluationDetail> getEvaluationDetail(Long );
 }

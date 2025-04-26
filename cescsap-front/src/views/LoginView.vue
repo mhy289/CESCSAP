@@ -148,7 +148,8 @@
           // 发送请求（设置5秒超时）
           let requestData = {
             role: this.ruleForm.role,
-            password: this.ruleForm.password
+            password: this.ruleForm.password,
+            role: this.ruleForm.role
           };
           if (this.loginType === 'name') {
             requestData.name = this.ruleForm.name;

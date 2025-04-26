@@ -189,4 +189,29 @@ public class EvaluationController {
         List<EvaluationDetail> evaluationDetails = evaluationService.getEvaluationDetail(evaluationId);
         return new Result(evaluationDetails);
     }
+
+    //获取该教师的总体平均分（所有维度总体平均），以及每个维度的平均分
+
+    @GetMapping("/stats/teacher/{teacherId}")
+    public Result getTeacherStats(@PathVariable Long teacherId) {
+        // 返回 DTO 包含：overallAvg（Double） + List< { dimensionName, avgScore } >
+        TeacherStatsDTO stats = evaluationService.calculateTeacherStats(teacherId);
+        return new Result(stats);
+    }
+
+    //分页查询每个学生对该教师的评价概要（包括 evaluationScore 即总体得分）
+
+    @GetMapping("/evals/teacher/{teacherId}/page/{pageNum}/size/{pageSize}")
+    public Result listEvaluations(@PathVariable Long teacherId,@PathVariable int pageNum,@PathVariable int pageSize) {
+        PageItem<Evaluation> page = evaluationService.listByTeacher(teacherId, pageNum, pageSize);
+        return new Result(page);
+    }
+
+    //获取某一次评价的详细维度打分
+
+    @GetMapping("/teacher/{teacherId}/evaluations/details/{evaluationId}")
+    public Result getEvaluationDetails(@PathVariable Long evaluationId) {
+        List<EvaluationDetail> details = evaluationService.getDetails(evaluationId);
+        return new Result(details);
+    }
 }
