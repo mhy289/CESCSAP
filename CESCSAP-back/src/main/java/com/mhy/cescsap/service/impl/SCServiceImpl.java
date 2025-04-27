@@ -205,8 +205,11 @@ public class SCServiceImpl implements SCService {
         int sum=0;
         //验证是否有空，有就补充
         for(StudentCourse sc : studentCourseList){
-            if(sc.getName()==null){
+            Student s = studentMapper.getStudentById(sc.getStudentId());
+            Teacher t = teacherMapper.selectTeacherById(sc.getTeacherId());
+            if(sc.getName()==null || !sc.getName().equals(s.getName())){
                 Student student = studentMapper.getStudentById(sc.getStudentId());
+                log.debug("student is {}", student);
                 sc.setName(student.getName());
                 sum++;
             }
@@ -215,10 +218,12 @@ public class SCServiceImpl implements SCService {
                 sc.setCourseName(course.getCourseName());
                 sum++;
             }
-            if(sc.getTeacherId()==null){
+            if(sc.getTeacherId()==null || !sc.getTeacherName().equals(t.getName())){
                 Course course = courseMapper.getCourseById(sc.getCourseId());
-                sc.setTeacherName(course.getTeacherName());
+                course.setTeacherName(t.getName());
+                sc.setTeacherName(t.getName());
                 sc.setTeacherId(course.getTeacherId());
+                Integer i = courseMapper.updateCourse(course);
                 sum++;
             }
             if(sc.getClassId()==null){

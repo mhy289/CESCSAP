@@ -2,9 +2,7 @@ package com.mhy.cescsap.mapper;
 
 import com.mhy.cescsap.pojo.Evaluation;
 import com.mhy.cescsap.pojo.EvaluationDimension;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -14,6 +12,7 @@ public interface EvaluationMapper {
     List<Evaluation> getEvaluations(Long teacherId);
 
     @Insert("insert into evaluation(student_id, course_id, teacher_id, comment, evaluation_time) values (#{studentId},#{courseId},#{teacherId},#{comment},#{evaluationTime})")
+    @Options(useGeneratedKeys = true, keyProperty = "evaluationId", keyColumn = "evaluationId")
     Integer insertEvaluation(Evaluation evaluation);
 
     @Select("select * from evaluationdimension")
@@ -31,4 +30,7 @@ public interface EvaluationMapper {
         WHERE t.teacher_id = #{teacherId}
     """)
     Double selectOverallAvgByTeacher(Long teacherId);
+
+    @Update("update evaluation set evaluation_score = #{evaluationScore} where evaluation_id = #{evaluationId}")
+    Integer updateEvaluationScore(Evaluation evaluation);
 }

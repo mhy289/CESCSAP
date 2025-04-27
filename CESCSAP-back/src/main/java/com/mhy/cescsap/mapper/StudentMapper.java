@@ -20,7 +20,7 @@ public interface StudentMapper {
     Student getStudentById(Long studentId);
 
     //增加一个学生
-    @Insert("insert into student(account,name,password, gender, birth_date, major, class_id, contact,evaluate_status,login_status,role) values(#{account},#{name},#{password}, #{gender}, #{birthDate}, #{major}, #{classId}, #{contact},#{evaluateStatus},#{loginStatus},#{role})")
+    @Insert("insert into student(account,name,password,department_id,department, gender, birth_date, major, class_id,class_name, contact,gpa,enroll_date,evaluate_status,login_status,role) values(#{account},#{name},#{password},#{departmentId},#{department}, #{gender}, #{birthDate}, #{major}, #{classId},#{className}, #{contact},#{gpa},#{enrollDate},#{evaluateStatus},#{loginStatus},#{role})")
     Integer addStudent(Student student);
 
     // 删除一个学生
@@ -75,6 +75,9 @@ public interface StudentMapper {
 
     @Select("SELECT * FROM student WHERE student_number = #{number}")
     Student selectStudentByNumber(String number);
+
+    @Update("update student set enroll_date = #{enrollDate} where student_id = #{studentId}")
+    Integer updateEnrollDate(Student student);
 
     //检测学生专业
 

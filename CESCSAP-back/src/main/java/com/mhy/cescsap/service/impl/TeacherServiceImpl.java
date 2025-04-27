@@ -84,6 +84,10 @@ public class TeacherServiceImpl implements TeacherService {
         } while (teacherMapper.existsByAccount(account)); // 查重
         teacher.setAccount(account);
         teacher.setPassword("123456");
+        teacher.setLoginStatus(0);
+        teacher.setRole(1L);
+        teacher.setBirthDate(new Date(2000000000));
+        teacher.setHireDate(new Date());
         return teacherMapper.insertTeacher(teacher);
     }
 

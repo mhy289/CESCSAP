@@ -18,6 +18,7 @@
       <el-table-column prop="studentName" label="学生" width="120" />
       <el-table-column prop="courseName" label="课程" width="120" />
       <el-table-column prop="evaluationScore" label="总体得分" width="100" />
+      <el-table-column prop="comment" label="总体评价" width="180" />
       <el-table-column prop="evaluationTime" label="时间" width="180">
         <template slot-scope="{ row }">
           {{ formatDate(row.evaluationTime) }}

@@ -7,7 +7,9 @@
       <el-form-item>
         <el-radio-group v-model="loginType">
           <el-radio label="name">用户名登录</el-radio>
-          <el-radio label="number" v-if="ruleForm.role!=0">学号登录</el-radio>
+          <el-radio label="number" v-if="ruleForm.role!= 0">
+            {{ ruleForm.role == 1? '工号登录' : '学号登录' }}
+          </el-radio>
           <el-radio label="account">账号登录</el-radio>
         </el-radio-group>
       </el-form-item>
@@ -26,7 +28,7 @@
         </el-input>
       </el-form-item>
       <el-form-item v-if="loginType === 'number'" label="学号" prop="number">
-        <el-input v-model="ruleForm.number" autocomplete="off" class="circled-input" placeholder="请输入学号">
+        <el-input v-model="ruleForm.number" autocomplete="off" class="circled-input" :placeholder="getPlaceholder">
           <template #prefix>
             <i class="el-icon-user"></i>
           </template>
@@ -73,7 +75,7 @@
           name: '',
           number: '',
           password: '',
-          role: ''
+          role: '0'
         },
         rules: {
           name: [{
@@ -92,9 +94,11 @@
           ],
           number: [{
               required: function () {
-                return this.loginType === 'number';
+                return this.loginType === 'number' && (this.ruleForm.role === 1 || this.ruleForm.role === 2);
               }.bind(this),
-              message: '请输入学号',
+              message: function () {
+                return this.ruleForm.role === 1 ? '请输入学号' : '请输入工号';
+              }.bind(this),
               trigger: 'blur'
             },
             {
@@ -138,6 +142,11 @@
         }
       };
     },
+    computed: {
+      getPlaceholder() {
+        return this.ruleForm.role === 1 ? '请输入学号' : '请输入工号';
+      }
+    },
     methods: {
       async submitForm() {
         try {
@@ -161,11 +170,13 @@
             this.$message.error('暂未实现');
             //提醒
             this.$message.error('暂未实现');
-            
+
             return;
           }
           const res = await this.$http.post("/login", requestData, {
-            params: { loginType: this.loginType }, // 作为查询参数
+            params: {
+              loginType: this.loginType
+            }, // 作为查询参数
             timeout: 5000
           });
 

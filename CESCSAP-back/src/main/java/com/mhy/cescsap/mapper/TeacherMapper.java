@@ -17,7 +17,7 @@ public interface TeacherMapper {
     List<Teacher> selectAllTeachers();
 
     //增加一个教师
-    @Insert("insert into teacher (account,name, gender, department, birth_date, contact,login_status,role) values (#{account},#{name}, #{gender}, #{department}, #{birthDate}, #{contact},#{loginStatus},#{role})")
+    @Insert("insert into teacher (account,name,password, gender,department_id, department, birth_date, contact,hire_date,login_status,role) values (#{account},#{name},#{password}, #{gender},#{departmentId}, #{department}, #{birthDate}, #{contact},#{hireDate},#{loginStatus},#{role})")
     Integer insertTeacher(Teacher teacher);
 
     // 删除一个教师

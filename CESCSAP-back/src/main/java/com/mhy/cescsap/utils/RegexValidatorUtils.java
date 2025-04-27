@@ -11,7 +11,7 @@ public class RegexValidatorUtils {
     // ================= 预编译模式 =================
     private static final Map<String, Pattern> PRECOMPILED_PATTERNS = new HashMap<>();
     private static final Properties REGEX_CONFIG = new Properties();
-    private static final String DOMAIN_PATTERN ="^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\\.[A-Za-z]{2,6})+$";
+    private static final String DOMAIN_PATTERN ="^https?://(?!-)(?:[A-Za-z0-9-]{1,63}(?<!-)\\.)+(?:[A-Za-z]{2,63})(?:/[^?#]*)?(?:\\?[^#]*)?(?:#.*)?$";
 
     static {
         // 初始化预编译正则

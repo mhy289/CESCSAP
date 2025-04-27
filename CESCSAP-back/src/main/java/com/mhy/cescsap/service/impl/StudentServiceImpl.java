@@ -61,6 +61,10 @@ public class StudentServiceImpl implements StudentService {
             }
             student.setName(name);
         }
+        //名字查重
+        if (studentMapper.existsByName(student.getName())) {
+            throw new BusinessException(ExceptionType.NAME_DUPLICATE, "姓名重复");
+        }
         List<Student> students = studentMapper.getStudents();
         Long classId = student.getClassId();
         Map<String, Long> map = new HashMap<>();
@@ -91,7 +95,9 @@ public class StudentServiceImpl implements StudentService {
         student.setContact("777");
         student.setRole(2L);
         student.setEvaluateStatus(0);
-        student.setBirthDate(new Date());
+        student.setBirthDate(new Date(20000));
+        student.setLoginStatus(0);
+        student.setEnrollDate(new Date());
         student.setGpa(0.0);
         student.setClassName(classMapper.getClassByClassId(classId).getClassName());
         log.debug("stu is {}", student);
@@ -175,6 +181,7 @@ public class StudentServiceImpl implements StudentService {
         List<Student> students = studentMapper.getStudents();
         int sum = 0;
         for (Student student : students) {
+
             if (student.getAccount() == null) {
                 long account;
                 do {
@@ -184,12 +191,23 @@ public class StudentServiceImpl implements StudentService {
                 Integer i = studentMapper.addStudentForAccount(student);
             }
             String major = student.getMajor();
+            if(student.getDepartment()== null|| student.getDepartmentId() == null){
+                Major m = majorMapper.getMajor(major);
+                student.setDepartmentId(m.getDepartmentId());
+                Department department = departmentMapper.getDepartmentById(m.getDepartmentId());
+                student.setDepartment(department.getDepartmentName());
+                studentMapper.updateStudentDepartment(student);
+            }
             Long classId = student.getClassId();
             Integer i = classMapper.checkMajor(major);
             student.setPassword("123456");
+            student.setEnrollDate(new Date());
+            //更新入学日期
+            Integer z = studentMapper.updateEnrollDate(student);
             if (i == null || i <= 0) {
                 Class clazz = classMapper.getClassByClassId(classId);
                 student.setMajor(clazz.getMajor());
+                student.setClassName(clazz.getClassName());
                 Integer i1 = studentMapper.updateStudent(student);
                 sum++;
             }

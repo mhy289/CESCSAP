@@ -100,16 +100,29 @@ public class EvaluationServiceImpl implements EvaluationService {
         log.debug("---------------------------");
         log.debug("evaluation:{}",evaluation);
         Integer i = evaluationMapper.insertEvaluation(evaluation);
+        Long evaluationId = evaluation.getEvaluationId();
         //设置该学生课程评价完成
         //scService.updateCommentStatus(evaluation.getStudentId(), evaluation.getCourseId());
         Integer j = scMapper.markEvaluated(evaluation.getStudentId(),evaluation.getCourseId(),evaluation.getTeacherId());
         if(evaluation.getEvaluationDetails()!=null) {
+            double evaluationScore;
+            Double sumScore = 0.0;
+            Integer k = 0;
             for (EvaluationDetail evaluationDetail : evaluation.getEvaluationDetails()) {
-                evaluationDetail.setEvaluationId(Long.valueOf(i));
+                //综合维度的评价分赋给总分
+                sumScore += evaluationDetail.getScore();
+                k++;
+                evaluationDetail.setEvaluationId(evaluationId);
                 Integer i1 = evaluationDetailMapper.insertEvaluationDetail(evaluationDetail);
                 if (i1 == null || i1 <= 0) {
                     throw new BusinessException(ExceptionType.EVAL_DTL_ERR, "评价细节提交错误");
                 }
+            }
+            evaluationScore = sumScore/k;
+            evaluation.setEvaluationScore(evaluationScore);
+            Integer z = evaluationMapper.updateEvaluationScore(evaluation);
+            if(z == null || z <= 0) {
+                throw new BusinessException(ExceptionType.EVAL_ERR, "评价提交错误");
             }
         }
         return i;
